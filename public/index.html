@@ -90,8 +90,19 @@
     }
 
     /* Header / brand */
-    .header-brand,
-    .brand-title,
+    /* Header / brand */
+    .brand-title {
+      color: var(--text-primary) !important;
+    }
+
+    .brand-title-primary {
+      color: var(--cmc-blue) !important;
+    }
+
+    .brand-title-secondary {
+      color: var(--text-primary) !important;
+    }
+
     .header-link,
     .header-link .material-icons {
       color: var(--cmc-blue) !important;
@@ -107,12 +118,18 @@
       color: var(--cmc-blue) !important;
     }
 
+    .sidebar-nav-item a {
+      color: var(--text-secondary);
+    }
+
     .sidebar-nav-item .nav-icon {
-      color: var(--cmc-blue);
+      color: var(--text-secondary);
     }
 
     .sidebar-nav-item a:hover,
-    .sidebar-nav-item a.active {
+    .sidebar-nav-item a:hover .nav-icon,
+    .sidebar-nav-item a.active,
+    .sidebar-nav-item a.active .nav-icon {
       color: var(--cmc-blue);
     }
 
@@ -213,20 +230,24 @@
     }
 
     .featured-tool-name a,
+    .schema-name a {
+      color: var(--text-primary);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color .16s ease;
+    }
+
+    .featured-tool-name a:hover,
+    .schema-name a:hover {
+      color: var(--cmc-blue);
+    }
+
+    /* Action links stay blue at all times */
     .featured-tool-link,
-    .schema-name a,
-    .schema-card a,
     .section-view-all,
     .contributor-role a,
     .btn-copy {
       color: var(--cmc-blue);
-    }
-
-    .featured-tool-name a,
-    .featured-tool-link,
-    .schema-name a {
-      font-weight: 700;
-      text-decoration: none;
     }
 
     .featured-tool-desc {
@@ -281,7 +302,6 @@
 
     .section-view-all:hover,
     .featured-tool-link:hover,
-    .schema-card a:hover,
     .contributor-role a:hover {
       color: var(--cmc-blue-dark);
       text-decoration: underline;
@@ -573,7 +593,7 @@
       <a href="index.html" class="header-brand">
         <img src="assets/cmc-guides.png" alt="CraftersMC Guides">
         <div class="brand-text">
-          <span class="brand-title">CraftersMC Guides</span>
+          <span class="brand-title"><span class="brand-title-primary">CraftersMC</span> <span class="brand-title-secondary">Guides</span></span>
           <span class="version-badge">SkyBlock Docs</span>
         </div>
       </a>
