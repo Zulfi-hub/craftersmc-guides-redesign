@@ -2141,6 +2141,178 @@
     }
   }
 </style>
+
+<style id="mobile-header-and-code-fix">
+  /* =========================================================
+     MOBILE HEADER + API CODE READABILITY
+     ========================================================= */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+  }
+
+  .header-action-icon,
+  .header-action-svg {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    flex: 0 0 20px;
+    color: currentColor;
+  }
+
+  .header-action-svg {
+    display: block;
+  }
+
+  .code-block-wrapper {
+    background: #151b24 !important;
+    border-color: rgba(148,163,184,.22) !important;
+    box-shadow: 0 14px 34px rgba(0,0,0,.30) !important;
+  }
+
+  .code-block-wrapper .code-block-header {
+    background: #1c2530 !important;
+    border-bottom-color: rgba(148,163,184,.20) !important;
+    color: #dbe7f3 !important;
+  }
+
+  .code-block-wrapper .api-example-title > span {
+    color: #dbe7f3 !important;
+  }
+
+  .code-block-wrapper pre,
+  .code-block-wrapper pre code {
+    background: #151b24 !important;
+    color: #dbe7f3 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  .code-block-wrapper pre {
+    border: 0 !important;
+  }
+
+  .code-block-wrapper .btn-copy {
+    min-width: 70px;
+    min-height: 36px;
+    padding: 7px 12px !important;
+    border: 1px solid rgba(125,211,252,.35) !important;
+    border-radius: 8px !important;
+    background: #22303d !important;
+    color: #9bdcff !important;
+    font-weight: 800 !important;
+  }
+
+  .code-block-wrapper .btn-copy:hover,
+  .code-block-wrapper .btn-copy:focus-visible {
+    background: #2a3b4b !important;
+    color: #e0f2fe !important;
+  }
+
+  @media (max-width: 700px) {
+    .header-actions {
+      gap: 6px;
+    }
+
+    .header-icon-link {
+      width: 38px;
+      min-width: 38px;
+      height: 38px;
+      min-height: 38px;
+      padding: 0 !important;
+      border: 1px solid rgba(125,211,252,.18) !important;
+      border-radius: 9px !important;
+      background: #111821 !important;
+      color: #9bdcff !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+    }
+
+    .header-action-icon,
+    .header-action-svg {
+      width: 21px;
+      height: 21px;
+      font-size: 21px;
+      flex-basis: 21px;
+    }
+
+    .header-icon-link .header-link-text {
+      display: none !important;
+    }
+
+    .header-icon-link:hover,
+    .header-icon-link:focus-visible {
+      background: #17222d !important;
+      color: #dff6ff !important;
+    }
+
+    .api-method-badge {
+      margin-right: 7px;
+    }
+
+    .code-block-wrapper .code-block-header {
+      min-height: 58px;
+      padding: 12px 13px !important;
+    }
+
+    .code-block-wrapper .api-example-title {
+      align-items: center !important;
+      gap: 10px !important;
+    }
+
+    .code-block-wrapper .api-example-title > span {
+      font-size: .94rem !important;
+      line-height: 1.35 !important;
+      font-weight: 700 !important;
+    }
+
+    .code-block-wrapper pre {
+      padding: 18px 16px !important;
+      font-size: .80rem !important;
+      line-height: 1.62 !important;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .header-actions {
+      gap: 5px;
+    }
+
+    .header-icon-link {
+      width: 36px;
+      min-width: 36px;
+      height: 36px;
+      min-height: 36px;
+    }
+
+    .header-action-icon,
+    .header-action-svg {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      flex-basis: 20px;
+    }
+
+    .code-block-wrapper .api-example-title > span {
+      font-size: .88rem !important;
+    }
+
+    .code-block-wrapper .btn-copy {
+      min-width: 66px;
+      min-height: 34px;
+      padding: 6px 10px !important;
+      font-size: .78rem !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
@@ -2163,12 +2335,16 @@
 <div class="search-results" hidden="" id="search-results" role="listbox"></div>
 </div>
 <div class="header-actions">
-<a class="header-link" href="better-api-docs/index.html" style="font-weight:600;">
-<span aria-hidden="true" class="material-icons" style="font-size:1rem;vertical-align:middle;">api</span>
+<a class="header-link header-icon-link" href="better-api-docs/index.html" aria-label="API Docs" title="API Docs" style="font-weight:600;">
+<span aria-hidden="true" class="material-icons header-action-icon">api</span>
 <span class="header-link-text">API Docs</span>
 </a>
-<a class="header-link" href="https://discord.gg/BwuKACpVc9" rel="noopener noreferrer" style="font-weight:600;" target="_blank">
-<span aria-hidden="true" class="material-icons" style="font-size:1rem;vertical-align:middle;">forum</span>
+<a class="header-link header-icon-link" href="https://github.com/CraftersMC-Guides-Project/guides-code" aria-label="GitHub Repository" title="GitHub Repository" rel="noopener noreferrer" target="_blank" style="font-weight:600;">
+<svg class="header-action-svg github-logo" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M12 .7a11.3 11.3 0 0 0-3.58 22.02c.57.1.78-.25.78-.55v-2.1c-3.17.69-3.84-1.35-3.84-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.95.1-.74.4-1.25.73-1.54-2.53-.29-5.19-1.27-5.19-5.64 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .97-.31 3.17 1.17a11 11 0 0 1 5.77 0c2.2-1.48 3.17-1.17 3.17-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.38-2.67 5.34-5.21 5.63.41.35.78 1.04.78 2.1v3.11c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/></svg>
+<span class="header-link-text">GitHub</span>
+</a>
+<a class="header-link header-icon-link" href="https://discord.gg/BwuKACpVc9" aria-label="Discord" title="Discord" rel="noopener noreferrer" target="_blank" style="font-weight:600;">
+<svg class="header-action-svg discord-logo" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M19.54 4.9A16.6 16.6 0 0 0 15.45 3.6l-.5 1.03a15.2 15.2 0 0 0-5.9 0l-.5-1.03a16.6 16.6 0 0 0-4.09 1.3C1.84 8.8 1.14 12.65 1.49 16.45a16.7 16.7 0 0 0 5.15 2.6l1.25-1.7a10.2 10.2 0 0 1-1.97-.94l.48-.37a11.8 11.8 0 0 0 11.2 0l.48.37c-.63.36-1.29.67-1.97.94l1.25 1.7a16.7 16.7 0 0 0 5.15-2.6c.41-4.4-.7-8.2-2.67-11.55Zm-10.5 9.23c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Zm5.92 0c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Z"/></svg>
 <span class="header-link-text">Discord</span>
 </a>
 </div>
