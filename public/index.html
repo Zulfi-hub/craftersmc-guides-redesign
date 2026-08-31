@@ -1390,6 +1390,127 @@
     @media (prefers-reduced-motion: reduce) {
       .sidebar-nav-item a, .featured-tool-card, .schema-card, .contributor-card { transition:none !important; }
     }
+    /* =========================================================
+       BRAND PRESENCE — stronger hierarchy, restrained glow
+       ========================================================= */
+    .header-brand {
+      position: relative;
+      gap: 13px !important;
+      padding: 4px 8px 4px 4px;
+      border-radius: 14px;
+      isolation: isolate;
+    }
+
+    .header-brand::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      width: 58px;
+      height: 58px;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,189,248,.20) 0%, rgba(56,189,248,.07) 42%, transparent 74%);
+      filter: blur(7px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .header-brand img {
+      width: 48px !important;
+      height: 48px !important;
+      flex: 0 0 48px;
+      border-radius: 12px !important;
+      border: 1px solid rgba(56,189,248,.24);
+      background: linear-gradient(145deg, rgba(17,24,39,.92), rgba(5,9,15,.98));
+      padding: 2px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.025), 0 8px 22px rgba(0,0,0,.34);
+      filter: none !important;
+    }
+
+    .header-brand .brand-text {
+      min-width: 0;
+      display: flex !important;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
+
+    .header-brand .brand-title {
+      display: inline-flex;
+      align-items: baseline;
+      white-space: nowrap;
+      font-size: 1.24rem !important;
+      line-height: 1;
+      font-weight: 800 !important;
+      letter-spacing: -.035em;
+    }
+
+    .header-brand .brand-title-primary {
+      color: #38bdf8 !important;
+      font-weight: 800 !important;
+    }
+
+    .header-brand .brand-title-secondary {
+      color: #f1f5f9 !important;
+      font-weight: 650 !important;
+      margin-left: 2px;
+    }
+
+    .version-badge {
+      display: inline-flex !important;
+      align-items: center;
+      white-space: nowrap;
+      padding: 5px 8px !important;
+      border-radius: 7px !important;
+      background: rgba(56,189,248,.055) !important;
+      border: 1px solid rgba(56,189,248,.18) !important;
+      color: #7dd3fc !important;
+      font-family: var(--font-mono) !important;
+      font-size: .61rem !important;
+      font-weight: 700 !important;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+    }
+
+    .top-header {
+      border-bottom-color: rgba(56,189,248,.12) !important;
+      box-shadow: 0 10px 35px rgba(0,0,0,.24), 0 1px 0 rgba(56,189,248,.035) !important;
+    }
+
+    .header-brand:hover img {
+      border-color: rgba(56,189,248,.42);
+      box-shadow: 0 0 0 1px rgba(56,189,248,.10), 0 10px 26px rgba(0,0,0,.40);
+    }
+
+    .header-brand:hover .version-badge {
+      border-color: rgba(56,189,248,.30) !important;
+      background: rgba(56,189,248,.08) !important;
+    }
+
+    @media (max-width: 900px) {
+      .header-brand .brand-title { font-size: 1.12rem !important; }
+      .header-brand img { width: 44px !important; height: 44px !important; flex-basis: 44px; }
+      .header-brand .brand-text { gap: 8px; }
+    }
+
+    @media (max-width: 700px) {
+      .header-brand { padding-right: 2px; gap: 9px !important; }
+      .header-brand img { width: 40px !important; height: 40px !important; flex-basis: 40px; }
+      .header-brand .brand-title { font-size: .98rem !important; }
+      .version-badge {
+        padding: 4px 6px !important;
+        font-size: .54rem !important;
+      }
+      .header-brand .brand-text { gap: 7px; }
+    }
+
+    @media (max-width: 430px) {
+      .header-brand .brand-title { font-size: .90rem !important; }
+      .version-badge { display: none !important; }
+    }
+
   </style>
 
   <script src="better-api-docs/app.js" defer></script>
@@ -1406,7 +1527,7 @@
         <img src="assets/cmc-guides.png" alt="CraftersMC Guides">
         <div class="brand-text">
           <span class="brand-title"><span class="brand-title-primary">CraftersMC</span> <span class="brand-title-secondary">Guides</span></span>
-          <span class="version-badge">SkyBlock Docs</span>
+          <span class="version-badge">SkyBlock • Docs</span>
         </div>
       </a>
     </div>
