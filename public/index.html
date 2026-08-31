@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <title>CraftersMC SkyBlock Guides &amp; Documentation</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Official documentation and progression guides for CraftersMC SkyBlock, including live event tools, sellers directory, and REST API reference." />
+
+  <meta
+    name="description"
+    content="Official documentation and progression guides for CraftersMC SkyBlock, including live event tools, sellers directory, and REST API reference."
+  />
 
   <meta name="google-site-verification" content="a1S654ozEH6kuH1DM6-3ssQYXgow72Mfh19eg3RCUTk" />
   <meta name="google-site-verification" content="Wr3jatMv-sfXhgBy5jBfiX8Nwn6k8P1k_jPubQzBcTY" />
@@ -13,28 +19,37 @@
   <link rel="icon" href="assets/cmc-icon.png" type="image/png" />
   <link rel="icon" href="assets/cmc-guides.png" type="image/png" />
 
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- Existing Stylesheet -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Material Icons -->
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+
+  <!-- Existing stylesheet -->
   <link rel="stylesheet" href="better-api-docs/style.css" />
 
-  <!-- Page-specific layout changes -->
+  <!-- Homepage-specific CSS -->
   <style>
+
     /* =========================================================
-       HOMEPAGE REDESIGN
+       HOMEPAGE LAYOUT
        ========================================================= */
 
     .main-content {
-      padding-bottom: 50px;
+      padding-bottom: 40px;
     }
 
-    /* Give every major section breathing room */
     .doc-section {
-      margin-bottom: 42px;
+      margin-bottom: 24px;
     }
 
     /* =========================================================
@@ -42,7 +57,12 @@
        ========================================================= */
 
     .section-header {
-      margin-bottom: 18px;
+      margin-bottom: 10px;
+    }
+
+    .section-header p {
+      margin-top: 4px;
+      margin-bottom: 8px;
     }
 
     .section-header h2 {
@@ -60,8 +80,8 @@
        ========================================================= */
 
     .featured-tools-section {
-      margin-top: 8px;
-      margin-bottom: 42px;
+      margin-top: 4px;
+      margin-bottom: 24px;
     }
 
     .featured-tools-header {
@@ -69,7 +89,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .featured-tools-title {
@@ -84,30 +104,52 @@
     }
 
     .featured-tools-subtitle {
-      margin: 4px 0 0;
+      margin: 4px 0 8px;
       color: var(--text-secondary);
       font-size: 0.92rem;
     }
 
     .featured-tools-grid {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       overflow-x: auto;
-      padding: 4px 4px 14px 2px;
+      padding: 4px 4px 10px 2px;
       scroll-behavior: smooth;
       scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar {
+      height: 7px;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-track {
+      background: #edf2f7;
+      border-radius: 10px;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
     }
 
     .featured-tool-card {
-      flex: 0 0 230px;
-      min-height: 145px;
-      padding: 18px;
+      flex: 0 0 220px;
+      min-height: 120px;
+      padding: 14px;
+
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      background: var(--card-background, #fff);
+
+      background: var(--card-background, #ffffff);
+
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+
       box-sizing: border-box;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
     }
 
     .featured-tool-card:hover {
@@ -117,12 +159,12 @@
 
     .featured-tool-icon {
       color: var(--accent-color);
-      font-size: 1.6rem;
-      margin-bottom: 8px;
+      font-size: 1.5rem;
+      margin-bottom: 6px;
     }
 
     .featured-tool-name {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .featured-tool-name a {
@@ -133,64 +175,84 @@
 
     .featured-tool-desc {
       color: var(--text-secondary);
-      font-size: 0.88rem;
-      line-height: 1.45;
-      margin-bottom: 12px;
+      font-size: 0.86rem;
+      line-height: 1.35;
+      margin-bottom: 9px;
     }
 
     .featured-tool-link {
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--accent-color);
       text-decoration: none;
     }
 
     /* =========================================================
-       HORIZONTAL SCROLL SECTIONS
+       HORIZONTAL CARD SECTIONS
        ========================================================= */
 
     .horizontal-cards {
       display: flex;
-      gap: 16px;
+      gap: 12px;
+
       overflow-x: auto;
-      padding: 4px 4px 16px 2px;
+
+      padding: 4px 4px 10px 2px;
+
       scroll-behavior: smooth;
+
       scrollbar-width: thin;
+
       -webkit-overflow-scrolling: touch;
     }
 
-    .horizontal-cards::-webkit-scrollbar,
-    .featured-tools-grid::-webkit-scrollbar {
+    .horizontal-cards::-webkit-scrollbar {
       height: 7px;
     }
 
-    .horizontal-cards::-webkit-scrollbar-track,
-    .featured-tools-grid::-webkit-scrollbar-track {
-      background: #eef2f7;
+    .horizontal-cards::-webkit-scrollbar-track {
+      background: #edf2f7;
       border-radius: 10px;
     }
 
-    .horizontal-cards::-webkit-scrollbar-thumb,
-    .featured-tools-grid::-webkit-scrollbar-thumb {
-      background: #b8c1cc;
+    .horizontal-cards::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
       border-radius: 10px;
+    }
+
+    .horizontal-cards::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
     }
 
     .horizontal-card {
-      flex: 0 0 255px;
-      min-height: 175px;
+      flex: 0 0 225px;
+      width: 225px;
+      min-height: 145px;
+
       box-sizing: border-box;
     }
 
-    /* Existing schema cards get a subtle shadow */
+    /* =========================================================
+       NORMAL CARDS
+       ========================================================= */
+
     .schema-card {
+      padding: 14px;
+
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.07);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
     }
 
     .schema-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(15, 23, 42, 0.11);
+    }
+
+    .schema-desc {
+      line-height: 1.35;
     }
 
     /* =========================================================
@@ -199,18 +261,25 @@
 
     .section-header-with-action {
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 20px;
     }
 
     .section-view-all {
-      flex-shrink: 0;
+      flex: 0 0 auto;
+
+      margin-top: 6px;
+
       color: var(--accent-color);
+
       font-weight: 600;
-      text-decoration: none;
+
       font-size: 0.9rem;
-      margin-bottom: 4px;
+
+      text-decoration: none;
+
+      white-space: nowrap;
     }
 
     .section-view-all:hover {
@@ -219,42 +288,81 @@
 
     .other-guides-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+
+      grid-template-columns: repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
+      gap: 12px;
     }
 
     /* =========================================================
-       DEVELOPER / COMMUNITY CARDS
+       DEVELOPER / COMMUNITY
        ========================================================= */
 
     .resource-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+
+      grid-template-columns: repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
+      gap: 12px;
     }
 
     /* =========================================================
-       MOBILE
+       PROGRESSION FLOW
+       ========================================================= */
+
+    .progression-scroll {
+      align-items: stretch;
+    }
+
+    .progression-card {
+      flex: 0 0 225px;
+      width: 225px;
+
+      box-sizing: border-box;
+    }
+
+    /* =========================================================
+       MOBILE / TABLET
        ========================================================= */
 
     @media (max-width: 900px) {
+
       .other-guides-grid,
       .resource-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(
+          2,
+          minmax(0, 1fr)
+        );
       }
+
     }
 
     @media (max-width: 600px) {
+
       .doc-section {
-        margin-bottom: 34px;
+        margin-bottom: 24px;
+      }
+
+      .featured-tools-section {
+        margin-bottom: 24px;
       }
 
       .featured-tool-card {
-        flex-basis: 220px;
+        flex-basis: 200px;
+        min-height: 120px;
+        padding: 13px;
       }
 
       .horizontal-card {
-        flex-basis: 245px;
+        flex-basis: 215px;
+        width: 215px;
+        min-height: 140px;
       }
 
       .section-header-with-action {
@@ -265,1513 +373,14 @@
       .resource-grid {
         grid-template-columns: 1fr;
       }
+
     }
-    /* ===== COMPACT HOMEPAGE SPACING ===== */
 
-/* Reduce space between major sections */
-.doc-section {
-  margin-bottom: 24px;
-}
-
-/* Reduce space around section headings */
-.section-header {
-  margin-bottom: 10px;
-}
-
-.section-header p {
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
-
-/* Most Used Tools */
-.featured-tools-section {
-  margin-bottom: 24px;
-}
-
-.featured-tools-header {
-  margin-bottom: 10px;
-}
-
-.featured-tool-card {
-  min-height: 125px;
-  padding: 14px;
-}
-
-/* Horizontal scrolling cards */
-.horizontal-cards {
-  gap: 12px;
-  padding-bottom: 10px;
-}
-
-.horizontal-card {
-  flex-basis: 225px;
-  min-height: 145px;
-}
-
-/* Normal cards */
-.schema-card {
-  padding: 14px;
-}
-
-/* Reduce card description spacing */
-.schema-desc {
-  line-height: 1.35;
-}
-
-/* Other Game Guides */
-.other-guides-grid {
-  gap: 12px;
-}
-
-/* Developer / resource cards */
-.resource-grid {
-  gap: 12px;
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-
-  .doc-section {
-    margin-bottom: 24px;
-  }
-
-  .featured-tools-section {
-    margin-bottom: 24px;
-  }
-
-  .featured-tool-card {
-    flex-basis: 200px;
-    min-height: 120px;
-    padding: 13px;
-  }
-
-  .horizontal-card {
-    flex-basis: 215px;
-    min-height: 140px;
-  }
-
-  .schema-card {
-    padding: 13px;
-  }
-}
   </style>
 
-  <!-- Existing Scripts -->
+  <!-- Existing scripts -->
   <script src="better-api-docs/app.js" defer></script>
-</head>
 
-<body>
-
-  <!-- =========================================================
-       TOP HEADER
-       ========================================================= -->
-
-  <header class="top-header">
-    <div class="header-left">
-
-      <button type="button" class="mobile-menu-btn" aria-label="Toggle navigation menu">
-        <span class="material-icons" style="font-size:1.25rem;">menu</span>
-      </button>
-
-      <a href="index.html" class="header-brand">
-        <img src="assets/cmc-guides.png" alt="CraftersMC Logo" />
-
-        <div class="brand-text">
-          <span class="brand-title">CraftersMC Guides</span>
-          <span class="version-badge">SkyBlock Docs</span>
-        </div>
-      </a>
-    </div>
-
-    <!-- Search -->
-    <div class="search-box">
-      <span class="material-icons search-icon">search</span>
-      <input
-        type="text"
-        id="search-input"
-        placeholder="Search guides, tools, players, items..."
-      />
-      <span class="search-kbd-shortcut">/</span>
-    </div>
-
-    <!-- Header Links -->
-    <div class="header-actions">
-
-      <a
-        href="better-api-docs/index.html"
-        class="header-link"
-        style="color: var(--accent-color); font-weight: 600;"
-      >
-        <span class="material-icons" style="font-size:1rem; vertical-align:middle;">api</span>
-        <span class="header-link-text">API Docs</span>
-      </a>
-
-      <a
-        href="https://github.com/CraftersMC-Guides-Project/guides-code"
-        target="_blank"
-        class="header-link"
-      >
-        <span class="material-icons" style="font-size:1rem; vertical-align:middle;">code</span>
-        <span class="header-link-text">GitHub</span>
-      </a>
-
-    </div>
-  </header>
-
-
-  <!-- =========================================================
-       APPLICATION LAYOUT
-       ========================================================= -->
-
-  <div class="app-layout">
-
-    <!-- =======================================================
-         SIDEBAR
-         ======================================================= -->
-
-    <aside class="sidebar" id="sidebar">
-
-      <!-- Getting Started -->
-      <div class="sidebar-group">
-        <div class="sidebar-section-title">Getting Started</div>
-
-        <ul class="sidebar-nav">
-
-          <li class="sidebar-nav-item">
-            <a href="#overview">
-              <span class="material-icons nav-icon">home</span>
-              <span>Overview</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="#section-guides">
-              <span class="material-icons nav-icon">menu_book</span>
-              <span>Progression Guides</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="#section-tools">
-              <span class="material-icons nav-icon">build</span>
-              <span>Live Tools</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="#section-api">
-              <span class="material-icons nav-icon">code</span>
-              <span>Developer &amp; API</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-
-      <!-- Progression Guides -->
-      <div class="sidebar-group">
-        <div class="sidebar-section-title">Progression Guides</div>
-
-        <ul class="sidebar-nav">
-
-          <li class="sidebar-nav-item">
-            <a href="guide/starter-guide.html">
-              <span class="material-icons nav-icon">play_circle</span>
-              <span>Starter Guide</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/intermediate-guide.html">
-              <span class="material-icons nav-icon">trending_up</span>
-              <span>Intermediate Guide</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/intermediate-guide2.html">
-              <span class="material-icons nav-icon">shield</span>
-              <span>Slayers Edition</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/advanced-guide.html">
-              <span class="material-icons nav-icon">military_tech</span>
-              <span>Advanced Guide</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/accessories-guide.html">
-              <span class="material-icons nav-icon">auto_awesome</span>
-              <span>Accessories &amp; Reforges</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/bazaar-guide.html">
-              <span class="material-icons nav-icon">storefront</span>
-              <span>Bazaar Trading</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="guide/queries.html">
-              <span class="material-icons nav-icon">help_outline</span>
-              <span>Common Queries &amp; FAQ</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="unicode.html">
-              <span class="material-icons nav-icon">format_shapes</span>
-              <span>Unicode &amp; Formatting</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-
-      <!-- Live Tools -->
-      <div class="sidebar-group">
-        <div class="sidebar-section-title">Live Tools &amp; Trackers</div>
-
-        <ul class="sidebar-nav">
-
-          <li class="sidebar-nav-item">
-            <a href="player.html">
-              <span class="material-icons nav-icon">person_search</span>
-              <span>Player Viewer</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="skycalendar.html">
-              <span class="material-icons nav-icon">event</span>
-              <span>SkyCalendar (Events)</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="rank-sellers.html">
-              <span class="material-icons nav-icon">card_giftcard</span>
-              <span>Rank &amp; Gems Sellers</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="leaderboards.html">
-              <span class="material-icons nav-icon">leaderboard</span>
-              <span>Leaderboards</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="texture-packs.html">
-              <span class="material-icons nav-icon">palette</span>
-              <span>Texture Packs</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="tools.html">
-              <span class="material-icons nav-icon">calculate</span>
-              <span>Calculators</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="feather-bot/index.html">
-              <span class="material-icons nav-icon">smart_toy</span>
-              <span>Feather Bot Guide</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-
-      <!-- Developer -->
-      <div class="sidebar-group">
-        <div class="sidebar-section-title">Developer &amp; API</div>
-
-        <ul class="sidebar-nav">
-
-          <li class="sidebar-nav-item">
-            <a href="better-api-docs/index.html">
-              <span class="material-icons nav-icon">code</span>
-              <span>REST API v1 Reference</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="better-api-docs/index.html#section-nbt-decoding">
-              <span class="material-icons nav-icon">memory</span>
-              <span>15 NBT Storage Blobs</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a href="better-api-docs/index.html#section-item-ids">
-              <span class="material-icons nav-icon">list_alt</span>
-              <span>Numerical Item IDs (1,933)</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-
-      <!-- Community -->
-      <div class="sidebar-group">
-        <div class="sidebar-section-title">Community &amp; Source</div>
-
-        <ul class="sidebar-nav">
-
-          <li class="sidebar-nav-item">
-            <a href="https://craftersmc.net/" target="_blank">
-              <span class="material-icons nav-icon">language</span>
-              <span>Server Website</span>
-            </a>
-          </li>
-
-          <li class="sidebar-nav-item">
-            <a
-              href="https://github.com/CraftersMC-Guides-Project/guides-code"
-              target="_blank"
-            >
-              <span class="material-icons nav-icon">code</span>
-              <span>GitHub Repository</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-    </aside>
-
-
-    <!-- =======================================================
-         MAIN CONTENT
-         ======================================================= -->
-
-    <main class="main-content">
-
-
-      <!-- =====================================================
-           OVERVIEW
-           ===================================================== -->
-
-      <section class="doc-section" id="overview">
-
-        <div class="section-header">
-
-          <h1>CraftersMC SkyBlock Documentation</h1>
-
-          <p>
-            The comprehensive guide and reference library for CraftersMC SkyBlock players, traders, and developers.
-          </p>
-
-        </div>
-
-
-        <div class="prose-card">
-
-          <p>
-            Whether you are just starting your island, advancing through slayer bosses,
-            optimizing accessory reforges, or building integrations with the CraftersMC REST API,
-            this documentation contains all verified strategies, event timers, and technical references.
-          </p>
-
-
-          <div class="alert-box tip">
-
-            <span class="material-icons alert-icon">lightbulb</span>
-
-            <div>
-              <strong>Quick Tip:</strong>
-              Press
-              <kbd style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-family:var(--font-mono); font-size:0.8rem;">/</kbd>
-              anywhere on the page to focus the global search bar and instantly filter guides and tools.
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           MOST USED TOOLS
-           ===================================================== -->
-
-      <section class="featured-tools-section">
-
-        <div class="featured-tools-header">
-
-          <div>
-            <h2 class="featured-tools-title">
-              <span class="material-icons">build</span>
-              Most Used Tools
-            </h2>
-
-            <p class="featured-tools-subtitle">
-              Quick access to the tools players use the most.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="featured-tools-grid">
-
-          <!-- Player Viewer -->
-          <div class="featured-tool-card">
-
-            <div class="featured-tool-icon material-icons">
-              person
-            </div>
-
-            <div class="featured-tool-name">
-              <a href="player.html">Player Viewer</a>
-            </div>
-
-            <div class="featured-tool-desc">
-              View player stats, skills, profiles, minions and more.
-            </div>
-
-            <a class="featured-tool-link" href="player.html">
-              Launch →
-            </a>
-
-          </div>
-
-
-          <!-- SkyCalendar -->
-          <div class="featured-tool-card">
-
-            <div class="featured-tool-icon material-icons">
-              event
-            </div>
-
-            <div class="featured-tool-name">
-              <a href="skycalendar.html">SkyCalendar</a>
-            </div>
-
-            <div class="featured-tool-desc">
-              Live event timers and countdowns for SkyBlock events.
-            </div>
-
-            <a class="featured-tool-link" href="skycalendar.html">
-              Launch →
-            </a>
-
-          </div>
-
-
-          <!-- Bazaar -->
-          <div class="featured-tool-card">
-
-            <div class="featured-tool-icon material-icons">
-              shopping_cart
-            </div>
-
-            <div class="featured-tool-name">
-              <a href="guide/bazaar-guide.html">Bazaar Tracker</a>
-            </div>
-
-            <div class="featured-tool-desc">
-              Track prices, flips, orders and market trends.
-            </div>
-
-            <a class="featured-tool-link" href="guide/bazaar-guide.html">
-              Launch →
-            </a>
-
-          </div>
-
-
-          <!-- Leaderboards -->
-          <div class="featured-tool-card">
-
-            <div class="featured-tool-icon material-icons">
-              emoji_events
-            </div>
-
-            <div class="featured-tool-name">
-              <a href="leaderboards.html">Leaderboards</a>
-            </div>
-
-            <div class="featured-tool-desc">
-              Check top players across multiple categories.
-            </div>
-
-            <a class="featured-tool-link" href="leaderboards.html">
-              View →
-            </a>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           PROGRESSION GUIDES
-           ===================================================== -->
-
-      <section class="doc-section" id="section-guides">
-
-        <div class="section-header">
-
-          <h2>
-            <span class="material-icons">menu_book</span>
-            Progression &amp; Gameplay Guides
-          </h2>
-
-          <p>
-            Step-by-step guides to help you progress in SkyBlock.
-          </p>
-
-        </div>
-
-
-        <!-- Horizontal scrolling row -->
-        <div class="horizontal-cards">
-
-
-          <!-- Starter -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="guide/starter-guide.html">
-                Starter Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Early-game setup: Island layout, early coin generation,
-              fairy souls, minions, and more.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="guide/starter-guide.html"
-                style="font-weight: 600;"
-              >
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Intermediate -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="guide/intermediate-guide.html">
-                Intermediate Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Dragon armor progression, weapon upgrades,
-              combat skills and minion expansion.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="guide/intermediate-guide.html"
-                style="font-weight: 600;"
-              >
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Slayers -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="guide/intermediate-guide2.html">
-                Slayers Edition
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Boss mechanics, gear loadouts, and slayer progression
-              for Zombie, Spider, and Wolf slayers.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="guide/intermediate-guide2.html"
-                style="font-weight: 600;"
-              >
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Advanced -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="guide/advanced-guide.html">
-                Advanced Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Endgame setups, high-tier slayer farming,
-              economy and optimization.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="guide/advanced-guide.html"
-                style="font-weight: 600;"
-              >
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           LIVE TOOLS
-           ===================================================== -->
-
-      <section class="doc-section" id="section-tools">
-
-        <div class="section-header">
-
-          <h2>
-            <span class="material-icons">build</span>
-            Live Tools &amp; Trackers
-          </h2>
-
-          <p>
-            Real-time trackers, directories, and utilities built for CraftersMC players.
-          </p>
-
-        </div>
-
-
-        <!-- Horizontal scrolling row -->
-        <div class="horizontal-cards">
-
-
-          <!-- Player -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="player.html">
-                Player Viewer
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Inspect real-time player data, profiles, skills,
-              slayers, minions, and more.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="player.html" style="font-weight: 600;">
-                Launch →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Calendar -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="skycalendar.html">
-                SkyCalendar
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Live countdown timers for events, contests,
-              and special seasons.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="skycalendar.html" style="font-weight: 600;">
-                Launch →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Sellers -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="rank-sellers.html">
-                Rank &amp; Gems Sellers
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Verified list of trusted rank and gem sellers
-              with scam prevention guidelines.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="rank-sellers.html" style="font-weight: 600;">
-                Open Directory →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Leaderboards -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="leaderboards.html">
-                Leaderboards
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Check top player placements across collections,
-              skills, slayer XP, bank networth and boss records.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="leaderboards.html" style="font-weight: 600;">
-                View Leaderboards →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Calculators -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="tools.html">
-                Calculators
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Reforge stat calculators, minion inventory timers,
-              skill XP and other utilities.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="tools.html" style="font-weight: 600;">
-                Open Calculators →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Texture Packs -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="texture-packs.html">
-                Texture Packs
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Curated Bedrock resource packs customized for
-              CraftersMC weapons and armor.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="texture-packs.html" style="font-weight: 600;">
-                Browse Packs →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Feather Bot -->
-          <div class="schema-card horizontal-card">
-
-            <div class="schema-name">
-              <a href="feather-bot/index.html">
-                Feather Bot Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Slash command syntax and documentation for the
-              official CraftersMC Discord bot.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="feather-bot/index.html" style="font-weight: 600;">
-                View Guide →
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           OTHER GAME GUIDES
-           ===================================================== -->
-
-      <section class="doc-section">
-
-        <div class="section-header section-header-with-action">
-
-          <div>
-
-            <h2>
-              <span class="material-icons">menu_book</span>
-              Other Game Guides
-            </h2>
-
-            <p>
-              In-depth guides for specific game features and mechanics.
-            </p>
-
-          </div>
-
-
-          <!-- View All -->
-          <a
-            href="guide/"
-            class="section-view-all"
-          >
-            View all →
-          </a>
-
-        </div>
-
-
-        <div class="other-guides-grid">
-
-
-          <!-- Accessories -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="guide/accessories-guide.html">
-                Accessories &amp; Reforges
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Optimal reforge stones for common, uncommon,
-              rare, epic, and legendary talismans.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="guide/accessories-guide.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Bazaar -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="guide/bazaar-guide.html">
-                Bazaar Trading Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              How to use buy and sell orders, understand spreads,
-              and make coins with margin flipping.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="guide/bazaar-guide.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- FAQ -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="guide/queries.html">
-                Common Queries &amp; FAQ
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Quick answers to common questions regarding
-              CraftersMC custom features and mechanics.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="guide/queries.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Unicode -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="unicode.html">
-                Unicode &amp; Formatting
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Minecraft color code guide and custom unicode symbols
-              for Book &amp; Quills and item signs.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="unicode.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Minion Guide -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="guide/minion-guide.html">
-                Minion Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Maximize your minion setup and profits.
-              Best minions, upgrades and placements.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="guide/minion-guide.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Combat Guide -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="guide/combat-guide.html">
-                Combat Guide
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Improve your combat skills and damage output.
-              Learn mechanics and useful tips.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="guide/combat-guide.html" style="font-weight: 600;">
-                Open Guide →
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           DEVELOPER & API
-           ===================================================== -->
-
-      <section class="doc-section" id="section-api">
-
-        <div class="section-header">
-
-          <h2>
-            <span class="material-icons">code</span>
-            Developer &amp; API Resources
-          </h2>
-
-          <p>
-            Resources for developers and data enthusiasts.
-          </p>
-
-        </div>
-
-
-        <div class="resource-grid">
-
-
-          <!-- API -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="better-api-docs/index.html">
-                REST API v1 Reference
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Complete documentation for CraftersMC REST API
-              endpoints and usage.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a href="better-api-docs/index.html" style="font-weight: 600;">
-                View Docs →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- NBT -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="better-api-docs/index.html#section-nbt-decoding">
-                15 NBT Storage Blobs
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Detailed reference for all 15 NBT storage blobs
-              used in SkyBlock.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="better-api-docs/index.html#section-nbt-decoding"
-                style="font-weight: 600;"
-              >
-                View Reference →
-              </a>
-            </div>
-
-          </div>
-
-
-          <!-- Item IDs -->
-          <div class="schema-card">
-
-            <div class="schema-name">
-              <a href="better-api-docs/index.html#section-item-ids">
-                Numerical Item IDs (1,933)
-              </a>
-            </div>
-
-            <div class="schema-desc">
-              Browse all items with their numerical IDs
-              for API and integrations.
-            </div>
-
-            <div style="margin-top: 10px;">
-              <a
-                href="better-api-docs/index.html#section-item-ids"
-                style="font-weight: 600;"
-              >
-                View Items →
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- API Example -->
-
-        <div
-          class="code-block-wrapper"
-          style="margin-top: 20px;"
-        >
-
-          <div class="code-block-header">
-
-            <span>
-              Quick Example: Fetch Server Status (Node.js)
-            </span>
-
-            <button
-              class="btn-copy"
-              onclick="copyToClipboard(this)"
-            >
-              Copy
-            </button>
-
-          </div>
-
-
-          <pre><code>const res = await fetch("https://api.craftersmc.net/v1/network/status", {
-  headers: { "X-API-Key": "YOUR_API_KEY" }
-});
-
-const data = await res.json();
-
-console.log(
-  `Online Players: ${data.playerCount}/${data.maxPlayerCount} | SkyBlock: ${data.games.SKYBLOCK.modes.hub}`
-);</code></pre>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           COMMUNITY
-           ===================================================== -->
-
-      <section class="doc-section">
-
-        <div class="section-header">
-
-          <h2>
-            <span class="material-icons">groups</span>
-            Community &amp; Source
-          </h2>
-
-          <p>
-            Official links to community and source code.
-          </p>
-
-        </div>
-
-
-        <div class="resource-grid">
-
-
-          <!-- Server -->
-          <div
-            class="schema-card"
-            style="display:flex; align-items:center; gap:14px;"
-          >
-
-            <span
-              class="material-icons"
-              style="font-size:2rem; color:var(--accent-color);"
-            >
-              language
-            </span>
-
-            <div>
-
-              <div class="schema-name">
-                <a href="https://craftersmc.net/" target="_blank">
-                  CraftersMC Server
-                </a>
-              </div>
-
-              <div class="schema-desc">
-                Join the official CraftersMC community and stay updated.
-              </div>
-
-              <div style="margin-top:8px;">
-                <a
-                  href="https://craftersmc.net/"
-                  target="_blank"
-                  style="font-weight:600;"
-                >
-                  Visit Website →
-                </a>
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- GitHub -->
-          <div
-            class="schema-card"
-            style="display:flex; align-items:center; gap:14px;"
-          >
-
-            <span
-              class="material-icons"
-              style="font-size:2rem; color:var(--accent-color);"
-            >
-              code
-            </span>
-
-            <div>
-
-              <div class="schema-name">
-                <a
-                  href="https://github.com/CraftersMC-Guides-Project/guides-code"
-                  target="_blank"
-                >
-                  GitHub Repository
-                </a>
-              </div>
-
-              <div class="schema-desc">
-                View source code, report issues and contribute.
-              </div>
-
-              <div style="margin-top:8px;">
-                <a
-                  href="https://github.com/CraftersMC-Guides-Project/guides-code"
-                  target="_blank"
-                  style="font-weight:600;"
-                >
-                  Open Repository →
-                </a>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           FOOTER
-           ===================================================== -->
-
-      <footer class="site-footer">
-
-        <div class="site-footer-left">
-          CraftersMC Guides Project &bull;
-          Unofficial Community Guides &amp; Documentation
-        </div>
-
-        <div class="site-footer-right">
-
-          <a
-            href="https://github.com/CraftersMC-Guides-Project/guides-code"
-            target="_blank"
-          >
-            GitHub
-          </a>
-
-        </div>
-
-      </footer>
-
-    </main>
-
-  </div>
-
-</body>
-</html>
-    .horizontal-scroll::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-track {
-      background: #edf2f7;
-      border-radius: 10px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 10px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    /* =========================================================
-       MOST USED TOOLS / LIVE TOOLS CARDS
-       ========================================================= */
-
-    .horizontal-scroll .scroll-card {
-      flex: 0 0 280px;
-      width: 280px;
-
-      box-sizing: border-box;
-    }
-
-    .scroll-card .card-action {
-      margin-top: 12px;
-    }
-
-    .scroll-card .card-action a {
-      font-weight: 600;
-    }
-
-    /* =========================================================
-       PROGRESSION GUIDE FLOW
-       ========================================================= */
-
-    .progression-scroll {
-      align-items: center;
-      gap: 12px;
-    }
-
-    .progression-card {
-      flex: 0 0 270px;
-      width: 270px;
-
-      padding: 18px;
-
-      background: var(--card-background, #ffffff);
-
-      border: 1px solid var(--border-color, #e2e8f0);
-
-      border-radius: 10px;
-
-      box-sizing: border-box;
-    }
-
-    .progression-card .schema-name {
-      margin-bottom: 8px;
-    }
-
-    .progression-card .schema-desc {
-      line-height: 1.5;
-    }
-
-    .progression-link {
-      display: inline-block;
-      margin-top: 14px;
-
-      font-weight: 600;
-    }
-
-    .progression-arrow {
-      flex: 0 0 auto;
-
-      font-size: 1.8rem;
-
-      color: var(--accent-color);
-
-      line-height: 1;
-    }
-
-    /* =========================================================
-       NORMAL CARD ACTION
-       ========================================================= */
-
-    .card-action {
-      margin-top: 10px;
-    }
-
-    .card-action a {
-      font-weight: 600;
-    }
-
-    /* =========================================================
-       SECTION HEADER + VIEW ALL
-       ========================================================= */
-
-    .section-header-with-action {
-      display: flex;
-
-      align-items: flex-start;
-
-      justify-content: space-between;
-
-      gap: 20px;
-    }
-
-    .section-view-all {
-      flex: 0 0 auto;
-
-      margin-top: 6px;
-
-      font-weight: 600;
-
-      color: var(--accent-color);
-
-      white-space: nowrap;
-    }
-
-    /* =========================================================
-       OTHER GAME GUIDES
-       ========================================================= */
-
-    .other-guides-grid {
-      gap: 14px;
-    }
-
-    /* =========================================================
-       DEVELOPER / COMMUNITY
-       ========================================================= */
-
-    .resource-card {
-      min-height: 100%;
-    }
-
-    /* =========================================================
-       MOBILE
-       ========================================================= */
-
-    @media (max-width: 700px) {
-
-      .main-content > .doc-section {
-        margin-bottom: 24px;
-      }
-
-      .main-content > .doc-section + .doc-section {
-        margin-top: 24px;
-      }
-
-      .progression-card {
-        flex-basis: 260px;
-        width: 260px;
-      }
-
-      .horizontal-scroll .scroll-card {
-        flex-basis: 270px;
-        width: 270px;
-      }
-
-      .section-header-with-action {
-        align-items: flex-start;
-      }
-
-      .section-view-all {
-        font-size: 0.9rem;
-      }
-    }
-
-  </style>
 </head>
 
 <body>
@@ -1842,19 +451,19 @@ console.log(
     </div>
 
 
-    <!-- Header Links -->
+    <!-- Header links -->
 
     <div class="header-actions">
 
       <a
         href="better-api-docs/index.html"
         class="header-link"
-        style="color: var(--accent-color); font-weight: 600;"
+        style="color:var(--accent-color);font-weight:600;"
       >
 
         <span
           class="material-icons"
-          style="font-size:1rem; vertical-align:middle;"
+          style="font-size:1rem;vertical-align:middle;"
         >
           api
         </span>
@@ -1874,7 +483,7 @@ console.log(
 
         <span
           class="material-icons"
-          style="font-size:1rem; vertical-align:middle;"
+          style="font-size:1rem;vertical-align:middle;"
         >
           code
         </span>
@@ -1919,9 +528,7 @@ console.log(
               <span class="material-icons nav-icon">
                 home
               </span>
-              <span>
-                Overview
-              </span>
+              <span>Overview</span>
             </a>
           </li>
 
@@ -1930,9 +537,7 @@ console.log(
               <span class="material-icons nav-icon">
                 menu_book
               </span>
-              <span>
-                Progression Guides
-              </span>
+              <span>Progression Guides</span>
             </a>
           </li>
 
@@ -1941,9 +546,7 @@ console.log(
               <span class="material-icons nav-icon">
                 build
               </span>
-              <span>
-                Live Tools
-              </span>
+              <span>Live Tools</span>
             </a>
           </li>
 
@@ -1952,9 +555,7 @@ console.log(
               <span class="material-icons nav-icon">
                 code
               </span>
-              <span>
-                Developer &amp; API
-              </span>
+              <span>Developer &amp; API</span>
             </a>
           </li>
 
@@ -1978,9 +579,7 @@ console.log(
               <span class="material-icons nav-icon">
                 play_circle
               </span>
-              <span>
-                Starter Guide
-              </span>
+              <span>Starter Guide</span>
             </a>
           </li>
 
@@ -1989,9 +588,7 @@ console.log(
               <span class="material-icons nav-icon">
                 trending_up
               </span>
-              <span>
-                Intermediate Guide
-              </span>
+              <span>Intermediate Guide</span>
             </a>
           </li>
 
@@ -2000,9 +597,7 @@ console.log(
               <span class="material-icons nav-icon">
                 shield
               </span>
-              <span>
-                Slayers Edition
-              </span>
+              <span>Slayers Edition</span>
             </a>
           </li>
 
@@ -2011,9 +606,7 @@ console.log(
               <span class="material-icons nav-icon">
                 military_tech
               </span>
-              <span>
-                Advanced Guide
-              </span>
+              <span>Advanced Guide</span>
             </a>
           </li>
 
@@ -2032,4 +625,1298 @@ console.log(
 
         <ul class="sidebar-nav">
 
-          <li class="sidebar
+          <li class="sidebar-nav-item">
+            <a href="guide/accessories-guide.html">
+              <span class="material-icons nav-icon">
+                auto_awesome
+              </span>
+              <span>Accessories &amp; Reforges</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="guide/bazaar-guide.html">
+              <span class="material-icons nav-icon">
+                storefront
+              </span>
+              <span>Bazaar Trading</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="guide/queries.html">
+              <span class="material-icons nav-icon">
+                help_outline
+              </span>
+              <span>Common Queries &amp; FAQ</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="unicode.html">
+              <span class="material-icons nav-icon">
+                format_shapes
+              </span>
+              <span>Unicode &amp; Formatting</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- Live Tools -->
+
+      <div class="sidebar-group">
+
+        <div class="sidebar-section-title">
+          Live Tools &amp; Trackers
+        </div>
+
+        <ul class="sidebar-nav">
+
+          <li class="sidebar-nav-item">
+            <a href="player.html">
+              <span class="material-icons nav-icon">
+                person_search
+              </span>
+              <span>Player Viewer</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="skycalendar.html">
+              <span class="material-icons nav-icon">
+                event
+              </span>
+              <span>SkyCalendar (Events)</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="rank-sellers.html">
+              <span class="material-icons nav-icon">
+                card_giftcard
+              </span>
+              <span>Rank &amp; Gems Sellers</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="leaderboards.html">
+              <span class="material-icons nav-icon">
+                leaderboard
+              </span>
+              <span>Leaderboards</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="texture-packs.html">
+              <span class="material-icons nav-icon">
+                palette
+              </span>
+              <span>Texture Packs</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="tools.html">
+              <span class="material-icons nav-icon">
+                calculate
+              </span>
+              <span>Calculators</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="feather-bot/index.html">
+              <span class="material-icons nav-icon">
+                smart_toy
+              </span>
+              <span>Feather Bot Guide</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- Developer -->
+
+      <div class="sidebar-group">
+
+        <div class="sidebar-section-title">
+          Developer &amp; API
+        </div>
+
+        <ul class="sidebar-nav">
+
+          <li class="sidebar-nav-item">
+            <a href="better-api-docs/index.html">
+              <span class="material-icons nav-icon">
+                code
+              </span>
+              <span>REST API v1 Reference</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="better-api-docs/index.html#section-nbt-decoding">
+              <span class="material-icons nav-icon">
+                memory
+              </span>
+              <span>15 NBT Storage Blobs</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a href="better-api-docs/index.html#section-item-ids">
+              <span class="material-icons nav-icon">
+                list_alt
+              </span>
+              <span>Numerical Item IDs (1,933)</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- Community -->
+
+      <div class="sidebar-group">
+
+        <div class="sidebar-section-title">
+          Community &amp; Source
+        </div>
+
+        <ul class="sidebar-nav">
+
+          <li class="sidebar-nav-item">
+            <a
+              href="https://craftersmc.net/"
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="material-icons nav-icon">
+                language
+              </span>
+              <span>Server Website</span>
+            </a>
+          </li>
+
+          <li class="sidebar-nav-item">
+            <a
+              href="https://github.com/CraftersMC-Guides-Project/guides-code"
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="material-icons nav-icon">
+                code
+              </span>
+              <span>GitHub Repository</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =======================================================
+         MAIN CONTENT
+         ======================================================= -->
+
+    <main class="main-content">
+
+
+      <!-- =====================================================
+           OVERVIEW
+           ===================================================== -->
+
+      <section class="doc-section" id="overview">
+
+        <div class="section-header">
+
+          <h1>
+            CraftersMC SkyBlock Documentation
+          </h1>
+
+          <p>
+            The comprehensive guide and reference library for
+            CraftersMC SkyBlock players, traders, and developers.
+          </p>
+
+        </div>
+
+
+        <div class="prose-card">
+
+          <p>
+            Whether you are just starting your island,
+            advancing through slayer bosses,
+            optimizing accessory reforges,
+            or building integrations with the CraftersMC REST API,
+            this documentation contains all verified strategies,
+            event timers, and technical references.
+          </p>
+
+
+          <div class="alert-box tip">
+
+            <span class="material-icons alert-icon">
+              lightbulb
+            </span>
+
+            <div>
+
+              <strong>Quick Tip:</strong>
+
+              Press
+
+              <kbd
+                style="
+                  background:#e2e8f0;
+                  padding:2px 6px;
+                  border-radius:4px;
+                  font-family:var(--font-mono);
+                  font-size:0.8rem;
+                "
+              >
+                /
+              </kbd>
+
+              anywhere on the page to focus the global search bar
+              and instantly filter guides and tools.
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           MOST USED TOOLS
+           ===================================================== -->
+
+      <section class="featured-tools-section">
+
+        <div class="featured-tools-header">
+
+          <div>
+
+            <h2 class="featured-tools-title">
+
+              <span class="material-icons">
+                build
+              </span>
+
+              Most Used Tools
+
+            </h2>
+
+            <p class="featured-tools-subtitle">
+              Quick access to the tools players use the most.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="featured-tools-grid">
+
+
+          <div class="featured-tool-card">
+
+            <div class="featured-tool-icon material-icons">
+              person
+            </div>
+
+            <div class="featured-tool-name">
+              <a href="player.html">
+                Player Viewer
+              </a>
+            </div>
+
+            <div class="featured-tool-desc">
+              View player stats, skills, profiles, minions and more.
+            </div>
+
+            <a
+              class="featured-tool-link"
+              href="player.html"
+            >
+              Launch →
+            </a>
+
+          </div>
+
+
+          <div class="featured-tool-card">
+
+            <div class="featured-tool-icon material-icons">
+              event
+            </div>
+
+            <div class="featured-tool-name">
+              <a href="skycalendar.html">
+                SkyCalendar
+              </a>
+            </div>
+
+            <div class="featured-tool-desc">
+              Live event timers and countdowns for SkyBlock events.
+            </div>
+
+            <a
+              class="featured-tool-link"
+              href="skycalendar.html"
+            >
+              Launch →
+            </a>
+
+          </div>
+
+
+          <div class="featured-tool-card">
+
+            <div class="featured-tool-icon material-icons">
+              shopping_cart
+            </div>
+
+            <div class="featured-tool-name">
+              <a href="guide/bazaar-guide.html">
+                Bazaar Tracker
+              </a>
+            </div>
+
+            <div class="featured-tool-desc">
+              Track prices, flips, orders and market trends.
+            </div>
+
+            <a
+              class="featured-tool-link"
+              href="guide/bazaar-guide.html"
+            >
+              Launch →
+            </a>
+
+          </div>
+
+
+          <div class="featured-tool-card">
+
+            <div class="featured-tool-icon material-icons">
+              emoji_events
+            </div>
+
+            <div class="featured-tool-name">
+              <a href="leaderboards.html">
+                Leaderboards
+              </a>
+            </div>
+
+            <div class="featured-tool-desc">
+              Check top players across multiple categories.
+            </div>
+
+            <a
+              class="featured-tool-link"
+              href="leaderboards.html"
+            >
+              View →
+            </a>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           PROGRESSION GUIDES
+           ===================================================== -->
+
+      <section
+        class="doc-section"
+        id="section-guides"
+      >
+
+        <div class="section-header">
+
+          <h2>
+
+            <span class="material-icons">
+              menu_book
+            </span>
+
+            Progression &amp; Gameplay Guides
+
+          </h2>
+
+          <p>
+            Step-by-step guides to help you progress in SkyBlock.
+          </p>
+
+        </div>
+
+
+        <div class="horizontal-cards">
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="guide/starter-guide.html">
+                Starter Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Early-game setup: Island layout,
+              early coin generation, fairy souls,
+              minions, and more.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/starter-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="guide/intermediate-guide.html">
+                Intermediate Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Dragon armor progression,
+              weapon upgrades, combat skills
+              and minion expansion.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/intermediate-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="guide/intermediate-guide2.html">
+                Slayers Edition
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Boss mechanics, gear loadouts,
+              and slayer progression for
+              Zombie, Spider, and Wolf slayers.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/intermediate-guide2.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="guide/advanced-guide.html">
+                Advanced Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Endgame setups, high-tier slayer
+              farming, economy and optimization.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/advanced-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           LIVE TOOLS
+           ===================================================== -->
+
+      <section
+        class="doc-section"
+        id="section-tools"
+      >
+
+        <div class="section-header">
+
+          <h2>
+
+            <span class="material-icons">
+              build
+            </span>
+
+            Live Tools &amp; Trackers
+
+          </h2>
+
+          <p>
+            Real-time trackers, directories, and utilities
+            built for CraftersMC players.
+          </p>
+
+        </div>
+
+
+        <div class="horizontal-cards">
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="player.html">
+                Player Viewer
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Inspect real-time player data,
+              profiles, skills, slayers,
+              minions, and more.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="player.html"
+                style="font-weight:600;"
+              >
+                Launch →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="skycalendar.html">
+                SkyCalendar
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Live countdown timers for events,
+              contests, and special seasons.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="skycalendar.html"
+                style="font-weight:600;"
+              >
+                Launch →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="rank-sellers.html">
+                Rank &amp; Gems Sellers
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Verified list of trusted rank and
+              gem sellers with scam prevention guidelines.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="rank-sellers.html"
+                style="font-weight:600;"
+              >
+                Open Directory →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="leaderboards.html">
+                Leaderboards
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Check top player placements across
+              collections, skills, slayer XP,
+              bank networth and boss records.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="leaderboards.html"
+                style="font-weight:600;"
+              >
+                View Leaderboards →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="tools.html">
+                Calculators
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Reforge stat calculators,
+              minion inventory timers,
+              skill XP and other utilities.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="tools.html"
+                style="font-weight:600;"
+              >
+                Open Calculators →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="texture-packs.html">
+                Texture Packs
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Curated Bedrock resource packs
+              customized for CraftersMC weapons
+              and armor.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="texture-packs.html"
+                style="font-weight:600;"
+              >
+                Browse Packs →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card horizontal-card">
+
+            <div class="schema-name">
+              <a href="feather-bot/index.html">
+                Feather Bot Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Slash command syntax and documentation
+              for the official CraftersMC Discord bot.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="feather-bot/index.html"
+                style="font-weight:600;"
+              >
+                View Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           OTHER GAME GUIDES
+           ===================================================== -->
+
+      <section class="doc-section">
+
+        <div class="section-header section-header-with-action">
+
+          <div>
+
+            <h2>
+
+              <span class="material-icons">
+                menu_book
+              </span>
+
+              Other Game Guides
+
+            </h2>
+
+            <p>
+              In-depth guides for specific game features and mechanics.
+            </p>
+
+          </div>
+
+
+          <a
+            href="guide/"
+            class="section-view-all"
+          >
+            View all →
+          </a>
+
+        </div>
+
+
+        <div class="other-guides-grid">
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="guide/accessories-guide.html">
+                Accessories &amp; Reforges
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Optimal reforge stones for common,
+              uncommon, rare, epic, and legendary talismans.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/accessories-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="guide/bazaar-guide.html">
+                Bazaar Trading Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              How to use buy and sell orders,
+              understand spreads, and make coins
+              with margin flipping.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/bazaar-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="guide/queries.html">
+                Common Queries &amp; FAQ
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Quick answers to common questions
+              regarding CraftersMC custom features
+              and mechanics.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/queries.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="unicode.html">
+                Unicode &amp; Formatting
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Minecraft color code guide and custom
+              unicode symbols for Book &amp; Quills
+              and item signs.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="unicode.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="guide/minion-guide.html">
+                Minion Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Maximize your minion setup and profits.
+              Best minions, upgrades and placements.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/minion-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="guide/combat-guide.html">
+                Combat Guide
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Improve your combat skills and damage output.
+              Learn mechanics and useful tips.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="guide/combat-guide.html"
+                style="font-weight:600;"
+              >
+                Open Guide →
+              </a>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           DEVELOPER & API
+           ===================================================== -->
+
+      <section
+        class="doc-section"
+        id="section-api"
+      >
+
+        <div class="section-header">
+
+          <h2>
+
+            <span class="material-icons">
+              code
+            </span>
+
+            Developer &amp; API Resources
+
+          </h2>
+
+          <p>
+            Resources for developers and data enthusiasts.
+          </p>
+
+        </div>
+
+
+        <div class="resource-grid">
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="better-api-docs/index.html">
+                REST API v1 Reference
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Complete documentation for CraftersMC REST API
+              endpoints and usage.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="better-api-docs/index.html"
+                style="font-weight:600;"
+              >
+                View Docs →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="better-api-docs/index.html#section-nbt-decoding">
+                15 NBT Storage Blobs
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Detailed reference for all 15 NBT storage blobs
+              used in SkyBlock.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="better-api-docs/index.html#section-nbt-decoding"
+                style="font-weight:600;"
+              >
+                View Reference →
+              </a>
+            </div>
+
+          </div>
+
+
+          <div class="schema-card">
+
+            <div class="schema-name">
+              <a href="better-api-docs/index.html#section-item-ids">
+                Numerical Item IDs (1,933)
+              </a>
+            </div>
+
+            <div class="schema-desc">
+              Browse all items with their numerical IDs
+              for API and integrations.
+            </div>
+
+            <div style="margin-top:10px;">
+              <a
+                href="better-api-docs/index.html#section-item-ids"
+                style="font-weight:600;"
+              >
+                View Items →
+              </a>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- API example -->
+
+        <div
+          class="code-block-wrapper"
+          style="margin-top:20px;"
+        >
+
+          <div class="code-block-header">
+
+            <span>
+              Quick Example: Fetch Server Status (Node.js)
+            </span>
+
+            <button
+              class="btn-copy"
+              onclick="copyToClipboard(this)"
+            >
+              Copy
+            </button>
+
+          </div>
+
+          <pre><code>const res = await fetch("https://api.craftersmc.net/v1/network/status", {
+  headers: { "X-API-Key": "YOUR_API_KEY" }
+});
+
+const data = await res.json();
+
+console.log(
+  `Online Players: ${data.playerCount}/${data.maxPlayerCount} | SkyBlock: ${data.games.SKYBLOCK.modes.hub}`
+);</code></pre>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           COMMUNITY
+           ===================================================== -->
+
+      <section class="doc-section">
+
+        <div class="section-header">
+
+          <h2>
+
+            <span class="material-icons">
+              groups
+            </span>
+
+            Community &amp; Source
+
+          </h2>
+
+          <p>
+            Official links to community and source code.
+          </p>
+
+        </div>
+
+
+        <div class="resource-grid">
+
+
+          <div
+            class="schema-card"
+            style="
+              display:flex;
+              align-items:center;
+              gap:14px;
+            "
+          >
+
+            <span
+              class="material-icons"
+              style="
+                font-size:2rem;
+                color:var(--accent-color);
+              "
+            >
+              language
+            </span>
+
+            <div>
+
+              <div class="schema-name">
+
+                <a
+                  href="https://craftersmc.net/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  CraftersMC Server
+                </a>
+
+              </div>
+
+              <div class="schema-desc">
+                Join the official CraftersMC community
+                and stay updated.
+              </div>
+
+              <div style="margin-top:8px;">
+
+                <a
+                  href="https://craftersmc.net/"
+                  target="_blank"
+                  rel="noopener"
+                  style="font-weight:600;"
+                >
+                  Visit Website →
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="schema-card"
+            style="
+              display:flex;
+              align-items:center;
+              gap:14px;
+            "
+          >
+
+            <span
+              class="material-icons"
+              style="
+                font-size:2rem;
+                color:var(--accent-color);
+              "
+            >
+              code
+            </span>
+
+            <div>
+
+              <div class="schema-name">
+
+                <a
+                  href="https://github.com/CraftersMC-Guides-Project/guides-code"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  GitHub Repository
+                </a>
+
+              </div>
+
+              <div class="schema-desc">
+                View source code, report issues and contribute.
+              </div>
+
+              <div style="margin-top:8px;">
+
+                <a
+                  href="https://github.com/CraftersMC-Guides-Project/guides-code"
+                  target="_blank"
+                  rel="noopener"
+                  style="font-weight:600;"
+                >
+                  Open Repository →
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           FOOTER
+           ===================================================== -->
+
+      <footer class="site-footer">
+
+        <div class="site-footer-left">
+          CraftersMC Guides Project &bull;
+          Unofficial Community Guides &amp; Documentation
+        </div>
+
+        <div class="site-footer-right">
+
+          <a
+            href="https://github.com/CraftersMC-Guides-Project/guides-code"
+            target="_blank"
+            rel="noopener"
+          >
+            GitHub
+          </a>
+
+        </div>
+
+      </footer>
+
+
+    </main>
+
+  </div>
+
+</body>
+</html>
