@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>CraftersMC SkyBlock Guides &amp; Documentation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Official documentation and progression guides for CraftersMC SkyBlock, including live event tools, sellers directory, and REST API reference.">
+  <meta name="description" content="Community documentation and progression guides for CraftersMC SkyBlock, including live event tools, sellers directory, and REST API reference.">
 
   <meta name="google-site-verification" content="a1S654ozEH6kuH1DM6-3ssQYXgow72Mfh19eg3RCUTk">
   <meta name="google-site-verification" content="Wr3jatMv-sfXhgBy5jBfiX8Nwn6k8P1k_jPubQzBcTY">
@@ -595,6 +595,7 @@
     }
 
     @media (max-width: 430px) {
+      :root { --mobile-header-height: 106px; }
       .top-header {
         flex-wrap: wrap;
       }
@@ -658,7 +659,11 @@
       font-weight: 700;
     }
 
-    .header-brand .brand-title-primary,
+    .header-brand .brand-title-primary {
+      color: var(--cmc-blue) !important;
+      font-size: 1.18rem !important;
+    }
+
     .header-brand .brand-title-secondary {
       color: #0F172A !important;
       font-size: 1.18rem !important;
@@ -731,11 +736,12 @@
   }
 
   @media (max-width: 700px) {
+    :root { --mobile-header-height: 58px; }
     .mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; }
     .sidebar {
       display: block;
       position: fixed;
-      top: 58px;
+      top: var(--mobile-header-height, 58px);
       bottom: 0;
       left: 0;
       width: min(82vw, 310px);
@@ -831,7 +837,6 @@
       letter-spacing: .08em;
       text-transform: uppercase;
     }
-    .api-card .schema-name { margin-bottom: 2px; }
     .api-example-title {
       display: flex;
       align-items: center;
@@ -1366,7 +1371,7 @@ console.log(
       backdrop?.addEventListener("click", closeMobileNav);
       sidebar?.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMobileNav));
 
-      // Make the Most Used Tools cards reliably clickable while preserving their links.
+      // Make the Most Used Tools cards clickable without creating nested interactive controls.
       document.querySelectorAll(".featured-tool-card").forEach(card => {
         const primaryLink = card.querySelector(".featured-tool-name a");
         if (!primaryLink) return;
@@ -1374,14 +1379,6 @@ console.log(
           if (event.target.closest("a, button")) return;
           window.location.href = primaryLink.href;
         });
-        card.addEventListener("keydown", function (event) {
-          if ((event.key === "Enter" || event.key === " ") && event.target === card) {
-            event.preventDefault();
-            primaryLink.click();
-          }
-        });
-        card.setAttribute("tabindex", "0");
-        card.setAttribute("role", "link");
       });
 
       // Lightweight site search using the page's navigation plus card descriptions.
@@ -1390,12 +1387,16 @@ console.log(
         if (!title || !href) return;
         searchSource.push({ title: title.trim(), href, context, type, description: description.trim() });
       };
-      document.querySelectorAll("a[href]").forEach(a => {
-        if (!a.textContent.trim() || a.closest(".site-footer") || a.closest(".header-actions")) return;
+      document.querySelectorAll(".sidebar-nav-item a, .featured-tool-name a, .schema-name a").forEach(a => {
+        if (!a.textContent.trim()) return;
         const card = a.closest(".schema-card, .featured-tool-card");
         const context = a.closest("section, .sidebar-group")?.querySelector("h1,h2,.sidebar-section-title")?.textContent.trim() || "Documentation";
         const description = card?.querySelector(".schema-desc, .featured-tool-desc")?.textContent || "";
-        const type = card?.classList.contains("featured-tool-card") ? "Tools" : (a.closest("#section-api") ? "API" : (a.closest(".sidebar-group")?.querySelector(".sidebar-section-title")?.textContent.trim() || "Guides"));
+        let type = "Guides";
+        if (a.closest("#section-tools")) type = "Tools";
+        else if (a.closest("#section-api")) type = "API";
+        else if (a.closest(".sidebar-group")?.querySelector(".sidebar-section-title")?.textContent.includes("Developer & API")) type = "API";
+        else if (a.closest(".sidebar-group")?.querySelector(".sidebar-section-title")?.textContent.includes("Live Tools & Trackers")) type = "Tools";
         addSearchItem(a.textContent.replace(/\s+/g, " "), a.getAttribute("href"), context, type, description);
       });
       const searchable = searchSource.filter((item, i, arr) => item.href && arr.findIndex(x => x.title === item.title && x.href === item.href) === i);
@@ -1417,6 +1418,7 @@ console.log(
         searchResults.hidden = true;
         searchResults.innerHTML = "";
         searchInput.setAttribute("aria-expanded", "false");
+        searchInput.removeAttribute("aria-activedescendant");
         activeSearchIndex = -1;
       }
       function renderSearch(query) {
@@ -1435,11 +1437,12 @@ console.log(
           const group = item.type || "Guides";
           const groupHtml = group !== lastGroup ? `<div class="search-result-group">${escapeHtml(group)}</div>` : "";
           lastGroup = group;
-          return groupHtml + `<button type="button" class="search-result${i === 0 ? " is-active" : ""}" role="option" data-index="${i}" data-href="${escapeHtml(item.href)}" aria-selected="${i === 0}">\n            <span class="material-icons" aria-hidden="true">${group === "Tools" ? "build" : group === "API" ? "code" : "menu_book"}</span>\n            <span><span class="search-result-title">${highlight(item.title, terms)}</span><span class="search-result-meta">${escapeHtml(item.context)}</span></span>\n          </button>`;
+          return groupHtml + `<button type="button" id="search-result-${i}" class="search-result${i === 0 ? " is-active" : ""}" role="option" data-index="${i}" data-href="${escapeHtml(item.href)}" aria-selected="${i === 0}">\n            <span class="material-icons" aria-hidden="true">${group === "Tools" ? "build" : group === "API" ? "code" : "menu_book"}</span>\n            <span><span class="search-result-title">${highlight(item.title, terms)}</span><span class="search-result-meta">${escapeHtml(item.context)}</span></span>\n          </button>`;
         }).join("");
         searchResults.innerHTML = matches.length ? html + '<div class="search-help">↑ ↓ to navigate &nbsp; Enter to open &nbsp; Esc to close</div>' : '<div class="search-empty">No matching guides, tools, or API resources found.</div>';
         searchResults.hidden = false;
         searchInput.setAttribute("aria-expanded", "true");
+        if (matches.length) searchInput.setAttribute("aria-activedescendant", "search-result-0");
         searchResults.querySelectorAll(".search-result").forEach(btn => btn.addEventListener("click", () => {
           const href = btn.dataset.href;
           closeSearch();
@@ -1456,6 +1459,7 @@ console.log(
           btn.classList.toggle("is-active", active);
           btn.setAttribute("aria-selected", String(active));
         });
+        searchInput?.setAttribute("aria-activedescendant", buttons[activeSearchIndex].id);
         buttons[activeSearchIndex].scrollIntoView({ block: "nearest" });
       }
 
@@ -1498,11 +1502,17 @@ console.log(
           textarea.select();
 
           try {
-            document.execCommand("copy");
-            button.textContent = "Copied!";
+            const copied = document.execCommand("copy");
+            if (copied) {
+              button.textContent = "Copied!";
+            } else {
+              button.textContent = "Copy failed";
+            }
             setTimeout(() => button.textContent = originalText, 1500);
           } catch (fallbackError) {
             console.error("Unable to copy code:", fallbackError);
+            button.textContent = "Copy failed";
+            setTimeout(() => button.textContent = originalText, 1500);
           }
 
           document.body.removeChild(textarea);
