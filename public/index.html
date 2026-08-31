@@ -1145,7 +1145,31 @@
       line-height: 1.02;
       letter-spacing: -.045em;
     }
-    .hero-title span { color: #38bdf8; }
+    .hero-title span {
+      color: #38bdf8;
+      display: inline-block;
+      min-width: 13ch;
+      white-space: nowrap;
+    }
+
+    .hero-title span.typing-cursor::after {
+      content: "";
+      display: inline-block;
+      width: 2px;
+      height: .82em;
+      margin-left: 5px;
+      vertical-align: -.06em;
+      background: currentColor;
+      animation: heroCursorBlink .75s steps(1, end) infinite;
+    }
+
+    @keyframes heroCursorBlink {
+      50% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-title span.typing-cursor::after { animation: none; opacity: 1; }
+    }
     .hero-description {
       max-width: 640px;
       margin: 0;
@@ -3062,7 +3086,7 @@
 <section class="doc-section" id="overview">
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
-<h1 class="hero-title">CraftersMC SkyBlock <span>Documentation</span></h1>
+<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-live="polite">Documentation</span></h1>
 <p class="hero-description">The community reference hub for players, traders, and developers. Find progression paths, live tools, event timers, gameplay guides, and technical resources in one place.</p>
 <div aria-label="Documentation overview" class="hero-stats"><a class="hero-stat" href="#section-other-guides"><strong>10</strong> Guides</a><a class="hero-stat" href="#section-tools"><strong>7</strong> Tools</a><a class="hero-stat" href="#section-api"><strong>3</strong> API References</a></div>
 <div class="hero-tip">
@@ -3637,6 +3661,53 @@ console.log(
       closeMobileSearch();
     }
   });
+
+  // Hero word typing animation: Documentation -> Guides -> Tools -> Market.
+  const rotatingWord = document.getElementById("hero-rotating-word");
+  if (rotatingWord) {
+    const words = ["Documentation", "Guides", "Tools", "Market"];
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reducedMotion) {
+      rotatingWord.classList.add("typing-cursor");
+      let wordIndex = 0;
+      let charIndex = words[0].length;
+      let deleting = true;
+      let timerId;
+
+      const tick = () => {
+        const current = words[wordIndex];
+
+        if (deleting) {
+          charIndex = Math.max(0, charIndex - 1);
+          rotatingWord.textContent = current.slice(0, charIndex);
+
+          if (charIndex === 0) {
+            deleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            timerId = window.setTimeout(tick, 450);
+            return;
+          }
+          timerId = window.setTimeout(tick, 65);
+          return;
+        }
+
+        const next = words[wordIndex];
+        charIndex = Math.min(next.length, charIndex + 1);
+        rotatingWord.textContent = next.slice(0, charIndex);
+
+        if (charIndex === next.length) {
+          deleting = true;
+          timerId = window.setTimeout(tick, 1800);
+          return;
+        }
+        timerId = window.setTimeout(tick, 100);
+      };
+
+      timerId = window.setTimeout(tick, 1800);
+      window.addEventListener("pagehide", () => window.clearTimeout(timerId), { once: true });
+    }
+  }
 });</script>
 </body>
 </html>
