@@ -1357,13 +1357,16 @@ console.log(
         backdrop?.classList.add("is-open");
         document.body.classList.add("mobile-nav-open");
         menuButton.setAttribute("aria-expanded", "true");
+        const firstLink = sidebar.querySelector("a");
+        firstLink?.focus();
       }
-      function closeMobileNav() {
+      function closeMobileNav({ returnFocus = true } = {}) {
         if (!sidebar || !menuButton) return;
         sidebar.classList.remove("is-open");
         backdrop?.classList.remove("is-open");
         document.body.classList.remove("mobile-nav-open");
         menuButton.setAttribute("aria-expanded", "false");
+        if (returnFocus) menuButton.focus();
       }
       menuButton?.addEventListener("click", function () {
         sidebar?.classList.contains("is-open") ? closeMobileNav() : openMobileNav();
@@ -1406,12 +1409,13 @@ console.log(
         return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
       }
       function highlight(text, terms) {
-        let safe = escapeHtml(text);
-        terms.filter(Boolean).sort((a,b) => b.length-a.length).forEach(term => {
-          const escaped = escapeHtml(term).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          safe = safe.replace(new RegExp(`(${escaped})`, "ig"), "<mark>$1</mark>");
-        });
-        return safe;
+        const safe = escapeHtml(text);
+        const uniqueTerms = [...new Set(terms.filter(Boolean))].sort((a, b) => b.length - a.length);
+        if (!uniqueTerms.length) return safe;
+        const pattern = uniqueTerms
+          .map(term => escapeHtml(term).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join("|");
+        return safe.replace(new RegExp(`(${pattern})`, "ig"), "<mark>$1</mark>");
       }
       function closeSearch() {
         if (!searchResults || !searchInput) return;
@@ -1435,11 +1439,11 @@ console.log(
         let lastGroup = "";
         const html = matches.map((item, i) => {
           const group = item.type || "Guides";
-          const groupHtml = group !== lastGroup ? `<div class="search-result-group">${escapeHtml(group)}</div>` : "";
+          const groupHtml = group !== lastGroup ? `<div class="search-result-group" role="presentation">${escapeHtml(group)}</div>` : "";
           lastGroup = group;
           return groupHtml + `<button type="button" id="search-result-${i}" class="search-result${i === 0 ? " is-active" : ""}" role="option" data-index="${i}" data-href="${escapeHtml(item.href)}" aria-selected="${i === 0}">\n            <span class="material-icons" aria-hidden="true">${group === "Tools" ? "build" : group === "API" ? "code" : "menu_book"}</span>\n            <span><span class="search-result-title">${highlight(item.title, terms)}</span><span class="search-result-meta">${escapeHtml(item.context)}</span></span>\n          </button>`;
         }).join("");
-        searchResults.innerHTML = matches.length ? html + '<div class="search-help">↑ ↓ to navigate &nbsp; Enter to open &nbsp; Esc to close</div>' : '<div class="search-empty">No matching guides, tools, or API resources found.</div>';
+        searchResults.innerHTML = matches.length ? html + '<div class="search-help" role="presentation">↑ ↓ to navigate &nbsp; Enter to open &nbsp; Esc to close</div>' : '<div class="search-empty" role="presentation">No matching guides, tools, or API resources found.</div>';
         searchResults.hidden = false;
         searchInput.setAttribute("aria-expanded", "true");
         if (matches.length) searchInput.setAttribute("aria-activedescendant", "search-result-0");
