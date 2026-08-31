@@ -242,12 +242,58 @@
       color: var(--cmc-blue);
     }
 
-    /* Action links stay blue at all times */
+    /* Final link/brand color rules */
+
+    /* Header brand: only CraftersMC is blue; Guides stays grey. */
+    .brand-title {
+      color: var(--text-primary) !important;
+    }
+
+    .brand-title-primary {
+      color: var(--cmc-blue) !important;
+    }
+
+    .brand-title-secondary {
+      color: var(--text-primary) !important;
+    }
+
+    /* Card titles: grey normally, blue only on hover. */
+    .featured-tool-name a,
+    .schema-name a {
+      color: var(--text-primary) !important;
+      text-decoration: none;
+    }
+
+    .featured-tool-name a:hover,
+    .schema-name a:hover {
+      color: var(--cmc-blue) !important;
+    }
+
+    /* Action links remain blue at all times, including hover. */
     .featured-tool-link,
+    .featured-tool-link:hover,
     .section-view-all,
+    .section-view-all:hover,
     .contributor-role a,
-    .btn-copy {
-      color: var(--cmc-blue);
+    .contributor-role a:hover,
+    .btn-copy,
+    .btn-copy:hover,
+    .schema-card div[style*="margin-top"] a,
+    .schema-card div[style*="margin-top"] a:hover {
+      color: var(--cmc-blue) !important;
+    }
+
+    /* Sidebar labels/icons: grey normally, blue on hover. */
+    .sidebar-nav-item a,
+    .sidebar-nav-item .nav-icon {
+      color: var(--text-secondary) !important;
+    }
+
+    .sidebar-nav-item a:hover,
+    .sidebar-nav-item a:hover .nav-icon,
+    .sidebar-nav-item a.active,
+    .sidebar-nav-item a.active .nav-icon {
+      color: var(--cmc-blue) !important;
     }
 
     .featured-tool-desc {
