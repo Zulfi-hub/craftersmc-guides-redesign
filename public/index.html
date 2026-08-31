@@ -756,6 +756,138 @@
     .sidebar { transition: none; }
   }
 
+
+    /* =========================================================
+       V3 POLISH: hierarchy, cards, search, footer, docs UX
+       ========================================================= */
+    .overview-hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .overview-stat {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--text-secondary);
+      font-size: .78rem;
+    }
+    .overview-stat strong { color: var(--text-primary); font-size: .88rem; }
+    .card-eyebrow {
+      margin-bottom: 5px;
+      color: #64748b;
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .featured-tool-card,
+    .schema-card,
+    .contributor-card { border-color: #e2e8f0; }
+    .featured-tool-card:hover,
+    .schema-card:hover {
+      border-color: rgba(7,151,225,.35);
+    }
+    .featured-tool-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 8px;
+      border-radius: 9px;
+      background: #eef8fd;
+    }
+    .featured-tool-icon-wrap .featured-tool-icon { margin: 0; }
+    .progression-label {
+      display: inline-block;
+      margin-bottom: 6px;
+      color: #64748b;
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .docs-category-label {
+      display: inline-block;
+      margin-bottom: 6px;
+      color: #64748b;
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .api-card .schema-name { margin-bottom: 2px; }
+    .api-example-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .site-footer {
+      align-items: flex-start;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+    .site-footer-left {
+      max-width: 680px;
+      line-height: 1.5;
+    }
+    .site-footer-brand {
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .site-footer-note { color: var(--text-secondary); font-size: .82rem; }
+    .site-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 8px;
+    }
+    .site-footer-links a { color: var(--text-secondary); text-decoration: none; font-size: .82rem; }
+    .site-footer-links a:hover { color: var(--cmc-blue); text-decoration: underline; }
+    .site-footer-version { color: var(--text-secondary); font-size: .75rem; margin-top: 10px; }
+    .search-result-group {
+      padding: 7px 10px 4px;
+      color: #64748b;
+      font-size: .65rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .search-result mark {
+      padding: 0;
+      background: #e0f2fe;
+      color: inherit;
+      border-radius: 2px;
+    }
+    .search-result.is-active { outline: 2px solid rgba(7,151,225,.18); outline-offset: -2px; }
+    .search-help {
+      padding: 8px 10px 5px;
+      color: var(--text-secondary);
+      font-size: .72rem;
+    }
+    .api-method-badge {
+      display: inline-block;
+      margin-right: 6px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #475569;
+      font: 700 .65rem var(--font-mono);
+    }
+    @media (max-width: 700px) {
+      .overview-hero-meta { gap: 6px; }
+      .overview-stat { padding: 6px 8px; }
+      .site-footer { padding-top: 18px; padding-bottom: 18px; }
+    }
+
   </style>
 
   <script src="better-api-docs/app.js" defer></script>
@@ -871,7 +1003,12 @@
         </div>
 
         <div class="prose-card">
-          <p>Whether you are just starting your island, advancing through slayer bosses, optimizing accessory reforges, or building integrations with the CraftersMC REST API, this documentation contains all verified strategies, event timers, and technical references.</p>
+          <p>Whether you are just starting your island, advancing through slayer bosses, optimizing accessory reforges, or building integrations with the CraftersMC REST API, this documentation contains verified strategies, event timers, and technical references.</p>
+          <div class="overview-hero-meta" aria-label="Documentation overview">
+            <span class="overview-stat"><strong>10</strong> Guides</span>
+            <span class="overview-stat"><strong>7</strong> Tools</span>
+            <span class="overview-stat"><strong>3</strong> API References</span>
+          </div>
 
           <div class="alert-box tip">
             <span class="material-icons alert-icon" aria-hidden="true">lightbulb</span>
@@ -894,28 +1031,32 @@
 
         <div class="featured-tools-grid" role="region" aria-label="Most used tools" tabindex="0">
           <div class="featured-tool-card">
-            <div class="featured-tool-icon material-icons" aria-hidden="true">person</div>
+            <div class="featured-tool-icon-wrap"><div class="featured-tool-icon material-icons" aria-hidden="true">person</div></div>
+            <div class="card-eyebrow">Player Tool</div>
             <div class="featured-tool-name"><a href="player.html">Player Viewer</a></div>
             <div class="featured-tool-desc">View player stats, skills, profiles, minions and more.</div>
             <a class="featured-tool-link" href="player.html">Launch →</a>
           </div>
 
           <div class="featured-tool-card">
-            <div class="featured-tool-icon material-icons" aria-hidden="true">event</div>
+            <div class="featured-tool-icon-wrap"><div class="featured-tool-icon material-icons" aria-hidden="true">event</div></div>
+            <div class="card-eyebrow">Live Tool</div>
             <div class="featured-tool-name"><a href="skycalendar.html">SkyCalendar</a></div>
             <div class="featured-tool-desc">Live event timers and countdowns for SkyBlock events.</div>
             <a class="featured-tool-link" href="skycalendar.html">Launch →</a>
           </div>
 
           <div class="featured-tool-card">
-            <div class="featured-tool-icon material-icons" aria-hidden="true">shopping_cart</div>
+            <div class="featured-tool-icon-wrap"><div class="featured-tool-icon material-icons" aria-hidden="true">shopping_cart</div></div>
+            <div class="card-eyebrow">Market Tool</div>
             <div class="featured-tool-name"><a href="guide/bazaar-guide.html">Bazaar Tracker</a></div>
             <div class="featured-tool-desc">Track prices, flips, orders and market trends.</div>
             <a class="featured-tool-link" href="guide/bazaar-guide.html">Launch →</a>
           </div>
 
           <div class="featured-tool-card">
-            <div class="featured-tool-icon material-icons" aria-hidden="true">emoji_events</div>
+            <div class="featured-tool-icon-wrap"><div class="featured-tool-icon material-icons" aria-hidden="true">emoji_events</div></div>
+            <div class="card-eyebrow">Ranking Tool</div>
             <div class="featured-tool-name"><a href="leaderboards.html">Leaderboards</a></div>
             <div class="featured-tool-desc">Check top players across multiple categories.</div>
             <a class="featured-tool-link" href="leaderboards.html">View →</a>
@@ -931,24 +1072,28 @@
 
         <div class="horizontal-cards" role="region" aria-label="Progression and gameplay guides" tabindex="0">
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Start Here</span>
             <div class="schema-name"><a href="guide/starter-guide.html">Starter Guide</a></div>
             <div class="schema-desc">Early-game setup: Island layout, early coin generation, fairy souls, minions, and more.</div>
             <div style="margin-top:10px;"><a href="guide/starter-guide.html" style="font-weight:600;">Open Guide →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Progress</span>
             <div class="schema-name"><a href="guide/intermediate-guide.html">Intermediate Guide</a></div>
             <div class="schema-desc">Dragon armor progression, weapon upgrades, combat skills and minion expansion.</div>
             <div style="margin-top:10px;"><a href="guide/intermediate-guide.html" style="font-weight:600;">Open Guide →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Specialization</span>
             <div class="schema-name"><a href="guide/intermediate-guide2.html">Slayers Edition</a></div>
             <div class="schema-desc">Boss mechanics, gear loadouts, and slayer progression for Zombie, Spider, and Wolf slayers.</div>
             <div style="margin-top:10px;"><a href="guide/intermediate-guide2.html" style="font-weight:600;">Open Guide →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Endgame</span>
             <div class="schema-name"><a href="guide/advanced-guide.html">Advanced Guide</a></div>
             <div class="schema-desc">Endgame setups, high-tier slayer farming, economy and optimization.</div>
             <div style="margin-top:10px;"><a href="guide/advanced-guide.html" style="font-weight:600;">Open Guide →</a></div>
@@ -1018,6 +1163,12 @@
 
         <div class="other-guides-grid">
           <div class="schema-card">
+            <span class="docs-category-label">Guide</span>
+            <span class="docs-category-label">Guide</span>
+            <span class="docs-category-label">Reference</span>
+            <span class="docs-category-label">Reference</span>
+            <span class="docs-category-label">Guide</span>
+            <span class="docs-category-label">Guide</span>
             <div class="schema-name"><a href="guide/accessories-guide.html">Accessories &amp; Reforges</a></div>
             <div class="schema-desc">Optimal reforge stones for common, uncommon, rare, epic, and legendary talismans.</div>
             <div style="margin-top:10px;"><a href="guide/accessories-guide.html" style="font-weight:600;">Open Guide →</a></div>
@@ -1063,6 +1214,9 @@
 
         <div class="resource-grid">
           <div class="schema-card">
+            <span class="docs-category-label">API</span>
+            <span class="docs-category-label">NBT Reference</span>
+            <span class="docs-category-label">Item Reference</span>
             <div class="schema-name"><a href="better-api-docs/index.html">REST API v1 Reference</a></div>
             <div class="schema-desc">Complete documentation for CraftersMC REST API endpoints and usage.</div>
             <div style="margin-top:10px;"><a href="better-api-docs/index.html" style="font-weight:600;">View Docs →</a></div>
@@ -1082,8 +1236,8 @@
         </div>
 
         <div class="code-block-wrapper" style="margin-top:20px;">
-          <div class="code-block-header">
-            <span>Quick Example: Fetch Server Status (Node.js)</span>
+          <div class="code-block-header api-example-title">
+            <span><span class="api-method-badge">GET</span>Quick Example: Fetch Server Status (Node.js)</span>
             <button type="button" class="btn-copy" onclick="copyToClipboard(this)" aria-label="Copy Node.js API example">Copy</button>
           </div>
           <pre><code>const res = await fetch("https://api.craftersmc.net/v1/network/status", {
@@ -1132,9 +1286,17 @@ console.log(
       </section>
 
       <footer class="site-footer">
-        <div class="site-footer-left">CraftersMC Guides Project &bull; Unofficial Community Guides &amp; Documentation</div>
-        <div class="site-footer-right">
-          <a href="https://github.com/CraftersMC-Guides-Project/guides-code" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <div class="site-footer-left">
+          <div class="site-footer-brand">CraftersMC Guides</div>
+          <div class="site-footer-note">Unofficial community documentation for CraftersMC SkyBlock.</div>
+          <nav class="site-footer-links" aria-label="Footer navigation">
+            <a href="guide/">Guides</a>
+            <a href="tools.html">Tools</a>
+            <a href="better-api-docs/index.html">API</a>
+            <a href="https://discord.gg/BwuKACpVc9" target="_blank" rel="noopener noreferrer">Discord</a>
+            <a href="https://github.com/CraftersMC-Guides-Project/guides-code" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </nav>
+          <div class="site-footer-version">CraftersMC Guides Project &bull; Community maintained</div>
         </div>
       </footer>
     </main>
@@ -1206,21 +1368,40 @@ console.log(
         card.setAttribute("role", "link");
       });
 
-      // Lightweight site search built from the links already present on this page.
-      const searchable = Array.from(document.querySelectorAll("a[href]"))
-        .filter(a => a.textContent.trim() && !a.closest(".site-footer") && !a.closest(".header-actions"))
-        .map(a => ({
-          title: a.textContent.replace(/\s+/g, " ").trim(),
-          href: a.getAttribute("href"),
-          context: a.closest("section, .sidebar-group")?.querySelector("h1,h2,.sidebar-section-title")?.textContent.trim() || "Documentation"
-        }))
-        .filter((item, i, arr) => item.href && arr.findIndex(x => x.title === item.title && x.href === item.href) === i);
+      // Lightweight site search using the page's navigation plus card descriptions.
+      const searchSource = [];
+      const addSearchItem = (title, href, context, type, description = "") => {
+        if (!title || !href) return;
+        searchSource.push({ title: title.trim(), href, context, type, description: description.trim() });
+      };
+      document.querySelectorAll("a[href]").forEach(a => {
+        if (!a.textContent.trim() || a.closest(".site-footer") || a.closest(".header-actions")) return;
+        const card = a.closest(".schema-card, .featured-tool-card");
+        const context = a.closest("section, .sidebar-group")?.querySelector("h1,h2,.sidebar-section-title")?.textContent.trim() || "Documentation";
+        const description = card?.querySelector(".schema-desc, .featured-tool-desc")?.textContent || "";
+        const type = card?.classList.contains("featured-tool-card") ? "Tools" : (a.closest("#section-api") ? "API" : (a.closest(".sidebar-group")?.querySelector(".sidebar-section-title")?.textContent.trim() || "Guides"));
+        addSearchItem(a.textContent.replace(/\s+/g, " "), a.getAttribute("href"), context, type, description);
+      });
+      const searchable = searchSource.filter((item, i, arr) => item.href && arr.findIndex(x => x.title === item.title && x.href === item.href) === i);
+      let activeSearchIndex = -1;
 
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+      }
+      function highlight(text, terms) {
+        let safe = escapeHtml(text);
+        terms.filter(Boolean).sort((a,b) => b.length-a.length).forEach(term => {
+          const escaped = escapeHtml(term).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          safe = safe.replace(new RegExp(`(${escaped})`, "ig"), "<mark>$1</mark>");
+        });
+        return safe;
+      }
       function closeSearch() {
         if (!searchResults || !searchInput) return;
         searchResults.hidden = true;
         searchResults.innerHTML = "";
         searchInput.setAttribute("aria-expanded", "false");
+        activeSearchIndex = -1;
       }
       function renderSearch(query) {
         if (!searchResults || !searchInput) return;
@@ -1228,16 +1409,19 @@ console.log(
         if (!q) return closeSearch();
         const terms = q.split(/\s+/).filter(Boolean);
         const matches = searchable.map(item => {
-          const hay = (item.title + " " + item.context + " " + item.href).toLowerCase();
-          const score = terms.reduce((n, term) => n + (hay.includes(term) ? (item.title.toLowerCase().includes(term) ? 3 : 1) : 0), 0);
+          const hay = (item.title + " " + item.context + " " + item.description + " " + item.href).toLowerCase();
+          const score = terms.reduce((n, term) => n + (hay.includes(term) ? (item.title.toLowerCase().includes(term) ? 4 : item.description.toLowerCase().includes(term) ? 2 : 1) : 0), 0);
           return { ...item, score };
         }).filter(x => x.score > 0).sort((a,b) => b.score - a.score || a.title.localeCompare(b.title)).slice(0, 10);
-
-        searchResults.innerHTML = matches.length ? matches.map((item, i) => `
-          <button type="button" class="search-result" role="option" data-href="${item.href.replace(/"/g, '&quot;')}" aria-selected="${i === 0 ? 'false' : 'false'}">
-            <span class="material-icons" aria-hidden="true">${item.href.startsWith('#') ? 'bookmark' : 'menu_book'}</span>
-            <span><span class="search-result-title">${item.title}</span><span class="search-result-meta">${item.context}</span></span>
-          </button>`).join("") : '<div class="search-empty">No matching guides or tools found.</div>';
+        activeSearchIndex = matches.length ? 0 : -1;
+        let lastGroup = "";
+        const html = matches.map((item, i) => {
+          const group = item.type || "Guides";
+          const groupHtml = group !== lastGroup ? `<div class="search-result-group">${escapeHtml(group)}</div>` : "";
+          lastGroup = group;
+          return groupHtml + `<button type="button" class="search-result${i === 0 ? " is-active" : ""}" role="option" data-index="${i}" data-href="${escapeHtml(item.href)}" aria-selected="${i === 0}">\n            <span class="material-icons" aria-hidden="true">${group === "Tools" ? "build" : group === "API" ? "code" : "menu_book"}</span>\n            <span><span class="search-result-title">${highlight(item.title, terms)}</span><span class="search-result-meta">${escapeHtml(item.context)}</span></span>\n          </button>`;
+        }).join("");
+        searchResults.innerHTML = matches.length ? html + '<div class="search-help">↑ ↓ to navigate &nbsp; Enter to open &nbsp; Esc to close</div>' : '<div class="search-empty">No matching guides, tools, or API resources found.</div>';
         searchResults.hidden = false;
         searchInput.setAttribute("aria-expanded", "true");
         searchResults.querySelectorAll(".search-result").forEach(btn => btn.addEventListener("click", () => {
@@ -1247,6 +1431,27 @@ console.log(
           if (href) window.location.href = href;
         }));
       }
+      function moveSearch(delta) {
+        const buttons = Array.from(searchResults?.querySelectorAll(".search-result") || []);
+        if (!buttons.length) return;
+        activeSearchIndex = (activeSearchIndex + delta + buttons.length) % buttons.length;
+        buttons.forEach((btn, i) => {
+          const active = i === activeSearchIndex;
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-selected", String(active));
+        });
+        buttons[activeSearchIndex].scrollIntoView({ block: "nearest" });
+      }
+
+      searchInput?.addEventListener("keydown", event => {
+        if (!searchResults || searchResults.hidden) return;
+        if (event.key === "ArrowDown") { event.preventDefault(); moveSearch(1); }
+        else if (event.key === "ArrowUp") { event.preventDefault(); moveSearch(-1); }
+        else if (event.key === "Enter") {
+          const btn = searchResults.querySelector(`.search-result[data-index="${activeSearchIndex}"]`);
+          if (btn) { event.preventDefault(); btn.click(); }
+        }
+      });
       searchInput?.addEventListener("input", () => renderSearch(searchInput.value));
       searchInput?.addEventListener("focus", () => { if (searchInput.value) renderSearch(searchInput.value); });
       document.addEventListener("click", e => {
