@@ -902,6 +902,8 @@
       .site-footer { padding-top: 18px; padding-bottom: 18px; }
     }
 
+
+
   </style>
 
   <style id="dark-modern-theme">
@@ -1561,6 +1563,109 @@
     .app-layout,
     .main-content {
       background-color: #0A0A0A !important;
+    }
+  </style>
+  <style id="card-optimization">
+    /* =========================================================
+       CARD OPTIMIZATION — EQUAL SIZES + MOBILE HORIZONTAL SCROLL
+       ========================================================= */
+    .featured-tools-grid,
+    .horizontal-cards,
+    .other-guides-grid,
+    .resource-grid {
+      min-width: 0;
+      grid-auto-rows: 180px;
+    }
+
+    .featured-tool-card,
+    .schema-card {
+      height: 180px !important;
+      min-height: 180px !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .featured-tool-card .featured-tool-desc,
+    .schema-card .schema-desc {
+      overflow: hidden;
+    }
+
+    /* On phones, keep cards wide enough to read and let the section scroll horizontally. */
+    @media (max-width: 700px) {
+      .featured-tools-grid,
+      .horizontal-cards,
+      .other-guides-grid,
+      .resource-grid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 2px 2px 10px !important;
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .featured-tools-grid::-webkit-scrollbar,
+      .horizontal-cards::-webkit-scrollbar,
+      .other-guides-grid::-webkit-scrollbar,
+      .resource-grid::-webkit-scrollbar {
+        height: 5px;
+      }
+
+      .featured-tools-grid::-webkit-scrollbar-track,
+      .horizontal-cards::-webkit-scrollbar-track,
+      .other-guides-grid::-webkit-scrollbar-track,
+      .resource-grid::-webkit-scrollbar-track {
+        background: rgba(148,163,184,.08);
+        border-radius: 999px;
+      }
+
+      .featured-tools-grid::-webkit-scrollbar-thumb,
+      .horizontal-cards::-webkit-scrollbar-thumb,
+      .other-guides-grid::-webkit-scrollbar-thumb,
+      .resource-grid::-webkit-scrollbar-thumb {
+        background: rgba(148,163,184,.28);
+        border-radius: 999px;
+      }
+
+      .featured-tool-card,
+      .schema-card {
+        flex: 0 0 235px !important;
+        width: 235px !important;
+        height: 180px !important;
+        min-height: 180px !important;
+        scroll-snap-align: start;
+      }
+
+      .featured-tool-card .featured-tool-desc,
+      .schema-card .schema-desc {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .featured-tool-card,
+      .schema-card {
+        flex-basis: 225px !important;
+        width: 225px !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .featured-tools-grid,
+      .horizontal-cards,
+      .other-guides-grid,
+      .resource-grid {
+        scroll-behavior: auto !important;
+        scroll-snap-type: none;
+      }
     }
   </style>
 </head>
