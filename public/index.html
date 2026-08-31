@@ -902,6 +902,425 @@
       .site-footer { padding-top: 18px; padding-bottom: 18px; }
     }
 
+
+
+    /* =========================================================
+       DARK / GLASS REDESIGN — reference-inspired homepage
+       ========================================================= */
+    :root {
+      --cmc-blue: #3b82f6;
+      --cmc-blue-dark: #2563eb;
+      --dark-bg: #05080c;
+      --dark-panel: rgba(12, 16, 22, .50);
+      --dark-panel-strong: rgba(12, 16, 22, .70);
+      --dark-border: rgba(148, 163, 184, .16);
+      --dark-border-strong: rgba(148, 163, 184, .22);
+      --dark-text: #f8fafc;
+      --dark-muted: #a7b0bd;
+    }
+
+    html, body {
+      background: var(--dark-bg) !important;
+      color: var(--dark-text);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 72% 12%, rgba(37, 99, 235, .10), transparent 28%),
+        radial-gradient(circle at 28% 46%, rgba(59, 130, 246, .055), transparent 32%),
+        #05080c !important;
+    }
+
+    .top-header {
+      background: rgba(5, 8, 12, .70) !important;
+      border-bottom: 1px solid rgba(148, 163, 184, .14) !important;
+      backdrop-filter: blur(18px) saturate(125%);
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+      box-shadow: 0 10px 30px rgba(0,0,0,.20);
+    }
+
+    .sidebar {
+      background: rgba(7, 11, 16, .50) !important;
+      border-right: 1px solid rgba(148, 163, 184, .15) !important;
+      backdrop-filter: blur(18px) saturate(120%);
+      -webkit-backdrop-filter: blur(18px) saturate(120%);
+    }
+
+    .brand-title-secondary,
+    .header-brand .brand-title-secondary {
+      color: #f8fafc !important;
+    }
+
+    .brand-title-primary,
+    .header-brand .brand-title-primary {
+      color: #3b82f6 !important;
+    }
+
+    .version-badge {
+      color: #60a5fa !important;
+      background: rgba(59, 130, 246, .09) !important;
+      border-color: rgba(59, 130, 246, .24) !important;
+    }
+
+    .header-link,
+    .header-link .material-icons {
+      color: #e2e8f0 !important;
+    }
+
+    .header-link:hover,
+    .header-link:hover .material-icons {
+      color: #60a5fa !important;
+    }
+
+    .search-box {
+      background: rgba(15, 20, 28, .70) !important;
+      border-color: rgba(148, 163, 184, .14) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+    }
+
+    .search-box input {
+      color: #e5e7eb !important;
+    }
+
+    .search-box input::placeholder {
+      color: #8b95a3 !important;
+    }
+
+    .search-box:focus-within {
+      border-color: rgba(59, 130, 246, .55) !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, .10) !important;
+    }
+
+    .search-results {
+      background: rgba(10, 14, 20, .94) !important;
+      border-color: var(--dark-border-strong) !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,.45) !important;
+      backdrop-filter: blur(18px);
+    }
+
+    .search-result { color: #e5e7eb !important; }
+    .search-result:hover, .search-result.is-active { background: rgba(59,130,246,.10) !important; }
+
+    .sidebar-section-title {
+      color: #94a3b8 !important;
+    }
+
+    .sidebar-nav-item a,
+    .sidebar-nav-item .nav-icon {
+      color: #b7c0cc !important;
+    }
+
+    .sidebar-nav-item a:hover,
+    .sidebar-nav-item a:hover .nav-icon,
+    .sidebar-nav-item a.active,
+    .sidebar-nav-item a.active .nav-icon {
+      color: #f8fafc !important;
+    }
+
+    .sidebar-nav-item a.active {
+      background: linear-gradient(90deg, rgba(59,130,246,.16), rgba(59,130,246,.045)) !important;
+      border-left: 2px solid #3b82f6;
+    }
+
+    .main-content {
+      color: var(--dark-text);
+    }
+
+    .section-header h1,
+    .section-header h2,
+    .featured-tools-title,
+    .featured-tool-name a,
+    .schema-name a,
+    .contributor-name,
+    .site-footer-brand {
+      color: #f8fafc !important;
+    }
+
+    .section-header p,
+    .featured-tools-subtitle,
+    .featured-tool-desc,
+    .schema-desc,
+    .contributor-role,
+    .site-footer-note,
+    .site-footer-links a,
+    .site-footer-version {
+      color: #a7b0bd !important;
+    }
+
+    .section-header h2 .material-icons,
+    .featured-tools-title .material-icons {
+      color: #cbd5e1 !important;
+    }
+
+    .prose-card {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 22%, rgba(59,130,246,.12), transparent 26%),
+        linear-gradient(135deg, rgba(15, 20, 28, .62), rgba(7, 10, 14, .50)) !important;
+      border: 1px solid var(--dark-border-strong) !important;
+      box-shadow: 0 24px 60px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.025) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .prose-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 78% 20%, rgba(59,130,246,.13), transparent 28%);
+      pointer-events: none;
+    }
+
+    .overview-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(220px, .75fr);
+      gap: 12px 20px;
+      padding: 28px 30px 22px;
+    }
+
+    .overview-hero-copy { position: relative; z-index: 2; }
+    .overview-hero-copy h1 { margin: 0; }
+    .overview-lead {
+      max-width: 650px;
+      margin: 14px 0 0 !important;
+      color: #b6bfcb !important;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .overview-hero-details {
+      grid-column: 1 / -1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .overview-hero-details > p {
+      max-width: 900px;
+      margin: 0;
+      color: #9fa9b6 !important;
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 180px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-moon {
+      position: absolute;
+      width: 100px; height: 100px;
+      right: 28px; top: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 32%, #dbeafe 0 8%, #60a5fa 10%, #1d4ed8 45%, rgba(29,78,216,.05) 72%, transparent 73%);
+      filter: blur(.2px);
+      opacity: .8;
+    }
+
+    .hero-cloud {
+      position: absolute;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.16);
+      filter: blur(1px);
+    }
+    .hero-cloud-one { width: 110px; right: 105px; top: 80px; }
+    .hero-cloud-two { width: 75px; right: 8px; top: 112px; }
+
+    .hero-island {
+      position: absolute;
+      width: 150px; height: 76px;
+      right: 52px; bottom: 6px;
+      transform: rotate(-3deg);
+      border-radius: 50% 46% 42% 44%;
+      background: linear-gradient(180deg, #365314 0 28%, #17220f 29% 55%, #0f172a 56%);
+      box-shadow: 0 22px 32px rgba(0,0,0,.48), inset 0 8px 0 rgba(132,204,22,.12);
+    }
+
+    .hero-island::before {
+      content: "";
+      position: absolute;
+      width: 95px; height: 18px;
+      left: 30px; top: 8px;
+      border-radius: 50%;
+      background: #365314;
+      box-shadow: inset 0 -5px 0 rgba(0,0,0,.20);
+    }
+
+    .hero-tree {
+      position: absolute;
+      width: 22px; height: 62px;
+      left: 40px; top: -49px;
+    }
+    .hero-tree::before {
+      content: "";
+      position: absolute;
+      width: 42px; height: 38px;
+      left: -10px; top: -1px;
+      border-radius: 50% 50% 44% 44%;
+      background: radial-gradient(circle at 35% 30%, #84cc16, #365314 62%, #1a2e05 100%);
+      box-shadow: 15px 10px 0 -5px #4d7c0f, -10px 13px 0 -7px #3f6212;
+    }
+    .hero-tree i {
+      position: absolute; width: 8px; height: 35px;
+      left: 7px; top: 27px; border-radius: 4px; background: #713f12;
+    }
+    .hero-tree b {
+      position: absolute; width: 5px; height: 18px;
+      left: 13px; top: 13px; transform: rotate(40deg); background: #713f12;
+    }
+
+    .hero-waterfall {
+      position: absolute;
+      width: 22px; height: 68px;
+      right: 28px; top: 34px;
+      background: linear-gradient(90deg, rgba(37,99,235,.45), #38bdf8 45%, rgba(14,165,233,.32));
+      clip-path: polygon(18% 0, 100% 0, 78% 100%, 0 76%);
+      filter: drop-shadow(0 5px 10px rgba(14,165,233,.18));
+    }
+
+    .overview-stat {
+      background: rgba(10, 14, 20, .54) !important;
+      border-color: rgba(148,163,184,.15) !important;
+      color: #a7b0bd !important;
+    }
+
+    .overview-stat strong { color: #f8fafc !important; }
+
+    .alert-box.tip {
+      background: rgba(12, 18, 27, .62) !important;
+      border-color: rgba(59,130,246,.18) !important;
+      color: #cbd5e1 !important;
+    }
+
+    .featured-tool-card,
+    .schema-card,
+    .contributor-card {
+      background: rgba(11, 15, 21, .50) !important;
+      border-color: rgba(148,163,184,.16) !important;
+      box-shadow: 0 12px 30px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.018) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .featured-tool-card:hover,
+    .schema-card:hover,
+    .contributor-card:hover {
+      border-color: rgba(59,130,246,.35) !important;
+      box-shadow: 0 18px 38px rgba(0,0,0,.28), 0 0 0 1px rgba(59,130,246,.05) !important;
+      transform: translateY(-3px);
+    }
+
+    .featured-tool-icon-wrap {
+      background: rgba(59,130,246,.10) !important;
+    }
+
+    .featured-tool-icon,
+    .featured-tool-link,
+    .section-view-all,
+    .contributor-role a,
+    .schema-card div[style*="margin-top"] a {
+      color: #60a5fa !important;
+    }
+
+    .card-eyebrow,
+    .progression-label,
+    .docs-category-label {
+      color: #8ea0b5 !important;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-track,
+    .horizontal-cards::-webkit-scrollbar-track {
+      background: rgba(255,255,255,.04) !important;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-thumb,
+    .horizontal-cards::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,.25) !important;
+    }
+
+    .contributors-section .contributor-avatar {
+      border: 1px solid rgba(148,163,184,.14);
+    }
+
+    .code-block-wrapper {
+      border-color: rgba(148,163,184,.15) !important;
+      box-shadow: 0 14px 35px rgba(0,0,0,.22);
+    }
+
+    .site-footer {
+      border-top-color: rgba(148,163,184,.12) !important;
+    }
+
+    .mobile-nav-backdrop {
+      background: rgba(0,0,0,.58) !important;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Make the homepage sections breathe like the reference design. */
+    .doc-section,
+    .featured-tools-section { margin-bottom: 34px; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border: 1px solid rgba(59,130,246,.28);
+      border-radius: 999px;
+      background: rgba(59,130,246,.06);
+      color: #60a5fa;
+      font-size: .76rem;
+      font-weight: 600;
+    }
+
+    .section-header h1 {
+      font-size: clamp(2rem, 3.2vw, 2.55rem);
+      line-height: 1.08;
+    }
+
+    .section-header h2,
+    .featured-tools-title {
+      font-size: 1.45rem;
+    }
+
+    .featured-tools-header,
+    .section-header-with-action {
+      align-items: center;
+    }
+
+    .section-header-with-action .section-view-all,
+
+
+    .section-header-with-action .section-view-all:hover {
+      background: rgba(59,130,246,.10);
+      color: #fff !important;
+      text-decoration: none;
+    }
+
+    /* The reference puts the most-used tools before progression guides. */
+    #section-guides { margin-top: 4px; }
+
+    @media (max-width: 700px) {
+      .overview-hero {
+        grid-template-columns: 1fr;
+        padding: 22px 18px 18px;
+      }
+      .hero-art {
+        min-height: 115px;
+        margin-top: -2px;
+      }
+      .hero-island { right: 26px; transform: scale(.82) rotate(-3deg); transform-origin: right bottom; }
+      .hero-moon { right: 16px; transform: scale(.72); transform-origin: top right; }
+      .overview-hero-details { grid-column: 1; }
+      .top-header { background: rgba(5,8,12,.78) !important; }
+      .sidebar { background: rgba(7,11,16,.82) !important; }
+      .section-header h1 { font-size: 1.8rem; }
+      .section-header h2,
+      .featured-tools-title { font-size: 1.25rem; }
+    }
+
   </style>
 
   <script src="better-api-docs/app.js" defer></script>
@@ -1011,13 +1430,24 @@
     <main class="main-content">
 
       <section class="doc-section" id="overview">
-        <div class="section-header">
-          <h1>CraftersMC SkyBlock Documentation</h1>
-          <p>The comprehensive guide and reference library for CraftersMC SkyBlock players, traders, and developers.</p>
-        </div>
+        <div class="prose-card overview-hero">
+          <div class="overview-hero-copy">
+            <div class="hero-eyebrow">Welcome to</div>
+            <h1>CraftersMC SkyBlock Documentation</h1>
+            <p class="overview-lead">The comprehensive guide and reference library for CraftersMC SkyBlock players, traders, and developers.</p>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="hero-moon"></div>
+            <div class="hero-cloud hero-cloud-one"></div>
+            <div class="hero-cloud hero-cloud-two"></div>
+            <div class="hero-island">
+              <div class="hero-tree"><i></i><b></b></div>
+              <div class="hero-waterfall"></div>
+            </div>
+          </div>
 
-        <div class="prose-card">
-          <p>Whether you are just starting your island, advancing through slayer bosses, optimizing accessory reforges, or building integrations with the CraftersMC REST API, this documentation contains verified strategies, event timers, and technical references.</p>
+          <div class="overview-hero-details">
+            <p>Whether you are just starting your island, advancing through slayer bosses, optimizing accessory reforges, or building integrations with the CraftersMC REST API, this documentation contains verified strategies, event timers, and technical references.</p>
           <div class="overview-hero-meta" aria-label="Documentation overview">
             <span class="overview-stat"><strong>10</strong> Guides</span>
             <span class="overview-stat"><strong>7</strong> Tools</span>
@@ -1032,6 +1462,7 @@
               anywhere on the page to focus the global search bar and instantly filter guides and tools.
             </div>
           </div>
+          </div>
         </div>
       </section>
 
@@ -1041,6 +1472,7 @@
             <h2 class="featured-tools-title" id="featured-tools-title"><span class="material-icons" aria-hidden="true">build</span>Most Used Tools</h2>
             <p class="featured-tools-subtitle">Quick access to the tools players use the most.</p>
           </div>
+          <a class="section-view-all" href="tools.html">View All Tools →</a>
         </div>
 
         <div class="featured-tools-grid" role="region" aria-label="Most used tools" tabindex="0">
