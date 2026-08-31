@@ -638,6 +638,98 @@
       font-size: 1.18rem !important;
     }
 
+  /* =========================================================
+     V2 UX POLISH: SEARCH, MOBILE NAV, INTERACTION, ACCESSIBILITY
+     ========================================================= */
+  .mobile-menu-btn {
+    display: none;
+    border: 0;
+    background: transparent;
+    padding: 7px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .mobile-menu-btn:hover { background: rgba(7,151,225,.08); }
+
+  .mobile-nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.34);
+    z-index: 998;
+  }
+  .mobile-nav-backdrop.is-open { display: block; }
+
+  .search-box { position: relative; }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: min(60vh, 480px);
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(15,23,42,.16);
+    padding: 6px;
+  }
+  .search-results[hidden] { display: none; }
+  .search-result {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+  .search-result:hover, .search-result.is-active { background: #f1f7fb; }
+  .search-result .material-icons { color: var(--cmc-blue); font-size: 19px; margin-top: 1px; }
+  .search-result-title { font-weight: 700; font-size: .88rem; line-height: 1.25; }
+  .search-result-meta { color: var(--text-secondary); font-size: .75rem; margin-top: 3px; }
+  .search-empty { padding: 14px; color: var(--text-secondary); font-size: .84rem; }
+
+  .schema-card, .featured-tool-card, .contributor-card { position: relative; }
+  .schema-card a, .featured-tool-card a { position: relative; z-index: 1; }
+  .section-header h1, .section-header h2, .featured-tools-title { letter-spacing: -.015em; }
+  .site-footer { gap: 12px; flex-wrap: wrap; }
+
+  @media (min-width: 701px) {
+    .mobile-menu-btn { display: none !important; }
+  }
+
+  @media (max-width: 700px) {
+    .mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+    .sidebar {
+      display: block;
+      position: fixed;
+      top: 58px;
+      bottom: 0;
+      left: 0;
+      width: min(82vw, 310px);
+      max-width: 310px;
+      z-index: 999;
+      overflow-y: auto;
+      transform: translateX(-105%);
+      transition: transform .2s ease;
+      box-shadow: 12px 0 30px rgba(15,23,42,.12);
+      background: var(--card-background, #fff);
+    }
+    .sidebar.is-open { transform: translateX(0); }
+    body.mobile-nav-open { overflow: hidden; }
+    .search-results { left: -6px; right: -6px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar { transition: none; }
+  }
+
   </style>
 
   <script src="better-api-docs/app.js" defer></script>
@@ -661,8 +753,9 @@
 
     <div class="search-box">
       <span class="material-icons search-icon" aria-hidden="true">search</span>
-      <input type="search" id="search-input" placeholder="Search guides, tools, players, items..." aria-label="Search guides, tools, players, and items" autocomplete="off" spellcheck="false">
+      <input type="search" id="search-input" placeholder="Search guides, tools, players, items..." aria-label="Search guides, tools, players, and items" autocomplete="off" spellcheck="false" aria-expanded="false" aria-controls="search-results" role="combobox">
       <span class="search-kbd-shortcut" aria-hidden="true">/</span>
+      <div class="search-results" id="search-results" role="listbox" hidden></div>
     </div>
 
     <div class="header-actions">
@@ -677,6 +770,7 @@
       </a>
     </div>
   </header>
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop" aria-hidden="true"></div>
 
   <div class="app-layout">
     <aside class="sidebar" id="sidebar" aria-label="Main navigation">
@@ -1023,40 +1117,97 @@ console.log(
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const searchInput = document.getElementById("search-input");
+      const searchResults = document.getElementById("search-results");
+      const menuButton = document.querySelector(".mobile-menu-btn");
+      const sidebar = document.getElementById("sidebar");
+      const backdrop = document.getElementById("mobile-nav-backdrop");
 
+      // Global / shortcut: focus search without hijacking typing.
       document.addEventListener("keydown", function (event) {
-        if (
-          event.key === "/" &&
-          !event.ctrlKey &&
-          !event.metaKey &&
-          !event.altKey
-        ) {
+        if (event.key === "/" && !event.ctrlKey && !event.metaKey && !event.altKey) {
           const active = document.activeElement;
-          const isTyping =
-            active &&
-            (
-              active.tagName === "INPUT" ||
-              active.tagName === "TEXTAREA" ||
-              active.tagName === "SELECT" ||
-              active.isContentEditable
-            );
-
+          const isTyping = active && (
+            active.tagName === "INPUT" || active.tagName === "TEXTAREA" ||
+            active.tagName === "SELECT" || active.isContentEditable
+          );
           if (!isTyping && searchInput) {
             event.preventDefault();
             searchInput.focus();
+            searchInput.select();
           }
+        }
+        if (event.key === "Escape") {
+          closeSearch();
+          closeMobileNav();
         }
       });
 
-      const menuButton = document.querySelector(".mobile-menu-btn");
-      const sidebar = document.getElementById("sidebar");
-
-      if (menuButton && sidebar) {
-        menuButton.addEventListener("click", function () {
-          const expanded = menuButton.getAttribute("aria-expanded") === "true";
-          menuButton.setAttribute("aria-expanded", String(!expanded));
-        });
+      function openMobileNav() {
+        if (!sidebar || !menuButton) return;
+        sidebar.classList.add("is-open");
+        backdrop?.classList.add("is-open");
+        document.body.classList.add("mobile-nav-open");
+        menuButton.setAttribute("aria-expanded", "true");
       }
+      function closeMobileNav() {
+        if (!sidebar || !menuButton) return;
+        sidebar.classList.remove("is-open");
+        backdrop?.classList.remove("is-open");
+        document.body.classList.remove("mobile-nav-open");
+        menuButton.setAttribute("aria-expanded", "false");
+      }
+      menuButton?.addEventListener("click", function () {
+        sidebar?.classList.contains("is-open") ? closeMobileNav() : openMobileNav();
+      });
+      backdrop?.addEventListener("click", closeMobileNav);
+      sidebar?.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMobileNav));
+
+      // Lightweight site search built from the links already present on this page.
+      const searchable = Array.from(document.querySelectorAll("a[href]"))
+        .filter(a => a.textContent.trim() && !a.closest(".site-footer") && !a.closest(".header-actions"))
+        .map(a => ({
+          title: a.textContent.replace(/\s+/g, " ").trim(),
+          href: a.getAttribute("href"),
+          context: a.closest("section, .sidebar-group")?.querySelector("h1,h2,.sidebar-section-title")?.textContent.trim() || "Documentation"
+        }))
+        .filter((item, i, arr) => item.href && arr.findIndex(x => x.title === item.title && x.href === item.href) === i);
+
+      function closeSearch() {
+        if (!searchResults || !searchInput) return;
+        searchResults.hidden = true;
+        searchResults.innerHTML = "";
+        searchInput.setAttribute("aria-expanded", "false");
+      }
+      function renderSearch(query) {
+        if (!searchResults || !searchInput) return;
+        const q = query.trim().toLowerCase();
+        if (!q) return closeSearch();
+        const terms = q.split(/\s+/).filter(Boolean);
+        const matches = searchable.map(item => {
+          const hay = (item.title + " " + item.context + " " + item.href).toLowerCase();
+          const score = terms.reduce((n, term) => n + (hay.includes(term) ? (item.title.toLowerCase().includes(term) ? 3 : 1) : 0), 0);
+          return { ...item, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score || a.title.localeCompare(b.title)).slice(0, 10);
+
+        searchResults.innerHTML = matches.length ? matches.map((item, i) => `
+          <button type="button" class="search-result" role="option" data-href="${item.href.replace(/"/g, '&quot;')}" aria-selected="${i === 0 ? 'false' : 'false'}">
+            <span class="material-icons" aria-hidden="true">${item.href.startsWith('#') ? 'bookmark' : 'menu_book'}</span>
+            <span><span class="search-result-title">${item.title}</span><span class="search-result-meta">${item.context}</span></span>
+          </button>`).join("") : '<div class="search-empty">No matching guides or tools found.</div>';
+        searchResults.hidden = false;
+        searchInput.setAttribute("aria-expanded", "true");
+        searchResults.querySelectorAll(".search-result").forEach(btn => btn.addEventListener("click", () => {
+          const href = btn.dataset.href;
+          closeSearch();
+          searchInput.value = "";
+          if (href) window.location.href = href;
+        }));
+      }
+      searchInput?.addEventListener("input", () => renderSearch(searchInput.value));
+      searchInput?.addEventListener("focus", () => { if (searchInput.value) renderSearch(searchInput.value); });
+      document.addEventListener("click", e => {
+        if (searchResults && !e.target.closest(".search-box")) closeSearch();
+      });
     });
 
     if (typeof window.copyToClipboard !== "function") {
