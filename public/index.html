@@ -194,15 +194,10 @@
     .horizontal-cards {
       display: flex;
       gap: 12px;
-
       overflow-x: auto;
-
       padding: 4px 4px 10px 2px;
-
       scroll-behavior: smooth;
-
       scrollbar-width: thin;
-
       -webkit-overflow-scrolling: touch;
     }
 
@@ -228,7 +223,6 @@
       flex: 0 0 225px;
       width: 225px;
       min-height: 145px;
-
       box-sizing: border-box;
     }
 
@@ -268,17 +262,11 @@
 
     .section-view-all {
       flex: 0 0 auto;
-
       margin-top: 6px;
-
       color: var(--accent-color);
-
       font-weight: 600;
-
       font-size: 0.9rem;
-
       text-decoration: none;
-
       white-space: nowrap;
     }
 
@@ -288,12 +276,7 @@
 
     .other-guides-grid {
       display: grid;
-
-      grid-template-columns: repeat(
-        3,
-        minmax(0, 1fr)
-      );
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -303,12 +286,7 @@
 
     .resource-grid {
       display: grid;
-
-      grid-template-columns: repeat(
-        3,
-        minmax(0, 1fr)
-      );
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -323,7 +301,6 @@
     .progression-card {
       flex: 0 0 225px;
       width: 225px;
-
       box-sizing: border-box;
     }
 
@@ -335,10 +312,7 @@
 
       .other-guides-grid,
       .resource-grid {
-        grid-template-columns: repeat(
-          2,
-          minmax(0, 1fr)
-        );
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
     }
@@ -455,6 +429,7 @@
 
     <div class="header-actions">
 
+      <!-- API Docs -->
       <a
         href="better-api-docs/index.html"
         class="header-link"
@@ -475,21 +450,24 @@
       </a>
 
 
+      <!-- Discord -->
       <a
-        href="https://github.com/CraftersMC-Guides-Project/guides-code"
+        href="https://discord.gg/BwuKACpVc9"
         target="_blank"
+        rel="noopener"
         class="header-link"
+        style="color:var(--accent-color);font-weight:600;"
       >
 
         <span
           class="material-icons"
           style="font-size:1rem;vertical-align:middle;"
         >
-          code
+          forum
         </span>
 
         <span class="header-link-text">
-          GitHub
+          Discord
         </span>
 
       </a>
@@ -1890,7 +1868,7 @@ console.log(
 
       <!-- =====================================================
            FOOTER
-           ===================================================== -->
+           ========================================================= -->
 
       <footer class="site-footer">
 
