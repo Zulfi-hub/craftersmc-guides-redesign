@@ -2884,6 +2884,87 @@
   }
 </style>
 
+
+<style id="mobile-search-final-fix">
+  /* Final mobile-only search behavior. Desktop/tablet rules are untouched. */
+  @media (max-width: 700px) {
+    .top-header > .search-box {
+      display: none !important;
+      position: absolute !important;
+      top: calc(100% + 10px) !important;
+      left: 10px !important;
+      right: 10px !important;
+      width: auto !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      z-index: 1100 !important;
+    }
+
+    .top-header.mobile-search-open > .search-box {
+      display: flex !important;
+    }
+
+    .top-header > .search-box::before {
+      content: none !important;
+    }
+
+    .top-header.mobile-search-open > .search-box::before {
+      content: "" !important;
+      position: absolute;
+      inset: -8px;
+      border-radius: 14px;
+      background: #0c1219;
+      border: 1px solid rgba(56,189,248,.16);
+      box-shadow: 0 18px 42px rgba(0,0,0,.44);
+      z-index: -1;
+    }
+
+    .top-header.mobile-search-open > .search-box input {
+      width: 100% !important;
+      min-width: 0 !important;
+      height: 48px !important;
+      padding: 0 42px 0 42px !important;
+      border-radius: 10px !important;
+      background: #eef3f8 !important;
+      color: #475569 !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18) !important;
+    }
+
+    .top-header.mobile-search-open > .search-box .search-icon {
+      z-index: 2;
+    }
+
+    .mobile-search-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .header-icon-link[href*="github.com"],
+    .header-icon-link[href*="better-api-docs"] {
+      display: none !important;
+    }
+
+    .header-icon-link[href*="discord.gg"] {
+      display: inline-flex !important;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .top-header > .search-box {
+      left: 8px !important;
+      right: 8px !important;
+    }
+
+    .top-header.mobile-search-open > .search-box input {
+      height: 46px !important;
+      font-size: .96rem !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <header class="top-header">
