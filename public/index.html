@@ -3235,6 +3235,20 @@
   }
 </style>
 
+<style id="final-responsive-consistency-fix">
+  /* Single source of truth for the mobile header/sidebar relationship. */
+  @media (max-width: 700px) {
+    :root { --mobile-header-height: 52px !important; }
+    .top-header { height: var(--mobile-header-height) !important; min-height: var(--mobile-header-height) !important; }
+    .sidebar { top: var(--mobile-header-height) !important; }
+  }
+  @media (max-width: 430px) {
+    :root { --mobile-header-height: 50px !important; }
+    .top-header { height: var(--mobile-header-height) !important; min-height: var(--mobile-header-height) !important; }
+    .sidebar { top: var(--mobile-header-height) !important; }
+  }
+</style>
+
 </head>
 <body>
 <header class="top-header">
@@ -3332,7 +3346,7 @@
 <section class="doc-section" id="overview">
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
-<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-live="polite">Documentation</span></h1>
+<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-hidden="true">Documentation</span></h1>
 <div class="pinned-player-card" id="pinned-player-card" aria-live="polite">
   <div class="pinned-player-header">
     <div>
@@ -3350,7 +3364,7 @@
   </div>
   <div class="pinned-player-error" id="pinned-player-error" hidden></div>
 </div>
-<div class="hero-status" id="hero-status" aria-live="polite">
+<div class="hero-status" id="hero-status">
 <div class="hero-status-title">SkyBlock Status</div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">cloud_done</span>Server Status</span><strong class="hero-status-value status-online" id="status-server"><span class="status-dot" aria-hidden="true"></span>Loading</strong></div>
@@ -3995,10 +4009,12 @@ console.log(
   function eventCandidates(now) {
     const candidates = [];
     const currentDayIndex = Math.floor((now - START_OF_TIMES) / SB_DAY_SECONDS);
-    let n = Math.floor(currentDayIndex / 3);
-    let target = START_OF_TIMES + (n * 3) * SB_DAY_SECONDS;
-    if (target <= now) target += 3 * SB_DAY_SECONDS;
-    candidates.push({ name: EVENTS[0].name, target, color: EVENTS[0].color });
+    const recurring = EVENTS[0];
+    const everyDays = Math.max(1, Number(recurring.everyDays) || 1);
+    let n = Math.floor(currentDayIndex / everyDays);
+    let target = START_OF_TIMES + (n * everyDays) * SB_DAY_SECONDS;
+    if (target <= now) target += everyDays * SB_DAY_SECONDS;
+    candidates.push({ name: recurring.name, target, color: recurring.color });
 
     const current = sbTime(now);
     for (const item of EVENTS.slice(1)) {
@@ -4056,6 +4072,7 @@ console.log(
 
   updateEvent();
   loadNetworkStatus();
+  window.setInterval(loadNetworkStatus, 15000);
   window.setInterval(updateEvent, 1000);
 })();
 </script>
@@ -4144,46 +4161,75 @@ console.log(
 
       const profiles = playerData.stats?.skyBlock?.profiles || {};
       const profileIds = Object.keys(profiles);
-      const profileId = pin.profileId && profiles[pin.profileId] ? pin.profileId : profileIds[0] || '';
-      let profileData = null;
-      let member = {};
+      const selectedProfileId =
+        pin.profileId && profiles[pin.profileId] ? pin.profileId :
+        playerData.stats?.skyBlock?.selectedProfile ||
+        playerData.stats?.skyBlock?.selectedProfileId ||
+        playerData.selectedProfile ||
+        '';
+      const profileId = selectedProfileId && profiles[selectedProfileId]
+        ? selectedProfileId
+        : (profileIds.length === 1 ? profileIds[0] : '');
 
-      if (profileId) {
-        try {
-          const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
-          profileData = profileResponse?.profile || profileResponse || null;
-          const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
-          const memberKeys = Object.keys(members);
-          const cleanUuid = String(playerData.uuid || '').replace(/-/g, '').toLowerCase();
-          const matchedKey = memberKeys.find(key => key.toLowerCase() === cleanUuid);
-          member = members[matchedKey || memberKeys[0] || ''] || {};
-        } catch (_) {
-          profileData = null;
-        }
+      let profileData = null;
+      let member = null;
+
+      if (!profileId) {
+        throw new Error('No unambiguous SkyBlock profile is available for this player.');
       }
 
+      const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
+      profileData = profileResponse?.profile || profileResponse || null;
+      const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
+      const memberKeys = Object.keys(members);
+      const cleanUuid = String(playerData.uuid || '').replace(/-/g, '').toLowerCase();
+      const matchedKey = cleanUuid
+        ? memberKeys.find(key => key.replace(/-/g, '').toLowerCase() === cleanUuid)
+        : null;
+
+      if (!matchedKey) {
+        throw new Error('Pinned player was not found in the selected SkyBlock profile.');
+      }
+      member = members[matchedKey];
+
       rankEl.textContent = playerData.selectedRank || 'DEFAULT';
-      levelEl.textContent = member.level != null ? `Level ${member.level}` : '—';
-      purseEl.textContent = compactCoins(member.coinPurse ?? member.coin_purse);
+      levelEl.textContent = member?.level != null ? `Level ${member.level}` : '—';
+      purseEl.textContent = compactCoins(member?.coinPurse ?? member?.coin_purse);
       bankEl.textContent = compactCoins(profileData?.banking?.balance);
       stateEl.textContent = profileData?.cuteName || profileData?.cute_name
         ? `Profile: ${profileData.cuteName || profileData.cute_name}`
         : 'Live stats from Player Viewer data';
+      errorEl.hidden = true;
       statsEl.hidden = false;
     } catch (error) {
       if (token !== requestToken) return;
       statsEl.hidden = true;
       stateEl.textContent = 'Player data could not be loaded right now.';
-      errorEl.hidden = true;
+      errorEl.textContent = error?.message || 'Please try again in a moment.';
+      errorEl.hidden = false;
     }
   }
 
-  loadPinnedPlayer();
+  let pollTimer = null;
+  let pollInFlight = false;
+  const refreshPinnedPlayer = async () => {
+    if (pollInFlight) return;
+    pollInFlight = true;
+    try {
+      await loadPinnedPlayer();
+    } finally {
+      pollInFlight = false;
+      window.clearTimeout(pollTimer);
+      pollTimer = window.setTimeout(refreshPinnedPlayer, 15000);
+    }
+  };
+
+  refreshPinnedPlayer();
   window.addEventListener('storage', event => {
-    if (PIN_KEYS.includes(event.key)) loadPinnedPlayer();
+    if (PIN_KEYS.includes(event.key)) refreshPinnedPlayer();
   });
-  window.addEventListener('pageshow', loadPinnedPlayer);
-  window.setInterval(loadPinnedPlayer, 15000);
+  window.addEventListener('pageshow', refreshPinnedPlayer);
+  window.addEventListener('pagehide', () => window.clearTimeout(pollTimer), { once: true });
 })();
 </script>
 
