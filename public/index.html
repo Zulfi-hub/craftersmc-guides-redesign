@@ -2312,6 +2312,196 @@
       font-size: .78rem !important;
     }
   }
+
+<style id="header-layout-final">
+  /* =========================================================
+     FINAL HEADER LAYOUT
+     Desktop: compact logo + larger brand text + API inside badge
+     Mobile: one compact row; API/GitHub hidden, Discord retained
+     ========================================================= */
+
+  /* Desktop */
+  .header-left {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .header-brand {
+    gap: 11px !important;
+  }
+
+  .header-left > .version-badge.api-badge-link {
+    margin-left: 12px;
+  }
+
+  .header-brand img {
+    width: 46px !important;
+    height: 46px !important;
+    flex-basis: 46px !important;
+  }
+
+  .header-brand .brand-title,
+  .header-brand .brand-title-primary,
+  .header-brand .brand-title-secondary {
+    font-size: 1.28rem !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: -.035em !important;
+  }
+
+  .version-badge.api-badge-link {
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: border-color .16s ease, background .16s ease, color .16s ease;
+  }
+
+  .version-badge.api-badge-link:hover,
+  .version-badge.api-badge-link:focus-visible {
+    color: #dff6ff !important;
+    border-color: rgba(125,211,252,.34) !important;
+    background: rgba(56,189,248,.085) !important;
+  }
+
+  .badge-api-arrow {
+    margin-left: 4px;
+    font-size: .72rem;
+    line-height: 1;
+    transform: translateY(-.5px);
+  }
+
+  @media (max-width: 700px) {
+    /* Keep mobile header to a single compact row. */
+    .top-header {
+      min-height: 54px !important;
+      height: 54px !important;
+      flex-wrap: nowrap !important;
+      padding: 6px 10px !important;
+      gap: 8px !important;
+    }
+
+    .header-left {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+    }
+
+    .header-left > .version-badge.api-badge-link {
+      display: none !important;
+    }
+
+    .mobile-menu-btn {
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
+      padding: 4px !important;
+    }
+
+    .mobile-menu-btn .material-icons {
+      font-size: 1.18rem !important;
+    }
+
+    .header-brand {
+      gap: 7px !important;
+      padding: 1px 0 !important;
+      min-width: 0 !important;
+      max-width: 100%;
+    }
+
+    .header-brand img {
+      width: 36px !important;
+      height: 36px !important;
+      flex-basis: 36px !important;
+    }
+
+    .header-brand .brand-text {
+      min-width: 0 !important;
+      gap: 0 !important;
+    }
+
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: 1.02rem !important;
+      line-height: 1.05 !important;
+      letter-spacing: -.028em !important;
+    }
+
+    /* API Docs is represented by the SkyBlock Docs badge on desktop. */
+    .version-badge.api-badge-link {
+      display: none !important;
+    }
+
+    /* Search is kept out of the compact mobile header. */
+    .top-header > .search-box {
+      display: none !important;
+    }
+
+    .header-actions {
+      flex: 0 0 auto !important;
+      gap: 5px !important;
+    }
+
+    /* GitHub and API are desktop-only. Discord remains available. */
+    .header-icon-link[href*="github.com"],
+    .header-icon-link[href*="better-api-docs"] {
+      display: none !important;
+    }
+
+    .header-icon-link[href*="discord.gg"] {
+      width: 34px !important;
+      min-width: 34px !important;
+      height: 34px !important;
+      min-height: 34px !important;
+      padding: 0 !important;
+      border-radius: 8px !important;
+    }
+
+    .header-icon-link[href*="discord.gg"] .header-action-svg {
+      width: 19px !important;
+      height: 19px !important;
+      flex-basis: 19px !important;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .top-header {
+      min-height: 52px !important;
+      height: 52px !important;
+      padding: 5px 9px !important;
+    }
+
+    .header-brand img {
+      width: 34px !important;
+      height: 34px !important;
+      flex-basis: 34px !important;
+    }
+
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .98rem !important;
+    }
+
+    .header-icon-link[href*="discord.gg"] {
+      width: 32px !important;
+      min-width: 32px !important;
+      height: 32px !important;
+      min-height: 32px !important;
+    }
+
+    .header-icon-link[href*="discord.gg"] .header-action-svg {
+      width: 18px !important;
+      height: 18px !important;
+      flex-basis: 18px !important;
+    }
+
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card {
+      flex-basis: 250px !important;
+      width: 250px !important;
+      min-width: 250px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -2324,9 +2514,9 @@
 <img alt="CraftersMC Guides" src="assets/cmc-guides.png"/>
 <div class="brand-text">
 <span class="brand-title"><span class="brand-title-primary">CraftersMC</span> <span class="brand-title-secondary">Guides</span></span>
-<span class="version-badge">SkyBlock Docs</span>
 </div>
 </a>
+<a class="version-badge api-badge-link" href="better-api-docs/index.html" aria-label="Open API Docs">SkyBlock Docs <span class="badge-api-arrow" aria-hidden="true">↗</span></a>
 </div>
 <div class="search-box">
 <span aria-hidden="true" class="material-icons search-icon">search</span>
@@ -2335,10 +2525,6 @@
 <div class="search-results" hidden="" id="search-results" role="listbox"></div>
 </div>
 <div class="header-actions">
-<a class="header-link header-icon-link" href="better-api-docs/index.html" aria-label="API Docs" title="API Docs" style="font-weight:600;">
-<span aria-hidden="true" class="material-icons header-action-icon">api</span>
-<span class="header-link-text">API Docs</span>
-</a>
 <a class="header-link header-icon-link" href="https://github.com/CraftersMC-Guides-Project/guides-code" aria-label="GitHub Repository" title="GitHub Repository" rel="noopener noreferrer" target="_blank" style="font-weight:600;">
 <svg class="header-action-svg github-logo" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M12 .7a11.3 11.3 0 0 0-3.58 22.02c.57.1.78-.25.78-.55v-2.1c-3.17.69-3.84-1.35-3.84-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.95.1-.74.4-1.25.73-1.54-2.53-.29-5.19-1.27-5.19-5.64 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .97-.31 3.17 1.17a11 11 0 0 1 5.77 0c2.2-1.48 3.17-1.17 3.17-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.38-2.67 5.34-5.21 5.63.41.35.78 1.04.78 2.1v3.11c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/></svg>
 <span class="header-link-text">GitHub</span>
