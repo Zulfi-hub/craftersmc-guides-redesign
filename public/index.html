@@ -2772,22 +2772,29 @@
       white-space: nowrap !important;
     }
 
-    /* The API Docs action lives inside this badge; hide the badge here
-       rather than allowing it to compete with the brand. */
-    .header-left > .version-badge.api-badge-link,
-    .header-brand .version-badge {
-      display: none !important;
-    }
-
-    /* Replace the desktop search field with the compact search button. */
-    .top-header > .search-box {
-      display: none !important;
-    }
-
-    .mobile-search-btn {
+    /* Keep the SkyBlock Docs badge and desktop search available in the
+       narrow/tablet viewport. Only GitHub is removed from the header here. */
+    .header-left > .version-badge.api-badge-link {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      flex: 0 0 auto !important;
+      margin-left: 8px !important;
+      padding: 5px 9px !important;
+      font-size: .58rem !important;
+      white-space: nowrap !important;
+    }
+
+    .top-header > .search-box {
+      display: flex !important;
+      flex: 1 1 260px !important;
+      min-width: 150px !important;
+      max-width: 380px !important;
+      margin-inline: 10px !important;
+    }
+
+    .mobile-search-btn {
+      display: none !important;
     }
 
     .header-actions {
@@ -2818,15 +2825,12 @@
       flex-basis: 18px !important;
     }
 
-    /* API is already represented by the SkyBlock Docs badge on wide
-       desktop, so at narrow widths keep only Discord + Search. */
-    .header-icon-link[href*="github.com"],
-    .header-icon-link[href*="better-api-docs"] {
+    /* Remove GitHub from the header in the narrow/tablet layout. */
+    .header-icon-link[href*="github.com"] {
       display: none !important;
     }
 
-    .header-icon-link[href*="discord.gg"],
-    .mobile-search-btn {
+    .header-icon-link[href*="discord.gg"] {
       display: inline-flex !important;
     }
   }
