@@ -4267,5 +4267,310 @@ console.log(
 })();
 </script>
 
+
+<style id="premium-animation-pass">
+  /* =========================================================
+     PREMIUM MOTION PASS
+     Subtle, performant, and disabled for reduced-motion users.
+     ========================================================= */
+  .doc-section,
+  .featured-tools-section {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .55s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+  }
+
+  .doc-section.motion-visible,
+  .featured-tools-section.motion-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #overview {
+    transition-delay: 0ms;
+  }
+
+  .featured-tools-section {
+    transition-delay: 60ms;
+  }
+
+  #section-guides {
+    transition-delay: 110ms;
+  }
+
+  #section-tools {
+    transition-delay: 160ms;
+  }
+
+  #section-api {
+    transition-delay: 210ms;
+  }
+
+  #contributors {
+    transition-delay: 260ms;
+  }
+
+  .featured-tool-card,
+  .horizontal-card,
+  .other-guides-grid .schema-card,
+  .resource-grid .schema-card,
+  .contributor-card {
+    transition:
+      transform .22s cubic-bezier(.22,.61,.36,1),
+      border-color .22s ease,
+      background .22s ease,
+      box-shadow .22s ease;
+  }
+
+  .featured-tool-card:hover,
+  .horizontal-card:hover,
+  .other-guides-grid .schema-card:hover,
+  .resource-grid .schema-card:hover,
+  .contributor-card:hover,
+  .featured-tool-card:focus-within,
+  .horizontal-card:focus-within,
+  .other-guides-grid .schema-card:focus-within,
+  .resource-grid .schema-card:focus-within,
+  .contributor-card:focus-within {
+    transform: translateY(-4px) !important;
+    border-color: rgba(56,189,248,.34) !important;
+    box-shadow: 0 18px 38px rgba(0,0,0,.28), 0 0 0 1px rgba(56,189,248,.05) !important;
+  }
+
+  .featured-tool-icon-wrap {
+    transition: transform .22s cubic-bezier(.22,.61,.36,1), background .22s ease, border-color .22s ease;
+  }
+
+  .featured-tool-card:hover .featured-tool-icon-wrap,
+  .featured-tool-card:focus-within .featured-tool-icon-wrap {
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(56,189,248,.10) !important;
+    border-color: rgba(56,189,248,.24) !important;
+  }
+
+  .featured-tool-icon {
+    transition: transform .24s cubic-bezier(.22,.61,.36,1);
+  }
+
+  .featured-tool-card:hover .featured-tool-icon,
+  .featured-tool-card:focus-within .featured-tool-icon {
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  .hero-status .status-dot {
+    animation: statusPulse 2.2s ease-in-out infinite;
+  }
+
+  #hero-rotating-word {
+    transition: opacity .16s ease, transform .18s ease;
+  }
+
+  .search-box {
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+
+  .search-box:focus-within {
+    transform: translateY(-1px);
+  }
+
+  .search-results {
+    transform-origin: top center;
+    animation: searchPanelIn .16s ease-out both;
+  }
+
+  .search-result {
+    animation: searchResultIn .18s ease-out both;
+  }
+
+  .search-result:nth-child(2) { animation-delay: 18ms; }
+  .search-result:nth-child(3) { animation-delay: 36ms; }
+  .search-result:nth-child(4) { animation-delay: 54ms; }
+  .search-result:nth-child(5) { animation-delay: 72ms; }
+
+  .horizontal-scroll-frame::after {
+    transition: opacity .2s ease, width .2s ease;
+  }
+
+  .horizontal-scroll-frame.scroll-end::after {
+    opacity: 0 !important;
+  }
+
+  .horizontal-scroll-frame.scroll-empty::after {
+    opacity: 0 !important;
+  }
+
+  .sidebar-nav-item a {
+    position: relative;
+  }
+
+  .sidebar-nav-item a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    bottom: 7px;
+    width: 2px;
+    border-radius: 99px;
+    background: #38bdf8;
+    transform: scaleY(0);
+    transform-origin: center;
+    opacity: 0;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  .sidebar-nav-item a.section-active::before {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(56,210,123,.22), 0 0 10px currentColor; }
+    50% { box-shadow: 0 0 0 5px rgba(56,210,123,0), 0 0 14px currentColor; }
+  }
+
+  @keyframes searchPanelIn {
+    from { opacity: 0; transform: translateY(-4px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes searchResultIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 700px) {
+    .doc-section,
+    .featured-tools-section {
+      transform: translateY(10px);
+    }
+
+    .featured-tool-card:hover,
+    .horizontal-card:hover,
+    .other-guides-grid .schema-card:hover,
+    .resource-grid .schema-card:hover,
+    .contributor-card:hover {
+      transform: translateY(-2px) !important;
+    }
+
+    .sidebar-nav-item a::before {
+      left: 3px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doc-section,
+    .featured-tools-section,
+    .featured-tool-card,
+    .horizontal-card,
+    .other-guides-grid .schema-card,
+    .resource-grid .schema-card,
+    .contributor-card,
+    .featured-tool-icon-wrap,
+    .featured-tool-icon,
+    .hero-status .status-dot,
+    #hero-rotating-word,
+    .search-box,
+    .search-results,
+    .search-result,
+    .sidebar-nav-item a::before,
+    .horizontal-scroll-frame::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .doc-section,
+    .featured-tools-section {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+
+<script id="premium-motion-script">
+(function () {
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const sections = Array.from(document.querySelectorAll('.main-content > .doc-section, .main-content > .featured-tools-section'));
+
+  function revealSections() {
+    if (reducedMotion || !sections.length) {
+      sections.forEach(section => section.classList.add('motion-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('motion-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px' });
+
+    sections.forEach(section => observer.observe(section));
+  }
+
+  function updateScrollFade(frame) {
+    const scroller = frame.querySelector('.featured-tools-grid, .horizontal-cards');
+    if (!scroller) {
+      frame.classList.add('scroll-empty');
+      return;
+    }
+
+    const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const atEnd = maxScroll <= 2 || scroller.scrollLeft >= maxScroll - 2;
+    frame.classList.toggle('scroll-end', atEnd);
+    frame.classList.toggle('scroll-empty', maxScroll <= 2);
+  }
+
+  function setupHorizontalFades() {
+    document.querySelectorAll('.horizontal-scroll-frame').forEach(frame => {
+      const scroller = frame.querySelector('.featured-tools-grid, .horizontal-cards');
+      if (!scroller) return;
+      const refresh = () => updateScrollFade(frame);
+      scroller.addEventListener('scroll', refresh, { passive: true });
+      window.addEventListener('resize', refresh, { passive: true });
+      refresh();
+    });
+  }
+
+  function setupSidebarSectionIndicator() {
+    const links = Array.from(document.querySelectorAll('.sidebar-nav-item a[href^="#"]'));
+    const targets = links
+      .map(link => ({ link, target: document.querySelector(link.getAttribute('href')) }))
+      .filter(item => item.target);
+
+    if (!targets.length) return;
+
+    const setActive = activeTarget => {
+      targets.forEach(({ link, target }) => {
+        const active = target === activeTarget;
+        link.classList.toggle('section-active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(visible.target);
+    }, {
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: [0.08, 0.2, 0.4]
+    });
+
+    targets.forEach(({ target }) => observer.observe(target));
+
+    const initial = targets.find(({ target }) => target.getBoundingClientRect().top >= 0)?.target || targets[0].target;
+    setActive(initial);
+  }
+
+  revealSections();
+  setupHorizontalFades();
+  setupSidebarSectionIndicator();
+})();
+</script>
+
 </body>
 </html>
