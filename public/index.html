@@ -1567,170 +1567,240 @@
   </style>
   <style id="card-optimization">
     /* =========================================================
-       CARD OPTIMIZATION — MOBILE ROW SCROLL + EQUAL CARD SIZES
+       CARD LAYOUT — DESKTOP ROWS + MOBILE HORIZONTAL SCROLL
        ========================================================= */
 
-    /* Consistent card structure and readable text. */
-    .featured-tool-card,
-    .schema-card {
+    /* Most Used Tools, Progression Guides and Live Tools stay as
+       one horizontal row at every screen size. */
+    .featured-tools-grid,
+    .horizontal-cards {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch;
+      gap: 12px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 2px 2px 10px !important;
       min-width: 0;
+      scroll-behavior: smooth;
+      scroll-snap-type: x proximity;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar,
+    .horizontal-cards::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-track,
+    .horizontal-cards::-webkit-scrollbar-track {
+      background: rgba(148,163,184,.08);
+      border-radius: 999px;
+    }
+
+    .featured-tools-grid::-webkit-scrollbar-thumb,
+    .horizontal-cards::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,.28);
+      border-radius: 999px;
+    }
+
+    /* Same card size within each horizontal section. */
+    .featured-tools-grid .featured-tool-card {
+      flex: 0 0 220px !important;
+      width: 220px !important;
       height: 180px !important;
       min-height: 180px !important;
+      min-width: 220px !important;
+      scroll-snap-align: start;
+    }
+
+    .horizontal-cards .horizontal-card {
+      flex: 0 0 225px !important;
+      width: 225px !important;
+      height: 180px !important;
+      min-height: 180px !important;
+      min-width: 225px !important;
+      scroll-snap-align: start;
+    }
+
+    .featured-tool-card,
+    .horizontal-card {
       display: flex !important;
-      flex-direction: column !important;
+      flex-direction: column;
       overflow: hidden;
     }
 
     .featured-tool-card .featured-tool-desc,
-    .schema-card .schema-desc {
-      color: #a3adbb !important;
-      font-size: .78rem !important;
-      line-height: 1.45 !important;
+    .horizontal-card .schema-desc {
       overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
     }
 
-    .featured-tool-card .featured-tool-link,
-    .schema-card > div[style*="margin-top"] {
-      margin-top: auto !important;
-      flex-shrink: 0;
-    }
-
-    /* Desktop/tablet: keep the existing 3-column layouts where appropriate. */
-    .featured-tools-grid,
-    .horizontal-cards {
+    /* Other SkyBlock Guides remains a normal 3 × 2 grid. */
+    .other-guides-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      align-items: stretch;
       min-width: 0;
     }
 
-    .other-guides-grid,
-    .resource-grid {
-      grid-auto-rows: 180px;
+    .other-guides-grid .schema-card {
+      width: 100% !important;
+      height: 190px !important;
+      min-height: 190px !important;
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    /* Phone: tools and progression/live sections become one horizontal row. */
+    /* Give the Other Guides text enough room to remain readable. */
+    .other-guides-grid .schema-name {
+      min-width: 0;
+    }
+
+    .other-guides-grid .schema-name a {
+      display: block;
+      line-height: 1.25 !important;
+      overflow-wrap: anywhere;
+    }
+
+    .other-guides-grid .schema-desc {
+      color: #8290a3 !important;
+      font-size: .78rem !important;
+      line-height: 1.4 !important;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+    }
+
+    .other-guides-grid .schema-card > div[style*="margin-top"] {
+      margin-top: auto !important;
+      padding-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Developer/API cards keep a consistent 3-column desktop layout. */
+    .resource-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      align-items: stretch;
+    }
+
+    .resource-grid .schema-card {
+      width: 100% !important;
+      height: 190px !important;
+      min-height: 190px !important;
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .resource-grid .schema-desc {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+    }
+
+    .resource-grid .schema-card > div[style*="margin-top"] {
+      margin-top: auto !important;
+      padding-top: 8px;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 700px) {
-      #section-tools .horizontal-cards,
-      #section-guides .horizontal-cards,
-      .featured-tools-grid {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        width: 100%;
+      .featured-tools-grid,
+      .horizontal-cards {
         gap: 12px !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
         padding: 2px 2px 10px !important;
-        scroll-behavior: smooth;
-        scroll-snap-type: x proximity;
-        overscroll-behavior-x: contain;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
       }
 
-      #section-tools .horizontal-cards::-webkit-scrollbar,
-      #section-guides .horizontal-cards::-webkit-scrollbar,
-      .featured-tools-grid::-webkit-scrollbar {
-        height: 5px;
-      }
-
-      #section-tools .horizontal-cards::-webkit-scrollbar-track,
-      #section-guides .horizontal-cards::-webkit-scrollbar-track,
-      .featured-tools-grid::-webkit-scrollbar-track {
-        background: rgba(148,163,184,.08);
-        border-radius: 999px;
-      }
-
-      #section-tools .horizontal-cards::-webkit-scrollbar-thumb,
-      #section-guides .horizontal-cards::-webkit-scrollbar-thumb,
-      .featured-tools-grid::-webkit-scrollbar-thumb {
-        background: rgba(148,163,184,.30);
-        border-radius: 999px;
-      }
-
-      #section-tools .horizontal-card,
-      #section-guides .horizontal-card,
       .featured-tools-grid .featured-tool-card {
-        flex: 0 0 235px !important;
+        flex-basis: 235px !important;
         width: 235px !important;
+        min-width: 235px !important;
         height: 180px !important;
         min-height: 180px !important;
-        scroll-snap-align: start;
       }
 
-      .featured-tool-card .featured-tool-desc,
-      #section-tools .schema-desc,
-      #section-guides .schema-desc {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
+      .horizontal-cards .horizontal-card {
+        flex-basis: 245px !important;
+        width: 245px !important;
+        min-width: 245px !important;
+        height: 190px !important;
+        min-height: 190px !important;
       }
 
-      /* Other SkyBlock Guides stays a clean 3 × 2 grid. */
-      #section-other-guides .other-guides-grid {
-        display: grid !important;
+      /* Keep Other SkyBlock Guides at 3 × 2 on mobile too. */
+      .other-guides-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        grid-auto-rows: 180px;
-        gap: 12px !important;
-        overflow: visible !important;
+        gap: 10px !important;
       }
 
-      #section-other-guides .schema-card {
-        width: auto !important;
-        height: 180px !important;
-        min-height: 180px !important;
-        padding: 14px !important;
+      .other-guides-grid .schema-card {
+        height: 205px !important;
+        min-height: 205px !important;
+        padding: 12px !important;
       }
 
-      #section-other-guides .schema-desc {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4;
-        overflow: hidden;
-        color: #a3adbb !important;
-        font-size: .72rem !important;
-        line-height: 1.4 !important;
+      .other-guides-grid .schema-name a {
+        font-size: .82rem !important;
       }
 
-      #section-other-guides .schema-name a {
-        font-size: .86rem !important;
-        line-height: 1.25 !important;
+      .other-guides-grid .schema-desc {
+        font-size: .70rem !important;
+        line-height: 1.38 !important;
+        -webkit-line-clamp: 5;
       }
 
-      #section-other-guides .docs-category-label {
-        font-size: .56rem !important;
-      }
-
-      #section-other-guides .schema-card > div[style*="margin-top"] {
-        margin-top: auto !important;
-        font-size: .72rem;
-      }
-
-      /* Keep API cards consistent without forcing them into a horizontal row. */
-      #section-api .resource-grid {
+      .resource-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        grid-auto-rows: 180px;
+        gap: 10px !important;
+      }
+
+      .resource-grid .schema-card {
+        height: 190px !important;
+        min-height: 190px !important;
+        padding: 12px !important;
+      }
+
+      .resource-grid .schema-name a {
+        font-size: .82rem !important;
+      }
+
+      .resource-grid .schema-desc {
+        font-size: .70rem !important;
+        line-height: 1.38 !important;
+        -webkit-line-clamp: 5;
       }
     }
 
     @media (max-width: 430px) {
-      #section-tools .horizontal-card,
-      #section-guides .horizontal-card,
       .featured-tools-grid .featured-tool-card {
         flex-basis: 225px !important;
         width: 225px !important;
+        min-width: 225px !important;
       }
 
-      #section-other-guides .other-guides-grid {
-        gap: 10px !important;
-      }
-
-      #section-other-guides .schema-card {
-        padding: 12px !important;
+      .horizontal-cards .horizontal-card {
+        flex-basis: 230px !important;
+        width: 230px !important;
+        min-width: 230px !important;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #section-tools .horizontal-cards,
-      #section-guides .horizontal-cards,
-      .featured-tools-grid {
+      .featured-tools-grid,
+      .horizontal-cards {
         scroll-behavior: auto !important;
         scroll-snap-type: none;
       }
