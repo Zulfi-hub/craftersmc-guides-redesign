@@ -2990,6 +2990,61 @@
 </style>
 
 
+<style id="hero-status-layout-final">
+  /* Final hero layout: status panel occupies the former illustration area. */
+  .prose-card.hero-card {
+    padding-right: 46% !important;
+  }
+  .hero-status {
+    position: absolute !important;
+    top: 42px !important;
+    right: 38px !important;
+    width: min(42%, 430px) !important;
+    margin-top: 0 !important;
+    box-sizing: border-box;
+  }
+  .hero-island {
+    display: none !important;
+  }
+  .hero-stats {
+    display: none !important;
+  }
+
+  @media (max-width: 1000px) {
+    .prose-card.hero-card {
+      padding-right: 42% !important;
+    }
+    .hero-status {
+      right: 28px !important;
+      width: min(44%, 410px) !important;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .prose-card.hero-card {
+      padding-right: 22px !important;
+    }
+    .hero-status {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin-top: 22px !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .prose-card.hero-card {
+      padding: 28px 22px !important;
+    }
+    .hero-status {
+      margin-top: 22px !important;
+      padding: 16px 14px 12px !important;
+    }
+  }
+</style>
+
 <style id="live-skyblock-status">
   .hero-status {
     position: relative;
@@ -3169,7 +3224,6 @@
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
 <h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-live="polite">Documentation</span></h1>
-<div aria-label="Documentation overview" class="hero-stats"><a class="hero-stat" href="#section-other-guides"><strong>10</strong> Guides</a><a class="hero-stat" href="#section-tools"><strong>7</strong> Tools</a><a class="hero-stat" href="#section-api"><strong>3</strong> API References</a></div>
 <div class="hero-status" id="hero-status" aria-live="polite">
 <div class="hero-status-title">SkyBlock Status</div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
@@ -3179,20 +3233,7 @@
 <a class="hero-status-button" href="skycalendar.html"><span class="material-icons" aria-hidden="true">calendar_month</span>View SkyCalendar</a>
 <div class="hero-status-note" id="status-note" hidden></div>
 </div>
-<div aria-hidden="true" class="hero-island">
-<div class="island-sky"></div>
-<div class="island-cloud cloud-a"></div>
-<div class="island-cloud cloud-b"></div>
-<div class="island-leaves"></div>
-<div class="island-tree"></div>
-<div class="island-path"></div>
-<div class="island-lamp"></div>
-<div class="island-top"></div>
-<div class="island-dirt"></div>
-<div class="island-stone stone-a"></div>
-<div class="island-stone stone-b"></div>
-<div class="island-stone stone-c"></div>
-</div>
+
 </div>
 </section>
 <section aria-labelledby="featured-tools-title" class="featured-tools-section">
