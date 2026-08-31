@@ -2724,6 +2724,162 @@
     }
   }
 </style>
+
+<style id="header-narrow-viewport-fix">
+  /* Header-only responsive fallback for narrow/zoomed browser viewports.
+     The rest of the site can stay in its desktop/tablet layout. */
+  @media (max-width: 1100px) {
+    .top-header {
+      min-height: 54px !important;
+      height: 54px !important;
+      padding: 6px 12px !important;
+      gap: 8px !important;
+      flex-wrap: nowrap !important;
+      overflow: visible !important;
+    }
+
+    .header-left {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      overflow: visible !important;
+    }
+
+    .header-brand {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      gap: 7px !important;
+      flex: 0 1 auto !important;
+      overflow: visible !important;
+    }
+
+    .header-brand img {
+      width: 34px !important;
+      height: 34px !important;
+      flex: 0 0 34px !important;
+    }
+
+    .header-brand .brand-text {
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .96rem !important;
+      line-height: 1 !important;
+      letter-spacing: -.028em !important;
+      white-space: nowrap !important;
+    }
+
+    /* The API Docs action lives inside this badge; hide the badge here
+       rather than allowing it to compete with the brand. */
+    .header-left > .version-badge.api-badge-link,
+    .header-brand .version-badge {
+      display: none !important;
+    }
+
+    /* Replace the desktop search field with the compact search button. */
+    .top-header > .search-box {
+      display: none !important;
+    }
+
+    .mobile-search-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .header-actions {
+      flex: 0 0 auto !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+    }
+
+    .header-icon-link {
+      width: 32px !important;
+      min-width: 32px !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      padding: 0 !important;
+      border-radius: 8px !important;
+    }
+
+    .header-icon-link .header-link-text {
+      display: none !important;
+    }
+
+    .header-action-svg,
+    .header-action-icon {
+      width: 18px !important;
+      height: 18px !important;
+      font-size: 18px !important;
+      flex-basis: 18px !important;
+    }
+
+    /* API is already represented by the SkyBlock Docs badge on wide
+       desktop, so at narrow widths keep only Discord + Search. */
+    .header-icon-link[href*="github.com"],
+    .header-icon-link[href*="better-api-docs"] {
+      display: none !important;
+    }
+
+    .header-icon-link[href*="discord.gg"],
+    .mobile-search-btn {
+      display: inline-flex !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .top-header {
+      min-height: 52px !important;
+      height: 52px !important;
+      padding: 5px 9px !important;
+    }
+
+    .header-brand img {
+      width: 31px !important;
+      height: 31px !important;
+      flex-basis: 31px !important;
+    }
+
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .91rem !important;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .top-header {
+      min-height: 50px !important;
+      height: 50px !important;
+      padding: 4px 8px !important;
+    }
+
+    .header-brand img {
+      width: 29px !important;
+      height: 29px !important;
+      flex-basis: 29px !important;
+    }
+
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .87rem !important;
+    }
+
+    .header-icon-link,
+    .mobile-search-btn {
+      width: 30px !important;
+      min-width: 30px !important;
+      height: 30px !important;
+      min-height: 30px !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <header class="top-header">
