@@ -635,6 +635,25 @@
       }
     }
 
+
+    /* Final readability fix: keep card copy visible and high-contrast. */
+    .featured-tool-desc,
+    .schema-desc {
+      color: #a7b1c0 !important;
+      opacity: 1 !important;
+    }
+    .featured-tool-name a,
+    .schema-name a {
+      color: #f1f5f9 !important;
+      opacity: 1 !important;
+    }
+    .other-guides-grid .schema-desc {
+      color: #aeb8c7 !important;
+      overflow: visible !important;
+      display: block !important;
+      -webkit-line-clamp: unset !important;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
@@ -1283,7 +1302,17 @@
     .featured-tool-name a:hover,
     .schema-name a:hover { color: #7dd3fc !important; }
     .featured-tool-desc,
-    .schema-desc { color: #8290a3 !important; line-height: 1.5 !important; }
+    .schema-desc {
+      color: #a7b1c0 !important;
+      line-height: 1.45 !important;
+      opacity: 1 !important;
+    }
+
+    .featured-tool-name a,
+    .schema-name a {
+      color: #f1f5f9 !important;
+      opacity: 1 !important;
+    }
     .featured-tool-link,
     .section-view-all,
     .schema-card div[style*="margin-top"] a,
@@ -1671,13 +1700,13 @@
     }
 
     .other-guides-grid .schema-desc {
-      color: #8290a3 !important;
+      color: #a7b1c0 !important;
       font-size: .78rem !important;
-      line-height: 1.4 !important;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4;
+      line-height: 1.42 !important;
+      opacity: 1 !important;
+      overflow: visible !important;
+      display: block !important;
+      -webkit-line-clamp: unset !important;
     }
 
     .other-guides-grid .schema-card > div[style*="margin-top"] {
@@ -1747,8 +1776,8 @@
       }
 
       .other-guides-grid .schema-card {
-        height: 205px !important;
-        min-height: 205px !important;
+        height: 218px !important;
+        min-height: 218px !important;
         padding: 12px !important;
       }
 
@@ -1757,9 +1786,12 @@
       }
 
       .other-guides-grid .schema-desc {
-        font-size: .70rem !important;
-        line-height: 1.38 !important;
-        -webkit-line-clamp: 5;
+        color: #a7b1c0 !important;
+        font-size: .72rem !important;
+        line-height: 1.42 !important;
+        overflow: visible !important;
+        display: block !important;
+        -webkit-line-clamp: unset !important;
       }
 
       .resource-grid {
