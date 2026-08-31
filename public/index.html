@@ -760,6 +760,15 @@
     /* =========================================================
        V3 POLISH: hierarchy, cards, search, footer, docs UX
        ========================================================= */
+    /* Keep the featured tools heading visually identical to section headings. */
+    .featured-tools-title {
+      color: var(--text-primary);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+
     .overview-hero-meta {
       display: flex;
       flex-wrap: wrap;
@@ -1109,42 +1118,49 @@
 
         <div class="horizontal-cards" role="region" aria-label="Live tools and trackers" tabindex="0">
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Player Tool</span>
             <div class="schema-name"><a href="player.html">Player Viewer</a></div>
             <div class="schema-desc">Inspect real-time player data, profiles, skills, slayers, minions, and more.</div>
             <div style="margin-top:10px;"><a href="player.html" style="font-weight:600;">Launch →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Event Tracker</span>
             <div class="schema-name"><a href="skycalendar.html">SkyCalendar</a></div>
             <div class="schema-desc">Live countdown timers for events, contests, and special seasons.</div>
             <div style="margin-top:10px;"><a href="skycalendar.html" style="font-weight:600;">Launch →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Seller Directory</span>
             <div class="schema-name"><a href="rank-sellers.html">Rank &amp; Gems Sellers</a></div>
             <div class="schema-desc">Verified list of trusted rank and gem sellers with scam prevention guidelines.</div>
             <div style="margin-top:10px;"><a href="rank-sellers.html" style="font-weight:600;">Open Directory →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Leaderboard</span>
             <div class="schema-name"><a href="leaderboards.html">Leaderboards</a></div>
             <div class="schema-desc">Check top player placements across collections, skills, slayer XP, bank networth and boss records.</div>
             <div style="margin-top:10px;"><a href="leaderboards.html" style="font-weight:600;">View Leaderboards →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Calculator</span>
             <div class="schema-name"><a href="tools.html">Calculators</a></div>
             <div class="schema-desc">Reforge stat calculators, minion inventory timers, skill XP and other utilities.</div>
             <div style="margin-top:10px;"><a href="tools.html" style="font-weight:600;">Open Calculators →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Resource Packs</span>
             <div class="schema-name"><a href="texture-packs.html">Texture Packs</a></div>
             <div class="schema-desc">Curated Bedrock resource packs customized for CraftersMC weapons and armor.</div>
             <div style="margin-top:10px;"><a href="texture-packs.html" style="font-weight:600;">Browse Packs →</a></div>
           </div>
 
           <div class="schema-card horizontal-card">
+            <span class="progression-label">Discord Bot</span>
             <div class="schema-name"><a href="feather-bot/index.html">Feather Bot Guide</a></div>
             <div class="schema-desc">Slash command syntax and documentation for the official CraftersMC Discord bot.</div>
             <div style="margin-top:10px;"><a href="feather-bot/index.html" style="font-weight:600;">View Guide →</a></div>
