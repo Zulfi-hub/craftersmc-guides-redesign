@@ -3045,6 +3045,101 @@
   }
 </style>
 
+
+<style id="pinned-player-card-style">
+  .pinned-player-card {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 560px);
+    margin-top: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(56,189,248,.11);
+    border-radius: 12px;
+    background: rgba(13,20,30,.82);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.02), 0 10px 24px rgba(0,0,0,.14);
+  }
+  .pinned-player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .pinned-player-kicker {
+    display: block;
+    margin-bottom: 3px;
+    color: #64748b;
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .pinned-player-name {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .pinned-player-open {
+    flex: 0 0 auto;
+    color: #38bdf8;
+    font-size: .72rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .pinned-player-open:hover { color: #7dd3fc; text-decoration: underline; }
+  .pinned-player-state {
+    margin-top: 7px;
+    color: #7f8ea3;
+    font-size: .72rem;
+    line-height: 1.4;
+  }
+  .pinned-player-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .pinned-player-stat {
+    min-width: 0;
+    padding: 8px 9px;
+    border: 1px solid rgba(148,163,184,.08);
+    border-radius: 8px;
+    background: rgba(255,255,255,.025);
+  }
+  .pinned-player-stat span {
+    display: block;
+    margin-bottom: 2px;
+    color: #64748b;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  .pinned-player-stat strong {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    color: #e2e8f0;
+    font-size: .78rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pinned-player-error {
+    margin-top: 8px;
+    color: #f87171;
+    font-size: .7rem;
+    line-height: 1.35;
+  }
+  @media (max-width: 800px) {
+    .pinned-player-card { width: 100%; }
+  }
+  @media (max-width: 520px) {
+    .pinned-player-stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .pinned-player-card { margin-top: 14px; padding: 13px 14px; }
+  }
+</style>
+
 <style id="live-skyblock-status">
   .hero-status {
     position: relative;
@@ -3123,6 +3218,20 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-status-button { transition: none !important; }
+  }
+</style>
+
+
+<style id="section-spacing-tight">
+  .doc-section,
+  .featured-tools-section { margin-bottom: 28px !important; }
+  #overview { margin-bottom: 28px !important; }
+  .horizontal-scroll-frame { margin-bottom: 10px !important; }
+  @media (max-width: 700px) {
+    .doc-section,
+    .featured-tools-section,
+    #overview { margin-bottom: 24px !important; }
+    .horizontal-scroll-frame { margin-bottom: 8px !important; }
   }
 </style>
 
@@ -3224,6 +3333,23 @@
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
 <h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-live="polite">Documentation</span></h1>
+<div class="pinned-player-card" id="pinned-player-card" aria-live="polite">
+  <div class="pinned-player-header">
+    <div>
+      <span class="pinned-player-kicker">Pinned Player</span>
+      <h2 class="pinned-player-name" id="pinned-player-name">No player pinned</h2>
+    </div>
+    <a class="pinned-player-open" href="player.html">Player Viewer <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="pinned-player-state" id="pinned-player-state">Pin a player in Player Viewer to show their live stats here.</div>
+  <div class="pinned-player-stats" id="pinned-player-stats" hidden>
+    <div class="pinned-player-stat"><span>Rank</span><strong id="pinned-stat-rank">—</strong></div>
+    <div class="pinned-player-stat"><span>SkyBlock Level</span><strong id="pinned-stat-level">—</strong></div>
+    <div class="pinned-player-stat"><span>Purse</span><strong id="pinned-stat-purse">—</strong></div>
+    <div class="pinned-player-stat"><span>Bank</span><strong id="pinned-stat-bank">—</strong></div>
+  </div>
+  <div class="pinned-player-error" id="pinned-player-error" hidden></div>
+</div>
 <div class="hero-status" id="hero-status" aria-live="polite">
 <div class="hero-status-title">SkyBlock Status</div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
@@ -3231,7 +3357,6 @@
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">event</span>Event</span><strong class="hero-status-value status-event" id="status-event">Calculating…</strong></div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">schedule</span>Starts In</span><strong class="hero-status-value status-countdown" id="status-countdown">—</strong></div>
 <a class="hero-status-button" href="skycalendar.html"><span class="material-icons" aria-hidden="true">calendar_month</span>View SkyCalendar</a>
-<div class="hero-status-note" id="status-note" hidden></div>
 </div>
 
 </div>
@@ -3843,17 +3968,14 @@ console.log(
   const serverEl = document.getElementById('status-server');
   const eventEl = document.getElementById('status-event');
   const countdownEl = document.getElementById('status-countdown');
-  const noteEl = document.getElementById('status-note');
   if (!playersEl || !serverEl || !eventEl || !countdownEl) return;
 
-  const API_URL = 'https://api.craftersmc.net/v1/network/status';
-  // CraftersMC requires X-API-Key on every REST request. Keep the secret out of this public bundle.
-  // A deployment can provide it through window.CMC_API_KEY only if it is safe to expose there.
-  const API_KEY = typeof window.CMC_API_KEY === 'string' ? window.CMC_API_KEY.trim() : '';
+  const PROXY_ORIGIN = 'https://craftersmc-guides.pages.dev';
+  const NETWORK_STATUS_URL = `${PROXY_ORIGIN}/network-status`;
   const START_OF_TIMES = 1648800000;
   const SB_DAY_SECONDS = 1200;
   const EVENTS = [
-    { name: 'Ethan\'s Farming Contest', color: '#facc15', everyDays: 3 },
+    { name: "Ethan's Farming Contest", color: '#facc15', everyDays: 3 },
     { name: 'Spooky Festival', color: '#c084fc', seasonal: 'autumn', startDay: 60, durationDays: 3 },
     { name: 'New Year Celebration', color: '#facc15', seasonal: 'winter', startDay: 91, durationDays: 3 },
     { name: 'Travelling Zoo', color: '#c084fc', seasonal: 'summer', startDay: 1, durationDays: 3, seasonalAlt: 'winter' }
@@ -3873,17 +3995,13 @@ console.log(
   function eventCandidates(now) {
     const candidates = [];
     const currentDayIndex = Math.floor((now - START_OF_TIMES) / SB_DAY_SECONDS);
-    const currentDayStart = START_OF_TIMES + currentDayIndex * SB_DAY_SECONDS;
-
-    // Ethan's contest: every third SkyBlock day.
     let n = Math.floor(currentDayIndex / 3);
     let target = START_OF_TIMES + (n * 3) * SB_DAY_SECONDS;
     if (target <= now) target += 3 * SB_DAY_SECONDS;
     candidates.push({ name: EVENTS[0].name, target, color: EVENTS[0].color });
 
-    // Seasonal events from the documented calendar engine schedule.
+    const current = sbTime(now);
     for (const item of EVENTS.slice(1)) {
-      const current = sbTime(now);
       const seasonNames = item.seasonalAlt ? [item.seasonal, item.seasonalAlt] : [item.seasonal];
       for (let yearOffset = 0; yearOffset <= 2; yearOffset++) {
         const year = current.year + yearOffset;
@@ -3917,40 +4035,155 @@ console.log(
   }
 
   async function loadNetworkStatus() {
-    if (!API_KEY) {
-      playersEl.textContent = 'API key needed';
-      serverEl.innerHTML = '<span class="status-dot" aria-hidden="true"></span>API unavailable';
-      serverEl.style.color = '#94a3b8';
-      noteEl.hidden = false;
-      noteEl.textContent = 'Live network data requires a CraftersMC API key. The event timer is calculated locally from the documented SkyCalendar engine.';
-      return;
-    }
     try {
-      const res = await fetch(API_URL, {
-        headers: { 'X-API-Key': API_KEY, 'Accept': 'application/json' },
-        cache: 'no-store'
-      });
+      const res = await fetch(NETWORK_STATUS_URL, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      playersEl.textContent = Number.isFinite(data.playerCount) && Number.isFinite(data.maxPlayerCount)
-        ? data.playerCount.toLocaleString() + ' / ' + data.maxPlayerCount.toLocaleString()
-        : '—';
+      const playerCount = Number(data.playerCount);
+      const maxPlayerCount = Number(data.maxPlayerCount);
+      playersEl.textContent = Number.isFinite(playerCount) && Number.isFinite(maxPlayerCount)
+        ? `${playerCount.toLocaleString()} / ${maxPlayerCount.toLocaleString()}`
+        : 'Unavailable';
       const maintenance = data.fullMaintenance ? 'Maintenance' : (data.plannedMaintenance ? 'Planned Maintenance' : 'Online');
       serverEl.innerHTML = '<span class="status-dot" aria-hidden="true"></span>' + maintenance;
       serverEl.style.color = maintenance === 'Online' ? '#38d27b' : '#facc15';
-      noteEl.hidden = true;
     } catch (error) {
       playersEl.textContent = 'Unavailable';
       serverEl.innerHTML = '<span class="status-dot" aria-hidden="true"></span>Unavailable';
       serverEl.style.color = '#f87171';
-      noteEl.hidden = false;
-      noteEl.textContent = 'Could not reach the CraftersMC status API right now.';
     }
   }
 
   updateEvent();
   loadNetworkStatus();
-  setInterval(updateEvent, 1000);
+  window.setInterval(updateEvent, 1000);
+})();
+</script>
+
+<script id="pinned-player-status-script">
+(function () {
+  const card = document.getElementById('pinned-player-card');
+  const nameEl = document.getElementById('pinned-player-name');
+  const stateEl = document.getElementById('pinned-player-state');
+  const statsEl = document.getElementById('pinned-player-stats');
+  const errorEl = document.getElementById('pinned-player-error');
+  const rankEl = document.getElementById('pinned-stat-rank');
+  const levelEl = document.getElementById('pinned-stat-level');
+  const purseEl = document.getElementById('pinned-stat-purse');
+  const bankEl = document.getElementById('pinned-stat-bank');
+  if (!card || !nameEl || !stateEl || !statsEl || !rankEl || !levelEl || !purseEl || !bankEl) return;
+
+  const PROXY_ORIGIN = 'https://craftersmc-guides.pages.dev';
+  const PIN_KEYS = ['cmcPinnedPlayer', 'cmc_pinned_player', 'craftersmcPinnedPlayer', 'pinnedPlayer'];
+  let requestToken = 0;
+
+  function readPinnedPlayer() {
+    for (const key of PIN_KEYS) {
+      try {
+        const raw = window.localStorage.getItem(key);
+        if (!raw) continue;
+        let value = raw;
+        try { value = JSON.parse(raw); } catch (_) {}
+        if (typeof value === 'string' && value.trim()) return { username: value.trim() };
+        if (value && typeof value === 'object') {
+          const username = value.username || value.playerName || value.player || value.name;
+          if (typeof username === 'string' && username.trim()) {
+            return {
+              username: username.trim(),
+              profileId: typeof value.profileId === 'string' ? value.profileId.trim() : ''
+            };
+          }
+        }
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  function compactCoins(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '—';
+    if (Math.abs(n) >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2) + 'B';
+    if (Math.abs(n) >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M';
+    if (Math.abs(n) >= 1_000) return (n / 1_000).toFixed(1) + 'K';
+    return n.toLocaleString();
+  }
+
+  async function fetchJson(url) {
+    const res = await fetch(url, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  }
+
+  function setEmpty(message) {
+    nameEl.textContent = 'No player pinned';
+    stateEl.textContent = message;
+    statsEl.hidden = true;
+    errorEl.hidden = true;
+    [rankEl, levelEl, purseEl, bankEl].forEach(el => { el.textContent = '—'; });
+  }
+
+  async function loadPinnedPlayer() {
+    const pin = readPinnedPlayer();
+    const token = ++requestToken;
+    if (!pin) {
+      setEmpty('Pin a player in Player Viewer to show their live stats here.');
+      return;
+    }
+
+    nameEl.textContent = pin.username;
+    stateEl.textContent = 'Loading live player data…';
+    statsEl.hidden = true;
+    errorEl.hidden = true;
+
+    try {
+      const playerResponse = await fetchJson(`${PROXY_ORIGIN}/player/${encodeURIComponent(pin.username)}`);
+      if (token !== requestToken) return;
+      const playerData = playerResponse?.player || playerResponse || {};
+      const actualName = playerData.name || playerData.username || pin.username;
+      nameEl.textContent = actualName;
+
+      const profiles = playerData.stats?.skyBlock?.profiles || {};
+      const profileIds = Object.keys(profiles);
+      const profileId = pin.profileId && profiles[pin.profileId] ? pin.profileId : profileIds[0] || '';
+      let profileData = null;
+      let member = {};
+
+      if (profileId) {
+        try {
+          const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
+          profileData = profileResponse?.profile || profileResponse || null;
+          const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
+          const memberKeys = Object.keys(members);
+          const cleanUuid = String(playerData.uuid || '').replace(/-/g, '').toLowerCase();
+          const matchedKey = memberKeys.find(key => key.toLowerCase() === cleanUuid);
+          member = members[matchedKey || memberKeys[0] || ''] || {};
+        } catch (_) {
+          profileData = null;
+        }
+      }
+
+      rankEl.textContent = playerData.selectedRank || 'DEFAULT';
+      levelEl.textContent = member.level != null ? `Level ${member.level}` : '—';
+      purseEl.textContent = compactCoins(member.coinPurse ?? member.coin_purse);
+      bankEl.textContent = compactCoins(profileData?.banking?.balance);
+      stateEl.textContent = profileData?.cuteName || profileData?.cute_name
+        ? `Profile: ${profileData.cuteName || profileData.cute_name}`
+        : 'Live stats from Player Viewer data';
+      statsEl.hidden = false;
+    } catch (error) {
+      if (token !== requestToken) return;
+      statsEl.hidden = true;
+      stateEl.textContent = 'Player data could not be loaded right now.';
+      errorEl.hidden = true;
+    }
+  }
+
+  loadPinnedPlayer();
+  window.addEventListener('storage', event => {
+    if (PIN_KEYS.includes(event.key)) loadPinnedPlayer();
+  });
+  window.addEventListener('pageshow', loadPinnedPlayer);
+  window.setInterval(loadPinnedPlayer, 15000);
 })();
 </script>
 
