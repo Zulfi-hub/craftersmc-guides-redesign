@@ -266,6 +266,94 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ===== COMPACT HOMEPAGE SPACING ===== */
+
+/* Reduce space between major sections */
+.doc-section {
+  margin-bottom: 24px;
+}
+
+/* Reduce space around section headings */
+.section-header {
+  margin-bottom: 10px;
+}
+
+.section-header p {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/* Most Used Tools */
+.featured-tools-section {
+  margin-bottom: 24px;
+}
+
+.featured-tools-header {
+  margin-bottom: 10px;
+}
+
+.featured-tool-card {
+  min-height: 125px;
+  padding: 14px;
+}
+
+/* Horizontal scrolling cards */
+.horizontal-cards {
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+.horizontal-card {
+  flex-basis: 225px;
+  min-height: 145px;
+}
+
+/* Normal cards */
+.schema-card {
+  padding: 14px;
+}
+
+/* Reduce card description spacing */
+.schema-desc {
+  line-height: 1.35;
+}
+
+/* Other Game Guides */
+.other-guides-grid {
+  gap: 12px;
+}
+
+/* Developer / resource cards */
+.resource-grid {
+  gap: 12px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+  .doc-section {
+    margin-bottom: 24px;
+  }
+
+  .featured-tools-section {
+    margin-bottom: 24px;
+  }
+
+  .featured-tool-card {
+    flex-basis: 200px;
+    min-height: 120px;
+    padding: 13px;
+  }
+
+  .horizontal-card {
+    flex-basis: 215px;
+    min-height: 140px;
+  }
+
+  .schema-card {
+    padding: 13px;
+  }
+}
   </style>
 
   <!-- Existing Scripts -->
