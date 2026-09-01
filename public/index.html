@@ -4174,6 +4174,125 @@
     }
   }
 </style>
+
+
+<style id="requested-card-layout-final">
+  /* Match the main card height across Featured Tools, Progression, Live Tools,
+     and Other SkyBlock Guides without changing card content or theme. */
+  @media (min-width: 701px) {
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card {
+      min-height: 200px !important;
+      height: 200px !important;
+    }
+
+    /* Other SkyBlock Guides: show a 2 × 2 viewport and scroll vertically
+       inside this section for the remaining guides. */
+    .other-guides-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      grid-auto-rows: 200px !important;
+      max-height: 414px !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding-right: 6px !important;
+      align-content: start !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100,116,139,.45) transparent;
+    }
+
+    .other-guides-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .other-guides-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .other-guides-grid::-webkit-scrollbar-thumb {
+      background: rgba(100,116,139,.42);
+      border-radius: 999px;
+    }
+
+    .other-guides-grid::-webkit-scrollbar-thumb:hover {
+      background: rgba(125,211,252,.5);
+    }
+
+    /* Developer & API Resources: horizontal card rail instead of a vertical stack. */
+    .resource-grid {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      grid-template-columns: none !important;
+      gap: 14px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 2px 2px 8px !important;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100,116,139,.45) transparent;
+    }
+
+    .resource-grid > .schema-card {
+      flex: 0 0 420px !important;
+      width: 420px !important;
+      min-width: 420px !important;
+      min-height: 200px !important;
+      height: 200px !important;
+    }
+
+    .resource-grid::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .resource-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .resource-grid::-webkit-scrollbar-thumb {
+      background: rgba(100,116,139,.42);
+      border-radius: 999px;
+    }
+
+    .resource-grid::-webkit-scrollbar-thumb:hover {
+      background: rgba(125,211,252,.5);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card {
+      min-height: 196px !important;
+      height: 196px !important;
+    }
+
+    .other-guides-grid {
+      grid-template-columns: 1fr !important;
+      grid-auto-rows: 196px !important;
+      max-height: 404px !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    .resource-grid {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 12px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding-bottom: 8px !important;
+    }
+
+    .resource-grid > .schema-card {
+      flex: 0 0 310px !important;
+      width: 310px !important;
+      min-width: 310px !important;
+      min-height: 196px !important;
+      height: 196px !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
