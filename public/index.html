@@ -4293,219 +4293,41 @@
     }
   }
 <style id="same-card-size-final">
-  /* Match Featured Tools, Progression Guides, and Live Tools to the
-     proven card dimensions used by Other SkyBlock Guides. */
+  /* Desktop only: make Feature Tools, Progression Guides, and Live Tools
+     the same card height/size as Other SkyBlock Guides. Keep their existing
+     horizontal scrolling behavior unchanged. */
   @media (min-width: 701px) {
-    .featured-tools-grid,
-    .horizontal-cards,
-    .other-guides-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 14px !important;
-    }
-
     .featured-tools-grid > .featured-tool-card,
     .horizontal-cards > .horizontal-card,
     .other-guides-grid > .schema-card {
-      width: auto !important;
-      min-width: 0 !important;
-      flex-basis: auto !important;
       min-height: 200px !important;
       height: 200px !important;
     }
   }
 
+  /* Mobile: show Other SkyBlock Guides 2 cards wide and 1 row at a time,
+     with the remaining guides accessible via vertical scrolling in-section. */
   @media (max-width: 700px) {
-    .featured-tools-grid,
-    .horizontal-cards,
     .other-guides-grid {
+      display: grid !important;
       grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      grid-auto-rows: 196px !important;
       gap: 12px !important;
+      max-height: 204px !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      align-content: start !important;
+      padding-right: 4px !important;
     }
 
-    .featured-tools-grid > .featured-tool-card,
-    .horizontal-cards > .horizontal-card,
     .other-guides-grid > .schema-card {
+      min-width: 0 !important;
       min-height: 196px !important;
       height: 196px !important;
     }
   }
 </style>
 </style>
-
-<style id="final-card-size-verification-fix">
-  /* Keep the four content-card families on the same compact 2-column footprint.
-     This intentionally overrides earlier horizontal-rail rules on these sections. */
-  @media (min-width: 701px) {
-    .featured-tools-grid,
-    .horizontal-cards {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      grid-auto-flow: row !important;
-      gap: 14px !important;
-      overflow: visible !important;
-      padding: 2px 1px 4px !important;
-    }
-
-    .featured-tools-grid > .featured-tool-card,
-    .horizontal-cards > .horizontal-card {
-      width: auto !important;
-      min-width: 0 !important;
-      flex: none !important;
-      flex-basis: auto !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-
-    /* Keep Other SkyBlock Guides as the sizing reference: same 2-column
-       footprint and the same card height, with its existing vertical scroller. */
-    .other-guides-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      grid-auto-rows: 150px !important;
-      gap: 14px !important;
-      max-height: 314px !important;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-    }
-
-    .other-guides-grid > .schema-card {
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-
-    /* Developer/API remains a horizontal rail. */
-    .resource-grid {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      grid-template-columns: none !important;
-      gap: 14px !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-    }
-
-    .resource-grid > .schema-card {
-      flex: 0 0 240px !important;
-      width: 240px !important;
-      min-width: 240px !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .featured-tools-grid,
-    .horizontal-cards,
-    .other-guides-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 12px !important;
-      overflow: visible !important;
-      padding: 2px 1px 4px !important;
-    }
-
-    .featured-tools-grid > .featured-tool-card,
-    .horizontal-cards > .horizontal-card,
-    .other-guides-grid > .schema-card {
-      width: auto !important;
-      min-width: 0 !important;
-      flex: none !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-
-    .other-guides-grid {
-      grid-auto-rows: 150px !important;
-      max-height: 312px !important;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-    }
-
-    .resource-grid {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      gap: 12px !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      padding: 2px 1px 8px !important;
-    }
-
-    .resource-grid > .schema-card {
-      flex: 0 0 240px !important;
-      width: 240px !important;
-      min-width: 240px !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-  }
-</style>
-
-<style id="hero-rotating-word-period-fix">
-  /* Keep the period attached to the animated hero word. */
-  #hero-rotating-word::after {
-    content: ".";
-  }
-</style>
-
-<style id="absolute-card-size-match">
-  /* Final geometry: Featured Tools, Progression Guides and Live Tools use
-     the exact same 2-column footprint and card height as Other SkyBlock Guides. */
-  @media (min-width: 701px) {
-    .featured-tools-grid,
-    #section-guides .horizontal-cards,
-    #section-tools .horizontal-cards,
-    .other-guides-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      grid-auto-flow: row !important;
-      gap: 14px !important;
-    }
-
-    .featured-tools-grid > .featured-tool-card,
-    #section-guides .horizontal-cards > .horizontal-card,
-    #section-tools .horizontal-cards > .horizontal-card,
-    .other-guides-grid > .schema-card {
-      width: auto !important;
-      min-width: 0 !important;
-      max-width: none !important;
-      flex: none !important;
-      flex-basis: auto !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .featured-tools-grid,
-    #section-guides .horizontal-cards,
-    #section-tools .horizontal-cards,
-    .other-guides-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 12px !important;
-    }
-
-    .featured-tools-grid > .featured-tool-card,
-    #section-guides .horizontal-cards > .horizontal-card,
-    #section-tools .horizontal-cards > .horizontal-card,
-    .other-guides-grid > .schema-card {
-      width: auto !important;
-      min-width: 0 !important;
-      max-width: none !important;
-      flex: none !important;
-      flex-basis: auto !important;
-      height: 150px !important;
-      min-height: 150px !important;
-      max-height: 150px !important;
-    }
-  }
-</style>
-
 </head>
 <body>
 <header class="top-header">
