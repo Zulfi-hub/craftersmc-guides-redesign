@@ -4126,6 +4126,54 @@
   }
 </style>
 
+<style id="final-card-balance-fix">
+  /* Keep desktop cards readable at the actual available content width. */
+  @media (min-width: 701px) and (max-width: 1120px) {
+    .featured-tools-grid,
+    .horizontal-cards,
+    .other-guides-grid,
+    .resource-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+
+  @media (min-width: 1121px) {
+    .featured-tools-grid,
+    .horizontal-cards,
+    .other-guides-grid,
+    .resource-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+  }
+
+  /* Give every card enough vertical room for its natural copy without
+     forcing a fixed, overly tall box. */
+  .featured-tools-grid > .featured-tool-card,
+  .horizontal-cards > .horizontal-card,
+  .other-guides-grid > .schema-card,
+  .resource-grid > .schema-card {
+    min-height: 196px !important;
+    height: auto !important;
+  }
+
+  @media (max-width: 700px) {
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card,
+    .resource-grid > .schema-card {
+      min-height: 190px !important;
+      height: auto !important;
+    }
+  }
+
+  /* The hero copy was sitting slightly too far left; nudge the content
+     inward without changing the hero card itself or its right-side panel. */
+  @media (min-width: 801px) {
+    .prose-card.hero-card {
+      padding-left: 56px !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
@@ -5409,3 +5457,5 @@ console.log(
 </script>
 </body>
 </html>
+
+
