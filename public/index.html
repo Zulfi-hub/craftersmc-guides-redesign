@@ -3607,6 +3607,264 @@
     }
   }
 </style>
+<style id="final-vertical-card-redesign">
+  /* Final card composition: TAG -> ICON -> TITLE -> DESCRIPTION -> ACTION. */
+  .featured-tool-card,
+  .horizontal-cards > .horizontal-card,
+  .other-guides-grid .schema-card,
+  .resource-grid .schema-card {
+    position: relative !important;
+    box-sizing: border-box !important;
+    padding: 20px !important;
+    border-radius: 13px !important;
+    background: var(--surface-1) !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    transition: transform .22s cubic-bezier(.22,.61,.36,1),
+                border-color .22s ease,
+                box-shadow .22s ease,
+                background .22s ease !important;
+  }
+
+  /* Keep the existing card widths; add height instead of making cards wider. */
+  .featured-tools-grid > .featured-tool-card,
+  .horizontal-cards > .horizontal-card {
+    width: 248px !important;
+    min-width: 248px !important;
+    flex-basis: 248px !important;
+    min-height: 244px !important;
+    height: 244px !important;
+  }
+
+  .other-guides-grid,
+  .resource-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .other-guides-grid .schema-card,
+  .resource-grid .schema-card {
+    width: 100% !important;
+    min-height: 244px !important;
+    height: 244px !important;
+  }
+
+  /* Featured cards: actual icon is a real child, so place it under the tag. */
+  .featured-tool-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    align-items: start !important;
+    row-gap: 0 !important;
+  }
+
+  .featured-tool-card .card-eyebrow {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    margin: 0 0 10px !important;
+  }
+
+  .featured-tool-card .featured-tool-icon-wrap {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 52px !important;
+    height: 52px !important;
+    margin: 0 0 13px !important;
+    border-radius: 14px !important;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 30%, transparent) !important;
+    background: color-mix(in srgb, var(--card-accent) 10%, transparent) !important;
+    color: var(--card-accent) !important;
+    box-shadow: 0 0 18px var(--card-accent-glow), inset 0 1px 0 rgba(255,255,255,.035) !important;
+  }
+
+  .featured-tool-card .featured-tool-icon {
+    color: var(--card-accent) !important;
+    text-shadow: 0 0 13px color-mix(in srgb, var(--card-accent) 42%, transparent) !important;
+  }
+
+  .featured-tool-card .featured-tool-name {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    margin: 0 0 7px !important;
+  }
+
+  .featured-tool-card .featured-tool-desc {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    line-height: 1.45 !important;
+  }
+
+  .featured-tool-card .featured-tool-link {
+    grid-column: 1 !important;
+    grid-row: 5 !important;
+    margin-top: 12px !important;
+    padding-top: 0 !important;
+  }
+
+  /* Standard guide/tool cards: generated icon sits between tag and heading. */
+  .schema-card.has-card-icon {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    align-items: start !important;
+    padding: 20px !important;
+    row-gap: 0 !important;
+  }
+
+  .schema-card.has-card-icon::after {
+    content: attr(data-card-icon) !important;
+    position: static !important;
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 52px !important;
+    height: 52px !important;
+    margin: 0 0 13px !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 30%, transparent) !important;
+    border-radius: 14px !important;
+    background: color-mix(in srgb, var(--card-accent) 10%, transparent) !important;
+    color: var(--card-accent) !important;
+    font-family: 'Material Icons' !important;
+    font-size: 25px !important;
+    line-height: 1 !important;
+    text-shadow: 0 0 13px color-mix(in srgb, var(--card-accent) 42%, transparent) !important;
+    box-shadow: 0 0 18px var(--card-accent-glow), inset 0 1px 0 rgba(255,255,255,.035) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+  }
+
+  .schema-card.has-card-icon .progression-label,
+  .schema-card.has-card-icon .docs-category-label {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    margin: 0 0 10px !important;
+  }
+
+  .schema-card.has-card-icon .schema-name {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    min-width: 0 !important;
+    margin: 0 0 7px !important;
+    padding: 0 !important;
+  }
+
+  .schema-card.has-card-icon .schema-desc {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    line-height: 1.45 !important;
+    white-space: normal !important;
+  }
+
+  .schema-card.has-card-icon > div[style*="margin-top"] {
+    grid-column: 1 !important;
+    grid-row: 5 !important;
+    margin-top: 12px !important;
+    padding-top: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Accent-colored hover: soft, localized, and intentionally restrained. */
+  .featured-tool-card:hover,
+  .featured-tool-card:focus-within,
+  .horizontal-cards > .horizontal-card:hover,
+  .horizontal-cards > .horizontal-card:focus-within,
+  .other-guides-grid .schema-card:hover,
+  .other-guides-grid .schema-card:focus-within,
+  .resource-grid .schema-card:hover,
+  .resource-grid .schema-card:focus-within {
+    transform: translateY(-4px) !important;
+    border-color: color-mix(in srgb, var(--card-accent) 48%, transparent) !important;
+    background: color-mix(in srgb, var(--surface-1) 94%, var(--card-accent) 6%) !important;
+    box-shadow:
+      0 18px 38px rgba(0,0,0,.28),
+      0 0 0 1px color-mix(in srgb, var(--card-accent) 12%, transparent),
+      0 0 24px var(--card-accent-glow) !important;
+  }
+
+  .featured-tool-card:hover .featured-tool-icon-wrap,
+  .featured-tool-card:focus-within .featured-tool-icon-wrap,
+  .schema-card.has-card-icon:hover::after,
+  .schema-card.has-card-icon:focus-within::after {
+    border-color: color-mix(in srgb, var(--card-accent) 48%, transparent) !important;
+    background: color-mix(in srgb, var(--card-accent) 14%, transparent) !important;
+    box-shadow: 0 0 21px color-mix(in srgb, var(--card-accent) 22%, transparent), inset 0 1px 0 rgba(255,255,255,.04) !important;
+  }
+
+  @media (max-width: 700px) {
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card {
+      width: 248px !important;
+      min-width: 248px !important;
+      flex-basis: 248px !important;
+      min-height: 226px !important;
+      height: 226px !important;
+    }
+
+    .other-guides-grid,
+    .resource-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    .other-guides-grid .schema-card,
+    .resource-grid .schema-card {
+      min-height: 226px !important;
+      height: 226px !important;
+    }
+
+    .featured-tool-card,
+    .schema-card.has-card-icon {
+      padding: 18px !important;
+    }
+
+    .featured-tool-card .featured-tool-icon-wrap,
+    .schema-card.has-card-icon::after {
+      width: 48px !important;
+      height: 48px !important;
+      margin-bottom: 11px !important;
+      border-radius: 13px !important;
+    }
+
+    .schema-card.has-card-icon::after {
+      font-size: 23px !important;
+    }
+
+    .featured-tool-card:hover,
+    .featured-tool-card:focus-within,
+    .horizontal-cards > .horizontal-card:hover,
+    .horizontal-cards > .horizontal-card:focus-within,
+    .other-guides-grid .schema-card:hover,
+    .other-guides-grid .schema-card:focus-within,
+    .resource-grid .schema-card:hover,
+    .resource-grid .schema-card:focus-within {
+      transform: translateY(-2px) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid .schema-card,
+    .resource-grid .schema-card,
+    .featured-tool-icon-wrap,
+    .schema-card.has-card-icon::after {
+      transition: none !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
