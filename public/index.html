@@ -3487,7 +3487,127 @@
       transition: none !important;
     }
   }
-</style></head>
+</style>
+<style id="final-card-icon-left-layout">
+  /* Card icon placement: keep every icon on the left of the copy. */
+  .featured-tool-card {
+    display: grid !important;
+    grid-template-columns: 50px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    column-gap: 14px !important;
+    row-gap: 0 !important;
+    min-height: 198px !important;
+    padding: 21px !important;
+    align-items: start !important;
+  }
+
+  .featured-tool-card .featured-tool-icon-wrap {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    align-self: center;
+    justify-self: center;
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  .featured-tool-card .card-eyebrow {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 4px !important;
+  }
+
+  .featured-tool-card .featured-tool-name {
+    grid-column: 2;
+    grid-row: 2;
+    margin-bottom: 6px !important;
+  }
+
+  .featured-tool-card .featured-tool-desc {
+    grid-column: 2;
+    grid-row: 3;
+    overflow: visible !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+  }
+
+  .featured-tool-card .featured-tool-link {
+    grid-column: 2;
+    grid-row: 4;
+    margin-top: 10px !important;
+    padding-top: 0 !important;
+  }
+
+  /* All icon-bearing schema cards use the same left-icon composition. */
+  .schema-card.has-card-icon {
+    min-height: 200px !important;
+    padding: 21px 21px 21px 78px !important;
+  }
+
+  .schema-card.has-card-icon::after {
+    top: 50% !important;
+    left: 21px !important;
+    right: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    transform: translateY(-50%) !important;
+    border-radius: 12px !important;
+    z-index: 2;
+  }
+
+  .schema-card.has-card-icon .schema-name,
+  .schema-card.has-card-icon .schema-desc {
+    padding-right: 0 !important;
+  }
+
+  .schema-card.has-card-icon .schema-desc {
+    overflow: visible !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    white-space: normal !important;
+  }
+
+  .schema-card.has-card-icon > div[style*="margin-top"] {
+    margin-top: auto !important;
+  }
+
+  /* Slightly taller cards on narrower screens, without changing the grid/gaps. */
+  @media (max-width: 700px) {
+    .featured-tool-card {
+      min-height: 190px !important;
+      padding: 19px !important;
+      grid-template-columns: 46px minmax(0, 1fr) !important;
+      column-gap: 12px !important;
+    }
+
+    .featured-tool-card .featured-tool-icon-wrap {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 11px !important;
+    }
+
+    .schema-card.has-card-icon {
+      min-height: 194px !important;
+      padding: 19px 19px 19px 70px !important;
+    }
+
+    .schema-card.has-card-icon::after {
+      left: 19px !important;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 11px !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .schema-card.has-card-icon::after,
+    .featured-tool-card .featured-tool-icon-wrap {
+      transition: none !important;
+    }
+  }
+</style>
+</head>
 <body>
 <header class="top-header">
 <div class="header-left">
