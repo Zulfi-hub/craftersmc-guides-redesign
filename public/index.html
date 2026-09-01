@@ -4677,8 +4677,364 @@
   }
 </style>
 
+<style id="complete-polish-and-motion">
+  /* =========================================================
+     FINAL CONSOLIDATED UX / BUG-FIX / MOTION LAYER
+     This layer intentionally does not alter the API hero-card behavior.
+     ========================================================= */
+  :root {
+    --ui-focus: rgba(56,189,248,.78);
+    --ui-accent: #38bdf8;
+    --ui-accent-soft: rgba(56,189,248,.08);
+    --ui-surface: #0f151e;
+    --ui-surface-strong: #121a24;
+    --ui-border: rgba(148,163,184,.16);
+  }
+
+  .skip-link {
+    position: fixed;
+    left: 14px;
+    top: 10px;
+    z-index: 3000;
+    padding: 9px 12px;
+    border: 1px solid rgba(56,189,248,.35);
+    border-radius: 9px;
+    background: #0b1017;
+    color: #e0f2fe !important;
+    font-size: .78rem;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-140%);
+    transition: transform .18s ease;
+  }
+  .skip-link:focus { transform: translateY(0); }
+
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--ui-focus) !important;
+    outline-offset: 3px !important;
+  }
+
+  .top-header {
+    isolation: isolate;
+  }
+
+  .header-actions .header-icon-link,
+  .mobile-menu-btn,
+  .mobile-search-btn {
+    min-width: 34px;
+    min-height: 34px;
+    border-radius: 9px;
+    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  .header-actions .header-icon-link:hover,
+  .mobile-menu-btn:hover,
+  .mobile-search-btn:hover {
+    background: rgba(56,189,248,.07);
+  }
+
+  .search-results {
+    overscroll-behavior: contain;
+  }
+  .search-result {
+    transition: background-color .14s ease, transform .14s ease;
+  }
+  .search-result:active { transform: scale(.995); }
+
+  .pinned-player-card,
+  .hero-status {
+    width: min(100%, 560px);
+  }
+  .pinned-player-card {
+    border-color: rgba(56,189,248,.14) !important;
+    background: rgba(8,14,22,.58) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.022), 0 14px 32px rgba(0,0,0,.16) !important;
+  }
+  .pinned-player-open,
+  .hero-status-button,
+  .dark-cta-button {
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+
+  .hero-status {
+    contain: layout paint;
+  }
+  .hero-status .status-dot {
+    transform-origin: center;
+  }
+  .hero-status .status-error .status-dot,
+  .hero-status-value.status-error .status-dot {
+    animation: none !important;
+  }
+
+  .featured-tool-card,
+  .horizontal-card,
+  .other-guides-grid .schema-card,
+  .resource-grid .schema-card,
+  .contributor-card {
+    will-change: auto;
+    backface-visibility: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .featured-tool-card:hover,
+    .horizontal-card:hover,
+    .other-guides-grid .schema-card:hover,
+    .resource-grid .schema-card:hover,
+    .contributor-card:hover {
+      transform: translateY(-3px) !important;
+    }
+    .featured-tool-card:hover .featured-tool-icon-wrap,
+    .featured-tool-card:focus-within .featured-tool-icon-wrap {
+      transform: translateY(-1px) scale(1.035);
+    }
+    .featured-tool-card:hover .featured-tool-icon,
+    .featured-tool-card:focus-within .featured-tool-icon {
+      transform: translateY(-1px) scale(1.05);
+    }
+  }
+
+  .hero-stat:hover,
+  .hero-stat:focus-visible {
+    transform: translateY(-1px) !important;
+  }
+
+  /* Responsive header: one source of truth. */
+  @media (max-width: 1100px) {
+    .top-header {
+      gap: 10px !important;
+    }
+    .header-left {
+      min-width: 0 !important;
+    }
+    .header-brand {
+      min-width: 0 !important;
+    }
+    .header-brand .brand-text,
+    .header-brand .brand-title {
+      min-width: 0 !important;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .top-header {
+      height: 54px !important;
+      min-height: 54px !important;
+      padding: 6px 10px !important;
+    }
+    .app-layout { min-height: calc(100vh - 54px) !important; }
+    .header-brand img {
+      width: 36px !important;
+      height: 36px !important;
+      flex-basis: 36px !important;
+    }
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .95rem !important;
+      line-height: 1.05 !important;
+    }
+    .version-badge { display: none !important; }
+    .top-header > .search-box { display: none !important; }
+    .header-icon-link[href*="github.com"],
+    .header-icon-link[href*="better-api-docs"] { display: none !important; }
+    .mobile-search-btn,
+    .mobile-menu-btn { display: inline-flex !important; }
+  }
+
+  @media (max-width: 700px) {
+    :root { --mobile-header-height: 52px !important; }
+    html { scroll-padding-top: 60px !important; }
+    .top-header {
+      height: var(--mobile-header-height) !important;
+      min-height: var(--mobile-header-height) !important;
+    }
+    .app-layout { min-height: calc(100vh - var(--mobile-header-height)) !important; }
+    .sidebar {
+      top: var(--mobile-header-height) !important;
+      height: calc(100dvh - var(--mobile-header-height)) !important;
+      max-height: calc(100dvh - var(--mobile-header-height)) !important;
+    }
+    .main-content { padding-left: 14px !important; padding-right: 14px !important; }
+    .doc-section,
+    .featured-tools-section { margin-bottom: 28px !important; }
+
+    .featured-tools-grid,
+    .horizontal-cards {
+      scroll-snap-type: x proximity !important;
+      overscroll-behavior-x: contain !important;
+      scrollbar-gutter: stable;
+    }
+
+    /* Prevent fixed-height API scrolling from becoming cramped on short phones. */
+    #section-api .resource-grid {
+      height: auto !important;
+      max-height: min(420px, 54dvh) !important;
+      min-height: 0 !important;
+      overflow-y: auto !important;
+      overscroll-behavior-y: contain !important;
+    }
+    #section-api .resource-grid > .schema-card {
+      height: 184px !important;
+      min-height: 184px !important;
+    }
+
+    #section-other-guides .other-guides-grid {
+      height: auto !important;
+      max-height: min(408px, 50dvh) !important;
+      overflow-y: auto !important;
+      overscroll-behavior-y: contain !important;
+    }
+    #section-other-guides .other-guides-grid > .schema-card {
+      height: 184px !important;
+      min-height: 184px !important;
+    }
+
+    .hero-title {
+      line-height: 1.04 !important;
+      letter-spacing: -.04em !important;
+    }
+    .hero-title span {
+      min-width: 0 !important;
+      white-space: normal !important;
+    }
+    .hero-description { max-width: 48rem !important; }
+
+    .pinned-player-header {
+      align-items: flex-start;
+    }
+    .pinned-player-open {
+      flex: 0 0 auto;
+    }
+  }
+
+  @media (max-width: 430px) {
+    :root { --mobile-header-height: 50px !important; }
+    .top-header {
+      height: var(--mobile-header-height) !important;
+      min-height: var(--mobile-header-height) !important;
+    }
+    .app-layout { min-height: calc(100vh - var(--mobile-header-height)) !important; }
+    .sidebar {
+      top: var(--mobile-header-height) !important;
+      height: calc(100dvh - var(--mobile-header-height)) !important;
+      max-height: calc(100dvh - var(--mobile-header-height)) !important;
+    }
+    .header-brand img {
+      width: 32px !important;
+      height: 32px !important;
+      flex-basis: 32px !important;
+    }
+    .header-brand .brand-title,
+    .header-brand .brand-title-primary,
+    .header-brand .brand-title-secondary {
+      font-size: .86rem !important;
+    }
+    .main-content { padding-left: 12px !important; padding-right: 12px !important; }
+    .pinned-player-stats { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  }
+
+  /* Motion should happen only after the section is known to be visible. */
+  .doc-section:not(.motion-visible),
+  .featured-tools-section:not(.motion-visible) {
+    contain: paint;
+  }
+  .motion-visible > .section-header,
+  .motion-visible > .featured-tools-header,
+  .motion-visible > .prose-card,
+  .motion-visible > .featured-tools-grid,
+  .motion-visible > .horizontal-scroll-frame,
+  .motion-visible > .other-guides-grid,
+  .motion-visible > .resource-grid,
+  .motion-visible > .contributors-grid,
+  .motion-visible > .code-block-wrapper {
+    animation: sectionContentIn .52s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .motion-visible > *:nth-child(2) { animation-delay: 20ms; }
+  .motion-visible > *:nth-child(3) { animation-delay: 40ms; }
+
+  .motion-visible .featured-tool-card,
+  .motion-visible .horizontal-card,
+  .motion-visible .other-guides-grid .schema-card,
+  .motion-visible .resource-grid .schema-card,
+  .motion-visible .contributor-card {
+    animation: cardContentIn .46s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .motion-visible .featured-tool-card:nth-child(1),
+  .motion-visible .horizontal-card:nth-child(1),
+  .motion-visible .schema-card:nth-child(1) { animation-delay: 25ms; }
+  .motion-visible .featured-tool-card:nth-child(2),
+  .motion-visible .horizontal-card:nth-child(2),
+  .motion-visible .schema-card:nth-child(2) { animation-delay: 55ms; }
+  .motion-visible .featured-tool-card:nth-child(3),
+  .motion-visible .horizontal-card:nth-child(3),
+  .motion-visible .schema-card:nth-child(3) { animation-delay: 85ms; }
+  .motion-visible .featured-tool-card:nth-child(4),
+  .motion-visible .horizontal-card:nth-child(4),
+  .motion-visible .schema-card:nth-child(4) { animation-delay: 115ms; }
+  .motion-visible .featured-tool-card:nth-child(5),
+  .motion-visible .horizontal-card:nth-child(5),
+  .motion-visible .schema-card:nth-child(5) { animation-delay: 145ms; }
+
+  @keyframes sectionContentIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cardContentIn {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes liveStatusGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(56,210,123,.14); }
+    50% { box-shadow: 0 0 0 4px rgba(56,210,123,0); }
+  }
+
+  .hero-status.status-online .status-dot,
+  .hero-status .status-online .status-dot {
+    animation: liveStatusGlow 2.8s ease-in-out infinite;
+  }
+
+  .dark-cta-button:hover,
+  .dark-cta-button:focus-visible,
+  .hero-status-button:hover,
+  .hero-status-button:focus-visible,
+  .pinned-player-open:hover,
+  .pinned-player-open:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip-link,
+    .header-actions .header-icon-link,
+    .mobile-menu-btn,
+    .mobile-search-btn,
+    .search-result,
+    .pinned-player-open,
+    .hero-status-button,
+    .dark-cta-button,
+    .featured-tool-card,
+    .horizontal-card,
+    .other-guides-grid .schema-card,
+    .resource-grid .schema-card,
+    .contributor-card,
+    .featured-tool-icon-wrap,
+    .featured-tool-icon,
+    .hero-stat,
+    .motion-visible > *,
+    .motion-visible .featured-tool-card,
+    .motion-visible .horizontal-card,
+    .motion-visible .schema-card,
+    .motion-visible .contributor-card,
+    .hero-status .status-dot {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+</style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="top-header">
 <div class="header-left">
 <button aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button">
@@ -4770,7 +5126,7 @@
 </ul>
 </div>
 </aside>
-<main class="main-content">
+<main class="main-content" id="main-content">
 <section class="doc-section" id="overview">
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
@@ -5421,6 +5777,14 @@ console.log(
     { name: 'Travelling Zoo', color: '#c084fc', seasonal: 'summer', startDay: 1, durationDays: 3, seasonalAlt: 'winter' }
   ];
 
+  playersEl.setAttribute('aria-live', 'polite');
+  playersEl.setAttribute('aria-atomic', 'true');
+  serverEl.setAttribute('aria-live', 'polite');
+  serverEl.setAttribute('aria-atomic', 'true');
+  eventEl.setAttribute('aria-live', 'polite');
+  eventEl.setAttribute('aria-atomic', 'true');
+  countdownEl.setAttribute('aria-hidden', 'true');
+
   function sbTime(unixSeconds) {
     const elapsed = unixSeconds - START_OF_TIMES;
     const totalDays = Math.floor(elapsed / SB_DAY_SECONDS) + 1;
@@ -5476,9 +5840,22 @@ console.log(
     countdownEl.textContent = formatCountdown(next.target * 1000 - Date.now());
   }
 
+  let networkController = null;
+  let networkTimer = null;
+  let networkInFlight = false;
+
   async function loadNetworkStatus() {
+    if (document.visibilityState === 'hidden' || networkInFlight) return;
+    networkInFlight = true;
+    networkController?.abort();
+    networkController = new AbortController();
+    const timeoutId = window.setTimeout(() => networkController?.abort(), 9000);
     try {
-      const res = await fetch(NETWORK_STATUS_URL, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
+      const res = await fetch(NETWORK_STATUS_URL, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' },
+        signal: networkController.signal
+      });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       const playerCount = Number(data.playerCount);
@@ -5489,17 +5866,46 @@ console.log(
       const maintenance = data.fullMaintenance ? 'Maintenance' : (data.plannedMaintenance ? 'Planned Maintenance' : 'Online');
       serverEl.innerHTML = '<span class="status-dot" aria-hidden="true"></span>' + maintenance;
       serverEl.style.color = maintenance === 'Online' ? '#38d27b' : '#facc15';
+      serverEl.classList.toggle('status-error', maintenance !== 'Online');
     } catch (error) {
+      if (error?.name === 'AbortError' && document.visibilityState === 'hidden') return;
       playersEl.textContent = 'Unavailable';
       serverEl.innerHTML = '<span class="status-dot" aria-hidden="true"></span>Unavailable';
       serverEl.style.color = '#f87171';
+      serverEl.classList.add('status-error');
+    } finally {
+      window.clearTimeout(timeoutId);
+      networkInFlight = false;
+    }
+  }
+
+  function scheduleNetworkRefresh() {
+    window.clearTimeout(networkTimer);
+    if (document.visibilityState === 'visible') {
+      networkTimer = window.setTimeout(async () => {
+        await loadNetworkStatus();
+        scheduleNetworkRefresh();
+      }, 15000);
+    }
+  }
+
+  function handleVisibility() {
+    if (document.visibilityState === 'visible') {
+      loadNetworkStatus();
+      updateEvent();
+      scheduleNetworkRefresh();
+    } else {
+      window.clearTimeout(networkTimer);
+      networkController?.abort();
     }
   }
 
   updateEvent();
-  loadNetworkStatus();
-  window.setInterval(loadNetworkStatus, 15000);
-  window.setInterval(updateEvent, 1000);
+  loadNetworkStatus().finally(scheduleNetworkRefresh);
+  window.setInterval(() => {
+    if (document.visibilityState === 'visible') updateEvent();
+  }, 1000);
+  document.addEventListener('visibilitychange', handleVisibility, { passive: true });
 })();
 </script>
 <script id="pinned-player-status-script">
@@ -5518,6 +5924,7 @@ console.log(
   const PROXY_ORIGIN = 'https://craftersmc-guides.pages.dev';
   const PIN_KEYS = ['cmcPinnedPlayer', 'cmc_pinned_player', 'craftersmcPinnedPlayer', 'pinnedPlayer'];
   let requestToken = 0;
+  let activeController = null;
 
   function readPinnedPlayer() {
     for (const key of PIN_KEYS) {
@@ -5550,10 +5957,23 @@ console.log(
     return n.toLocaleString();
   }
 
-  async function fetchJson(url) {
-    const res = await fetch(url, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return await res.json();
+  async function fetchJson(url, signal) {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 10000);
+    const onAbort = () => controller.abort();
+    signal?.addEventListener('abort', onAbort, { once: true });
+    try {
+      const res = await fetch(url, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' },
+        signal: controller.signal
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } finally {
+      window.clearTimeout(timeoutId);
+      signal?.removeEventListener('abort', onAbort);
+    }
   }
 
   function setEmpty(message) {
@@ -5567,6 +5987,9 @@ console.log(
   async function loadPinnedPlayer() {
     const pin = readPinnedPlayer();
     const token = ++requestToken;
+    activeController?.abort();
+    activeController = new AbortController();
+    const signal = activeController.signal;
     if (!pin) {
       setEmpty('Pin a player in Player Viewer to show their live stats here.');
       return;
@@ -5578,7 +6001,7 @@ console.log(
     errorEl.hidden = true;
 
     try {
-      const playerResponse = await fetchJson(`${PROXY_ORIGIN}/player/${encodeURIComponent(pin.username)}`);
+      const playerResponse = await fetchJson(`${PROXY_ORIGIN}/player/${encodeURIComponent(pin.username)}`, signal);
       if (token !== requestToken) return;
       const playerData = playerResponse?.player || playerResponse || {};
       const actualName = playerData.name || playerData.username || pin.username;
@@ -5603,7 +6026,7 @@ console.log(
         throw new Error('No unambiguous SkyBlock profile is available for this player.');
       }
 
-      const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
+      const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`, signal);
       profileData = profileResponse?.profile || profileResponse || null;
       const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
       const memberKeys = Object.keys(members);
@@ -5956,6 +6379,47 @@ console.log(
   revealSections();
   setupHorizontalFades();
   setupSidebarSectionIndicator();
+})();
+</script>
+<script id="final-ux-hardening-script">
+(function () {
+  const header = document.querySelector('.top-header');
+  const sidebar = document.getElementById('sidebar');
+  const menuButton = document.querySelector('.mobile-menu-btn');
+  const searchButton = document.querySelector('.mobile-search-btn');
+  const searchInput = document.getElementById('search-input');
+
+  function syncCompactLayout() {
+    const width = window.visualViewport?.width || window.innerWidth;
+    if (width > 700) {
+      header?.classList.remove('mobile-search-open');
+      sidebar?.classList.remove('is-open');
+      document.querySelector('.mobile-nav-backdrop')?.classList.remove('is-open');
+      document.body.classList.remove('mobile-nav-open');
+      menuButton?.setAttribute('aria-expanded', 'false');
+      searchButton?.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  const resizeTarget = window.visualViewport || window;
+  resizeTarget.addEventListener('resize', syncCompactLayout, { passive: true });
+  window.addEventListener('orientationchange', syncCompactLayout, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && document.activeElement === document.body) {
+      // Keep the page keyboard-friendly after returning from another tab/app.
+      searchInput?.removeAttribute('aria-activedescendant');
+    }
+  }, { passive: true });
+
+  // Keep the search dropdown inside the viewport on short screens.
+  function updateSearchMaxHeight() {
+    const results = document.getElementById('search-results');
+    if (!results) return;
+    const viewport = window.visualViewport?.height || window.innerHeight;
+    results.style.maxHeight = `${Math.max(180, Math.min(480, viewport - 92))}px`;
+  }
+  updateSearchMaxHeight();
+  resizeTarget.addEventListener('resize', updateSearchMaxHeight, { passive: true });
 })();
 </script>
 </body>
