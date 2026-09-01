@@ -2056,11 +2056,6 @@
     }
 </style>
 <script defer="" src="better-api-docs/app.js"></script>
-
-
-
-
-
 <style id="zoom-safe-final-fix">
   /* =========================================================
      FINAL MOBILE / ZOOM-SAFE RENDERING FIX
@@ -2156,7 +2151,6 @@
     .sidebar { top: 52px !important; }
   }
 </style>
-
 <style id="mobile-header-and-code-fix">
   /* =========================================================
      MOBILE HEADER + API CODE READABILITY
@@ -2328,7 +2322,6 @@
     }
   }
 </style>
-
 <style id="header-layout-final">
   /* =========================================================
      FINAL HEADER LAYOUT
@@ -2585,7 +2578,6 @@
     }
   }
 </style>
-
 <style id="brand-visibility-fix">
   /* Keep the header brand crisp and readable at all desktop widths. */
   .header-brand {
@@ -2631,7 +2623,6 @@
     }
   }
 </style>
-
 <style id="header-overlap-fix">
   /* Prevent the header from overlapping at narrow CSS viewports and during mobile/tablet zoom. */
   @media (max-width: 900px) {
@@ -2748,7 +2739,6 @@
     }
   }
 </style>
-
 <style id="header-narrow-viewport-fix">
   /* Header-only responsive fallback for narrow/zoomed browser viewports.
      The rest of the site can stay in its desktop/tablet layout. */
@@ -2907,8 +2897,6 @@
     }
   }
 </style>
-
-
 <style id="mobile-search-final-fix">
   /* Final mobile-only search behavior. Desktop/tablet rules are untouched. */
   @media (max-width: 700px) {
@@ -2988,8 +2976,6 @@
     }
   }
 </style>
-
-
 <style id="hero-status-layout-final">
   /* Final hero layout: status panel occupies the former illustration area. */
   .prose-card.hero-card {
@@ -3044,8 +3030,6 @@
     }
   }
 </style>
-
-
 <style id="pinned-player-card-style">
   .pinned-player-card {
     position: relative;
@@ -3139,7 +3123,6 @@
     .pinned-player-card { margin-top: 14px; padding: 13px 14px; }
   }
 </style>
-
 <style id="live-skyblock-status">
   .hero-status {
     position: relative;
@@ -3220,8 +3203,6 @@
     .hero-status-button { transition: none !important; }
   }
 </style>
-
-
 <style id="section-spacing-tight">
   .doc-section,
   .featured-tools-section { margin-bottom: 28px !important; }
@@ -3234,7 +3215,6 @@
     .horizontal-scroll-frame { margin-bottom: 8px !important; }
   }
 </style>
-
 <style id="final-responsive-consistency-fix">
   /* Single source of truth for the mobile header/sidebar relationship. */
   @media (max-width: 700px) {
@@ -3248,8 +3228,6 @@
     .sidebar { top: var(--mobile-header-height) !important; }
   }
 </style>
-
-
 <style id="final-hero-overlap-fix">
   /* Keep the pinned-player card and SkyBlock status panel in separate flow
      at tablet / narrow desktop widths, including browser zoomed views. */
@@ -3283,7 +3261,6 @@
     }
   }
 </style>
-
 <style id="per-card-accent-hover">
   /* Per-card accent system: color stays quiet until hover. */
   .featured-tool-card,
@@ -3448,8 +3425,69 @@
     }
   }
 </style>
+<style id="schema-card-icons">
+  /* Schema-card icons: additive only, no layout reflow. */
+  .schema-card.has-card-icon {
+    position: relative;
+  }
 
-</head>
+  .schema-card.has-card-icon::after {
+    content: attr(data-card-icon);
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 28%, transparent);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--card-accent) 9%, transparent);
+    color: var(--card-accent);
+    font-family: 'Material Icons';
+    font-size: 19px;
+    line-height: 1;
+    text-shadow: 0 0 10px color-mix(in srgb, var(--card-accent) 25%, transparent);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--card-accent) 5%, transparent);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .schema-card.has-card-icon .schema-name,
+  .schema-card.has-card-icon .schema-desc {
+    padding-right: 42px;
+  }
+
+  .schema-card.has-card-icon:hover::after,
+  .schema-card.has-card-icon:focus-within::after {
+    border-color: color-mix(in srgb, var(--card-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--card-accent) 13%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--card-accent) 12%, transparent);
+    text-shadow: 0 0 14px color-mix(in srgb, var(--card-accent) 40%, transparent);
+  }
+
+  @media (max-width:700px) {
+    .schema-card.has-card-icon::after {
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+    }
+
+    .schema-card.has-card-icon .schema-name,
+    .schema-card.has-card-icon .schema-desc {
+      padding-right: 38px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .schema-card.has-card-icon::after {
+      transition: none !important;
+    }
+  }
+</style></head>
 <body>
 <header class="top-header">
 <div class="header-left">
@@ -3462,7 +3500,7 @@
 <span class="brand-title"><span class="brand-title-primary">CraftersMC</span> <span class="brand-title-secondary">Guides</span></span>
 </div>
 </a>
-<a class="version-badge api-badge-link" href="better-api-docs/index.html" aria-label="Open API Docs">SkyBlock Docs</a>
+<a aria-label="Open API Docs" class="version-badge api-badge-link" href="better-api-docs/index.html">SkyBlock Docs</a>
 </div>
 <div class="search-box">
 <span aria-hidden="true" class="material-icons search-icon">search</span>
@@ -3471,15 +3509,15 @@
 <div class="search-results" hidden="" id="search-results" role="listbox"></div>
 </div>
 <div class="header-actions">
-<button class="header-icon-link mobile-search-btn" type="button" aria-label="Open search" aria-expanded="false" aria-controls="search-input" title="Search">
-<svg class="header-action-svg" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="m21 19.6-4.25-4.25A7.48 7.48 0 0 0 18 10.5a7.5 7.5 0 1 0-7.5 7.5 7.48 7.48 0 0 0 4.85-1.78L19.6 20.4a.99.99 0 0 0 1.4-1.4ZM4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Z"/></svg>
+<button aria-controls="search-input" aria-expanded="false" aria-label="Open search" class="header-icon-link mobile-search-btn" title="Search" type="button">
+<svg aria-hidden="true" class="header-action-svg" focusable="false" viewbox="0 0 24 24"><path d="m21 19.6-4.25-4.25A7.48 7.48 0 0 0 18 10.5a7.5 7.5 0 1 0-7.5 7.5 7.48 7.48 0 0 0 4.85-1.78L19.6 20.4a.99.99 0 0 0 1.4-1.4ZM4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Z" fill="currentColor"></path></svg>
 </button>
-<a class="header-link header-icon-link" href="https://github.com/CraftersMC-Guides-Project/guides-code" aria-label="GitHub Repository" title="GitHub Repository" rel="noopener noreferrer" target="_blank" style="font-weight:600;">
-<svg class="header-action-svg github-logo" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M12 .7a11.3 11.3 0 0 0-3.58 22.02c.57.1.78-.25.78-.55v-2.1c-3.17.69-3.84-1.35-3.84-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.95.1-.74.4-1.25.73-1.54-2.53-.29-5.19-1.27-5.19-5.64 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .97-.31 3.17 1.17a11 11 0 0 1 5.77 0c2.2-1.48 3.17-1.17 3.17-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.38-2.67 5.34-5.21 5.63.41.35.78 1.04.78 2.1v3.11c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z"/></svg>
+<a aria-label="GitHub Repository" class="header-link header-icon-link" href="https://github.com/CraftersMC-Guides-Project/guides-code" rel="noopener noreferrer" style="font-weight:600;" target="_blank" title="GitHub Repository">
+<svg aria-hidden="true" class="header-action-svg github-logo" focusable="false" viewbox="0 0 24 24"><path d="M12 .7a11.3 11.3 0 0 0-3.58 22.02c.57.1.78-.25.78-.55v-2.1c-3.17.69-3.84-1.35-3.84-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.95.1-.74.4-1.25.73-1.54-2.53-.29-5.19-1.27-5.19-5.64 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.03 0 0 .97-.31 3.17 1.17a11 11 0 0 1 5.77 0c2.2-1.48 3.17-1.17 3.17-1.17.62 1.58.23 2.74.11 3.03.73.8 1.18 1.82 1.18 3.07 0 4.38-2.67 5.34-5.21 5.63.41.35.78 1.04.78 2.1v3.11c0 .3.2.66.79.55A11.3 11.3 0 0 0 12 .7Z" fill="currentColor"></path></svg>
 <span class="header-link-text">GitHub</span>
 </a>
-<a class="header-link header-icon-link" href="https://discord.gg/BwuKACpVc9" aria-label="Discord" title="Discord" rel="noopener noreferrer" target="_blank" style="font-weight:600;">
-<svg class="header-action-svg discord-logo" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M19.54 4.9A16.6 16.6 0 0 0 15.45 3.6l-.5 1.03a15.2 15.2 0 0 0-5.9 0l-.5-1.03a16.6 16.6 0 0 0-4.09 1.3C1.84 8.8 1.14 12.65 1.49 16.45a16.7 16.7 0 0 0 5.15 2.6l1.25-1.7a10.2 10.2 0 0 1-1.97-.94l.48-.37a11.8 11.8 0 0 0 11.2 0l.48.37c-.63.36-1.29.67-1.97.94l1.25 1.7a16.7 16.7 0 0 0 5.15-2.6c.41-4.4-.7-8.2-2.67-11.55Zm-10.5 9.23c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Zm5.92 0c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Z"/></svg>
+<a aria-label="Discord" class="header-link header-icon-link" href="https://discord.gg/BwuKACpVc9" rel="noopener noreferrer" style="font-weight:600;" target="_blank" title="Discord">
+<svg aria-hidden="true" class="header-action-svg discord-logo" focusable="false" viewbox="0 0 24 24"><path d="M19.54 4.9A16.6 16.6 0 0 0 15.45 3.6l-.5 1.03a15.2 15.2 0 0 0-5.9 0l-.5-1.03a16.6 16.6 0 0 0-4.09 1.3C1.84 8.8 1.14 12.65 1.49 16.45a16.7 16.7 0 0 0 5.15 2.6l1.25-1.7a10.2 10.2 0 0 1-1.97-.94l.48-.37a11.8 11.8 0 0 0 11.2 0l.48.37c-.63.36-1.29.67-1.97.94l1.25 1.7a16.7 16.7 0 0 0 5.15-2.6c.41-4.4-.7-8.2-2.67-11.55Zm-10.5 9.23c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Zm5.92 0c-1.1 0-2.01-1.02-2.01-2.27s.88-2.27 2.01-2.27 2.02 1.02 2 2.27c0 1.25-.88 2.27-2 2.27Z" fill="currentColor"></path></svg>
 <span class="header-link-text">Discord</span>
 </a>
 </div>
@@ -3546,33 +3584,32 @@
 <section class="doc-section" id="overview">
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
-<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-hidden="true">Documentation</span></h1>
-<div class="pinned-player-card" id="pinned-player-card" aria-live="polite">
-  <div class="pinned-player-header">
-    <div>
-      <span class="pinned-player-kicker">Pinned Player</span>
-      <h2 class="pinned-player-name" id="pinned-player-name">No player pinned</h2>
-    </div>
-    <a class="pinned-player-open" href="player.html">Player Viewer <span aria-hidden="true">→</span></a>
-  </div>
-  <div class="pinned-player-state" id="pinned-player-state">Pin a player in Player Viewer to show their live stats here.</div>
-  <div class="pinned-player-stats" id="pinned-player-stats" hidden>
-    <div class="pinned-player-stat"><span>Rank</span><strong id="pinned-stat-rank">—</strong></div>
-    <div class="pinned-player-stat"><span>SkyBlock Level</span><strong id="pinned-stat-level">—</strong></div>
-    <div class="pinned-player-stat"><span>Purse</span><strong id="pinned-stat-purse">—</strong></div>
-    <div class="pinned-player-stat"><span>Bank</span><strong id="pinned-stat-bank">—</strong></div>
-  </div>
-  <div class="pinned-player-error" id="pinned-player-error" hidden></div>
+<h1 class="hero-title">CraftersMC SkyBlock <span aria-hidden="true" id="hero-rotating-word">Documentation</span></h1>
+<div aria-live="polite" class="pinned-player-card" id="pinned-player-card">
+<div class="pinned-player-header">
+<div>
+<span class="pinned-player-kicker">Pinned Player</span>
+<h2 class="pinned-player-name" id="pinned-player-name">No player pinned</h2>
+</div>
+<a class="pinned-player-open" href="player.html">Player Viewer <span aria-hidden="true">→</span></a>
+</div>
+<div class="pinned-player-state" id="pinned-player-state">Pin a player in Player Viewer to show their live stats here.</div>
+<div class="pinned-player-stats" hidden="" id="pinned-player-stats">
+<div class="pinned-player-stat"><span>Rank</span><strong id="pinned-stat-rank">—</strong></div>
+<div class="pinned-player-stat"><span>SkyBlock Level</span><strong id="pinned-stat-level">—</strong></div>
+<div class="pinned-player-stat"><span>Purse</span><strong id="pinned-stat-purse">—</strong></div>
+<div class="pinned-player-stat"><span>Bank</span><strong id="pinned-stat-bank">—</strong></div>
+</div>
+<div class="pinned-player-error" hidden="" id="pinned-player-error"></div>
 </div>
 <div class="hero-status" id="hero-status">
 <div class="hero-status-title">SkyBlock Status</div>
-<div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
-<div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">cloud_done</span>Server Status</span><strong class="hero-status-value status-online" id="status-server"><span class="status-dot" aria-hidden="true"></span>Loading</strong></div>
-<div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">event</span>Event</span><strong class="hero-status-value status-event" id="status-event">Calculating…</strong></div>
-<div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">schedule</span>Starts In</span><strong class="hero-status-value status-countdown" id="status-countdown">—</strong></div>
-<a class="hero-status-button" href="skycalendar.html"><span class="material-icons" aria-hidden="true">calendar_month</span>View SkyCalendar</a>
+<div class="hero-status-row"><span class="hero-status-label"><span aria-hidden="true" class="material-icons">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
+<div class="hero-status-row"><span class="hero-status-label"><span aria-hidden="true" class="material-icons">cloud_done</span>Server Status</span><strong class="hero-status-value status-online" id="status-server"><span aria-hidden="true" class="status-dot"></span>Loading</strong></div>
+<div class="hero-status-row"><span class="hero-status-label"><span aria-hidden="true" class="material-icons">event</span>Event</span><strong class="hero-status-value status-event" id="status-event">Calculating…</strong></div>
+<div class="hero-status-row"><span class="hero-status-label"><span aria-hidden="true" class="material-icons">schedule</span>Starts In</span><strong class="hero-status-value status-countdown" id="status-countdown">—</strong></div>
+<a class="hero-status-button" href="skycalendar.html"><span aria-hidden="true" class="material-icons">calendar_month</span>View SkyCalendar</a>
 </div>
-
 </div>
 </section>
 <section aria-labelledby="featured-tools-title" class="featured-tools-section">
@@ -3619,25 +3656,25 @@
 <p>Step-by-step guides to help you progress in SkyBlock.</p>
 </div>
 <div class="horizontal-scroll-frame"><div aria-describedby="horizontal-scroll-hint" aria-label="Progression and gameplay guides" class="horizontal-cards" role="region" tabindex="0">
-<div class="schema-card horizontal-card is-clickable" data-primary-href="guide/starter-guide.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="eco" data-primary-href="guide/starter-guide.html">
 <span class="progression-label">Start Here</span>
 <div class="schema-name"><a href="guide/starter-guide.html">Starter Guide</a></div>
 <div class="schema-desc">Early-game setup: Island layout, early coin generation, fairy souls, minions, and more.</div>
 <div style="margin-top:10px;"><a href="guide/starter-guide.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="guide/intermediate-guide.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="trending_up" data-primary-href="guide/intermediate-guide.html">
 <span class="progression-label">Progress</span>
 <div class="schema-name"><a href="guide/intermediate-guide.html">Intermediate Guide</a></div>
 <div class="schema-desc">Dragon armor progression, weapon upgrades, combat skills and minion expansion.</div>
 <div style="margin-top:10px;"><a href="guide/intermediate-guide.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="guide/intermediate-guide2.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="skull" data-primary-href="guide/intermediate-guide2.html">
 <span class="progression-label">Specialization</span>
 <div class="schema-name"><a href="guide/intermediate-guide2.html">Slayers Edition</a></div>
 <div class="schema-desc">Boss mechanics, gear loadouts, and slayer progression for Zombie, Spider, and Wolf slayers.</div>
 <div style="margin-top:10px;"><a href="guide/intermediate-guide2.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="guide/advanced-guide.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="military_tech" data-primary-href="guide/advanced-guide.html">
 <span class="progression-label">Endgame</span>
 <div class="schema-name"><a href="guide/advanced-guide.html">Advanced Guide</a></div>
 <div class="schema-desc">Endgame setups, high-tier slayer farming, economy and optimization.</div>
@@ -3651,43 +3688,43 @@
 <p>Real-time trackers, directories, and utilities built for CraftersMC players.</p>
 </div>
 <div class="horizontal-scroll-frame"><div aria-describedby="horizontal-scroll-hint" aria-label="Live tools and trackers" class="horizontal-cards" role="region" tabindex="0">
-<div class="schema-card horizontal-card is-clickable" data-primary-href="player.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="person_search" data-primary-href="player.html">
 <span class="progression-label">Player Tool</span>
 <div class="schema-name"><a href="player.html">Player Viewer</a></div>
 <div class="schema-desc">Inspect real-time player data, profiles, skills, slayers, minions, and more.</div>
 <div style="margin-top:10px;"><a href="player.html" style="font-weight:600;">Launch →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="skycalendar.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="event" data-primary-href="skycalendar.html">
 <span class="progression-label">Event Tracker</span>
 <div class="schema-name"><a href="skycalendar.html">SkyCalendar</a></div>
 <div class="schema-desc">Live countdown timers for events, contests, and special seasons.</div>
 <div style="margin-top:10px;"><a href="skycalendar.html" style="font-weight:600;">Launch →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="rank-sellers.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="diamond" data-primary-href="rank-sellers.html">
 <span class="progression-label">Seller Directory</span>
 <div class="schema-name"><a href="rank-sellers.html">Rank &amp; Gems Sellers</a></div>
 <div class="schema-desc">Verified list of trusted rank and gem sellers with scam prevention guidelines.</div>
 <div style="margin-top:10px;"><a href="rank-sellers.html" style="font-weight:600;">Open Directory →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="leaderboards.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="emoji_events" data-primary-href="leaderboards.html">
 <span class="progression-label">Leaderboard</span>
 <div class="schema-name"><a href="leaderboards.html">Leaderboards</a></div>
 <div class="schema-desc">Check top player placements across collections, skills, slayer XP, bank networth and boss records.</div>
 <div style="margin-top:10px;"><a href="leaderboards.html" style="font-weight:600;">View Leaderboards →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="tools.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="calculate" data-primary-href="tools.html">
 <span class="progression-label">Calculator</span>
 <div class="schema-name"><a href="tools.html">Calculators</a></div>
 <div class="schema-desc">Reforge stat calculators, minion inventory timers, skill XP and other utilities.</div>
 <div style="margin-top:10px;"><a href="tools.html" style="font-weight:600;">Open Calculators →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="texture-packs.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="texture" data-primary-href="texture-packs.html">
 <span class="progression-label">Resource Packs</span>
 <div class="schema-name"><a href="texture-packs.html">Texture Packs</a></div>
 <div class="schema-desc">Curated Bedrock resource packs customized for CraftersMC weapons and armor.</div>
 <div style="margin-top:10px;"><a href="texture-packs.html" style="font-weight:600;">Browse Packs →</a></div>
 </div>
-<div class="schema-card horizontal-card is-clickable" data-primary-href="feather-bot/index.html">
+<div class="schema-card horizontal-card is-clickable has-card-icon" data-card-icon="smart_toy" data-primary-href="feather-bot/index.html">
 <span class="progression-label">Discord Bot</span>
 <div class="schema-name"><a href="feather-bot/index.html">Feather Bot Guide</a></div>
 <div class="schema-desc">Slash command syntax and documentation for the official CraftersMC Discord bot.</div>
@@ -3704,37 +3741,37 @@
 <a class="section-view-all" href="guide/">View all →</a>
 </div>
 <div class="other-guides-grid">
-<div class="schema-card is-clickable" data-primary-href="guide/accessories-guide.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="auto_awesome" data-primary-href="guide/accessories-guide.html">
 <span class="docs-category-label">Guide</span>
 <div class="schema-name"><a href="guide/accessories-guide.html">Accessories &amp; Reforges</a></div>
 <div class="schema-desc">Optimal reforge stones for common, uncommon, rare, epic, and legendary talismans.</div>
 <div style="margin-top:10px;"><a href="guide/accessories-guide.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="guide/bazaar-guide.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="storefront" data-primary-href="guide/bazaar-guide.html">
 <span class="docs-category-label">Guide</span>
 <div class="schema-name"><a href="guide/bazaar-guide.html">Bazaar Trading Guide</a></div>
 <div class="schema-desc">How to use buy and sell orders, understand spreads, and make coins with margin flipping.</div>
 <div style="margin-top:10px;"><a href="guide/bazaar-guide.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="guide/queries.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="help_outline" data-primary-href="guide/queries.html">
 <span class="docs-category-label">FAQ</span>
 <div class="schema-name"><a href="guide/queries.html">Common Queries &amp; FAQ</a></div>
 <div class="schema-desc">Quick answers to common questions regarding CraftersMC custom features and mechanics.</div>
 <div style="margin-top:10px;"><a href="guide/queries.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="unicode.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="text_fields" data-primary-href="unicode.html">
 <span class="docs-category-label">Guide</span>
 <div class="schema-name"><a href="unicode.html">Unicode &amp; Formatting</a></div>
 <div class="schema-desc">Minecraft color code guide and custom unicode symbols for Book &amp; Quills and item signs.</div>
 <div style="margin-top:10px;"><a href="unicode.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="guide/minion-guide.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="inventory_2" data-primary-href="guide/minion-guide.html">
 <span class="docs-category-label">Guide</span>
 <div class="schema-name"><a href="guide/minion-guide.html">Minion Guide</a></div>
 <div class="schema-desc">Maximize your minion setup and profits. Best minions, upgrades and placements.</div>
 <div style="margin-top:10px;"><a href="guide/minion-guide.html" style="font-weight:600;">Open Guide →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="guide/combat-guide.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="sports_martial_arts" data-primary-href="guide/combat-guide.html">
 <span class="docs-category-label">Guide</span>
 <div class="schema-name"><a href="guide/combat-guide.html">Combat Guide</a></div>
 <div class="schema-desc">Improve your combat skills and damage output. Learn mechanics and useful tips.</div>
@@ -3748,19 +3785,19 @@
 <p>Resources for developers and data enthusiasts.</p>
 </div>
 <div class="resource-grid">
-<div class="schema-card is-clickable" data-primary-href="better-api-docs/index.html">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="api" data-primary-href="better-api-docs/index.html">
 <span class="docs-category-label">API</span>
 <div class="schema-name"><a href="better-api-docs/index.html">REST API v1 Reference</a></div>
 <div class="schema-desc">Complete documentation for CraftersMC REST API endpoints and usage.</div>
 <div style="margin-top:10px;"><a href="better-api-docs/index.html" style="font-weight:600;">View Docs →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="better-api-docs/index.html#section-nbt-decoding">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="storage" data-primary-href="better-api-docs/index.html#section-nbt-decoding">
 <span class="docs-category-label">NBT Reference</span>
 <div class="schema-name"><a href="better-api-docs/index.html#section-nbt-decoding">15 NBT Storage Blobs</a></div>
 <div class="schema-desc">Detailed reference for all 15 NBT storage blobs used in SkyBlock.</div>
 <div style="margin-top:10px;"><a href="better-api-docs/index.html#section-nbt-decoding" style="font-weight:600;">View Reference →</a></div>
 </div>
-<div class="schema-card is-clickable" data-primary-href="better-api-docs/index.html#section-item-ids">
+<div class="schema-card is-clickable has-card-icon" data-card-icon="tag" data-primary-href="better-api-docs/index.html#section-item-ids">
 <span class="docs-category-label">Item Reference</span>
 <div class="schema-name"><a href="better-api-docs/index.html#section-item-ids">Numerical Item IDs (1,933)</a></div>
 <div class="schema-desc">Browse all items with their numerical IDs for API and integrations.</div>
@@ -4175,7 +4212,6 @@ console.log(
     }
   }
 });</script>
-
 <script id="live-skyblock-status-script">
 (function () {
   const playersEl = document.getElementById('status-players');
@@ -4276,7 +4312,6 @@ console.log(
   window.setInterval(updateEvent, 1000);
 })();
 </script>
-
 <script id="pinned-player-status-script">
 (function () {
   const card = document.getElementById('pinned-player-card');
@@ -4432,8 +4467,6 @@ console.log(
   window.addEventListener('pagehide', () => window.clearTimeout(pollTimer), { once: true });
 })();
 </script>
-
-
 <style id="premium-animation-pass">
   /* =========================================================
      PREMIUM MOTION PASS
@@ -4651,8 +4684,6 @@ console.log(
     }
   }
 </style>
-
-
 <script id="premium-motion-script">
 (function () {
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -4737,6 +4768,5 @@ console.log(
   setupSidebarSectionIndicator();
 })();
 </script>
-
 </body>
 </html>
