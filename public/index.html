@@ -5899,12 +5899,15 @@ console.log(
   function updateScrollFade(frame) {
     const scroller = frame.querySelector('.featured-tools-grid, .horizontal-cards');
     if (!scroller) {
-      frame.classList.add('scroll-empty');
+      frame.classList.add('scroll-empty', 'scroll-start');
+      frame.classList.remove('scroll-end');
       return;
     }
 
     const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const atStart = scroller.scrollLeft <= 2;
     const atEnd = maxScroll <= 2 || scroller.scrollLeft >= maxScroll - 2;
+    frame.classList.toggle('scroll-start', atStart);
     frame.classList.toggle('scroll-end', atEnd);
     frame.classList.toggle('scroll-empty', maxScroll <= 2);
   }
@@ -5958,6 +5961,100 @@ console.log(
   setupSidebarSectionIndicator();
 })();
 </script>
+
+<style id="final-scroll-hover-fade-fix">
+  /* Final scroll/hover geometry fix.
+     Keep lifted cards fully visible and give horizontal rails balanced edge fades. */
+  .horizontal-scroll-frame {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: visible !important;
+    padding: 6px 0 0 !important;
+  }
+
+  .horizontal-scroll-frame::before,
+  .horizontal-scroll-frame::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 6px !important;
+    bottom: 10px !important;
+    width: 56px !important;
+    pointer-events: none !important;
+    z-index: 4 !important;
+    opacity: 1 !important;
+    transition: opacity .2s ease !important;
+  }
+
+  .horizontal-scroll-frame::before {
+    left: 0 !important;
+    right: auto !important;
+    background: linear-gradient(to right, rgba(5,7,11,.92), transparent) !important;
+    border-radius: 10px 0 0 10px !important;
+  }
+
+  .horizontal-scroll-frame::after {
+    right: 0 !important;
+    left: auto !important;
+    background: linear-gradient(to left, rgba(5,7,11,.92), transparent) !important;
+    border-radius: 0 10px 10px 0 !important;
+  }
+
+  .horizontal-scroll-frame.scroll-start::before,
+  .horizontal-scroll-frame.scroll-empty::before,
+  .horizontal-scroll-frame.scroll-end::after,
+  .horizontal-scroll-frame.scroll-empty::after {
+    opacity: 0 !important;
+  }
+
+  /* Extra top breathing room prevents the translateY(-4px) hover lift from
+     touching/clipping against the scroll viewport. */
+  .featured-tools-grid,
+  .horizontal-cards {
+    padding-top: 8px !important;
+  }
+
+  @media (max-width: 700px) {
+    .horizontal-scroll-frame::before,
+    .horizontal-scroll-frame::after {
+      width: 48px !important;
+      top: 6px !important;
+      bottom: 10px !important;
+    }
+  }
+</style>
+
+<style id="final-other-guides-mobile-match-api">
+  /* Mobile: Other SkyBlock Guides uses the same vertical resource treatment
+     as Developer & API Resources. */
+  @media (max-width: 700px) {
+    #section-other-guides .other-guides-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
+      gap: 12px !important;
+      width: 100% !important;
+      height: 362px !important;
+      max-height: 362px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      padding: 2px 6px 8px 1px !important;
+      align-items: stretch !important;
+      box-sizing: border-box !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100,116,139,.45) transparent;
+    }
+
+    #section-other-guides .other-guides-grid > .schema-card {
+      flex: 0 0 175px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      min-height: 175px !important;
+      height: 175px !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
 </body>
 </html>
 
