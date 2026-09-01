@@ -3805,6 +3805,30 @@
   }
 
   @media (max-width: 700px) {
+    /* Keep mobile card glow contained within each card. */
+    .featured-tool-card:hover,
+    .featured-tool-card:focus-within,
+    .horizontal-cards > .horizontal-card:hover,
+    .horizontal-cards > .horizontal-card:focus-within,
+    .other-guides-grid .schema-card:hover,
+    .other-guides-grid .schema-card:focus-within,
+    .resource-grid .schema-card:hover,
+    .resource-grid .schema-card:focus-within {
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--card-accent) 16%, transparent),
+        inset 0 0 26px color-mix(in srgb, var(--card-accent) 13%, transparent),
+        0 10px 22px rgba(0,0,0,.22) !important;
+    }
+
+    .featured-tool-card:hover .featured-tool-icon-wrap,
+    .featured-tool-card:focus-within .featured-tool-icon-wrap,
+    .schema-card.has-card-icon:hover::after,
+    .schema-card.has-card-icon:focus-within::after {
+      box-shadow:
+        inset 0 0 14px color-mix(in srgb, var(--card-accent) 16%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--card-accent) 10%, transparent) !important;
+    }
+
     .featured-tools-grid > .featured-tool-card,
     .horizontal-cards > .horizontal-card {
       width: 248px !important;
