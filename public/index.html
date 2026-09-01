@@ -4626,6 +4626,57 @@
   }
 </style>
 
+
+<style id="final-developer-api-mobile-scroll">
+  /* Mobile Developer & API: use the same roomy card proportions as Featured Tools.
+     Cards stack vertically and the section itself scrolls through the remaining cards. */
+  @media (max-width: 700px) {
+    #section-api .resource-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
+      gap: 12px !important;
+      width: 100% !important;
+      max-height: 362px !important;
+      height: 362px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      padding: 2px 6px 8px 1px !important;
+      align-items: stretch !important;
+      box-sizing: border-box !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100,116,139,.45) transparent;
+    }
+
+    #section-api .resource-grid > .schema-card {
+      flex: 0 0 175px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      min-height: 175px !important;
+      height: 175px !important;
+      box-sizing: border-box !important;
+    }
+
+    #section-api .resource-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #section-api .resource-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #section-api .resource-grid::-webkit-scrollbar-thumb {
+      background: rgba(100,116,139,.42);
+      border-radius: 999px;
+    }
+
+    #section-api .resource-grid::-webkit-scrollbar-thumb:hover {
+      background: rgba(125,211,252,.5);
+    }
+  }
+</style>
+
 </head>
 <body>
 <header class="top-header">
