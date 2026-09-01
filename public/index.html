@@ -4562,6 +4562,70 @@
     }
   }
 </style>
+
+<style id="final-user-request-layout-fix">
+  /* DESKTOP
+     Developer & API: show exactly 2 cards (one row) and vertically scroll
+     for any remaining cards inside this section. */
+  @media (min-width: 701px) {
+    #section-api .resource-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      grid-auto-rows: 200px !important;
+      gap: 14px !important;
+      height: 214px !important;
+      max-height: 214px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      align-content: start !important;
+      padding: 2px 6px 4px 1px !important;
+      box-sizing: border-box !important;
+    }
+
+    #section-api .resource-grid > .schema-card {
+      width: auto !important;
+      min-width: 0 !important;
+      flex: none !important;
+      min-height: 200px !important;
+      height: 200px !important;
+      box-sizing: border-box !important;
+    }
+  }
+
+  /* MOBILE
+     Developer & API behaves like Live Tools/Trackers: horizontal rail.
+     Other SkyBlock Guides follows the same horizontal-scroll behavior. */
+  @media (max-width: 700px) {
+    #section-api .resource-grid,
+    #section-other-guides .other-guides-grid {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      grid-template-columns: none !important;
+      gap: 12px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      height: auto !important;
+      max-height: none !important;
+      align-content: normal !important;
+      padding: 2px 1px 8px !important;
+      min-width: 0 !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+
+    /* Match Live Tools/Trackers' two-visible-card mobile rail. */
+    #section-api .resource-grid > .schema-card,
+    #section-other-guides .other-guides-grid > .schema-card {
+      flex: 0 0 calc((100% - 12px) / 2) !important;
+      width: calc((100% - 12px) / 2) !important;
+      min-width: calc((100% - 12px) / 2) !important;
+      min-height: 196px !important;
+      height: 196px !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <header class="top-header">
