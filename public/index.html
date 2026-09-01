@@ -4363,6 +4363,32 @@
     }
   }
 </style>
+<style id="final-desktop-card-alignment-fix">
+  /* Desktop: match Featured Tools, Progression Guides, and Live Tools/Trackers
+     to the same 2-card visual width used by Other SkyBlock Guides, while
+     preserving horizontal scrolling for sections with more than 2 cards. */
+  @media (min-width: 701px) {
+    .featured-tools-grid,
+    .horizontal-cards {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 14px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      min-width: 0 !important;
+    }
+
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card {
+      flex: 0 0 calc((100% - 14px) / 2) !important;
+      width: calc((100% - 14px) / 2) !important;
+      min-width: calc((100% - 14px) / 2) !important;
+      min-height: 200px !important;
+      height: 200px !important;
+      box-sizing: border-box !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
