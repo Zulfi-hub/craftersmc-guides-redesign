@@ -4328,6 +4328,41 @@
   }
 </style>
 </style>
+
+<style id="final-requested-card-sizing">
+  /* Final requested sizing: desktop only. Keep each section's existing layout/scroll behavior. */
+  @media (min-width: 701px) {
+    /* Match the card height used by Other SkyBlock Guides. */
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card {
+      min-height: 200px !important;
+      height: 200px !important;
+    }
+  }
+
+  /* Mobile: Other SkyBlock Guides = 2 columns × 1 visible row,
+     then vertical scrolling for the remaining guides. */
+  @media (max-width: 700px) {
+    .other-guides-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      grid-auto-rows: 196px !important;
+      gap: 12px !important;
+      max-height: 204px !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      align-content: start !important;
+      padding-right: 6px !important;
+      scrollbar-width: thin;
+    }
+
+    .other-guides-grid > .schema-card {
+      min-height: 196px !important;
+      height: 196px !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
