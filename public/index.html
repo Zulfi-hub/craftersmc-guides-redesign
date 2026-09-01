@@ -4489,11 +4489,11 @@
 
 
 <style id="final-resource-vertical-scroll-fix">
-  /* Desktop: Developer & API Resources follows the same card sizing as
-     Other SkyBlock Guides, with a 2-column viewport and vertical scrolling
-     for any additional cards. */
+  /* Desktop: Developer & API Resources uses the exact same 2-column card
+     geometry as Other SkyBlock Guides, while keeping an in-section
+     vertical scrollbar for additional cards. */
   @media (min-width: 701px) {
-    .resource-grid {
+    #section-api .resource-grid {
       display: grid !important;
       grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
       grid-auto-rows: 200px !important;
@@ -4508,7 +4508,7 @@
       scrollbar-color: rgba(100,116,139,.45) transparent;
     }
 
-    .resource-grid > .schema-card {
+    #section-api .resource-grid > .schema-card {
       width: auto !important;
       min-width: 0 !important;
       flex: none !important;
@@ -4517,21 +4517,48 @@
       box-sizing: border-box !important;
     }
 
-    .resource-grid::-webkit-scrollbar {
+    #section-api .resource-grid::-webkit-scrollbar {
       width: 6px;
     }
 
-    .resource-grid::-webkit-scrollbar-track {
+    #section-api .resource-grid::-webkit-scrollbar-track {
       background: transparent;
     }
 
-    .resource-grid::-webkit-scrollbar-thumb {
+    #section-api .resource-grid::-webkit-scrollbar-thumb {
       background: rgba(100,116,139,.42);
       border-radius: 999px;
     }
 
-    .resource-grid::-webkit-scrollbar-thumb:hover {
+    #section-api .resource-grid::-webkit-scrollbar-thumb:hover {
       background: rgba(125,211,252,.5);
+    }
+  }
+
+  @media (max-width: 700px) {
+    /* Keep the API/resource cards otherwise unchanged on mobile. */
+  }
+</style>
+<style id="final-other-guides-mobile-authoritative">
+  @media (max-width: 700px) {
+    #section-other-guides .other-guides-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      grid-auto-rows: 196px !important;
+      height: 196px !important;
+      max-height: 196px !important;
+      gap: 12px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      align-content: start !important;
+      box-sizing: border-box !important;
+    }
+
+    #section-other-guides .other-guides-grid > .schema-card {
+      min-width: 0 !important;
+      min-height: 196px !important;
+      height: 196px !important;
+      box-sizing: border-box !important;
     }
   }
 </style>
