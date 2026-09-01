@@ -6055,6 +6055,40 @@ console.log(
     }
   }
 </style>
+
+<style id="final-no-fade-and-hover-clearance">
+  /* Remove scroll-edge fade overlays completely. */
+  .horizontal-scroll-frame::before,
+  .horizontal-scroll-frame::after {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    background: none !important;
+  }
+
+  /* Give every scroll viewport enough vertical breathing room for the
+     card hover lift. Feature Tool cards keep their existing behavior. */
+  @media (min-width: 701px) {
+    #section-guides .horizontal-cards,
+    #section-tools .horizontal-cards,
+    #section-api .resource-grid,
+    #section-other-guides .other-guides-grid {
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    #section-guides .horizontal-cards,
+    #section-tools .horizontal-cards,
+    #section-api .resource-grid,
+    #section-other-guides .other-guides-grid {
+      padding-top: 8px !important;
+      padding-bottom: 10px !important;
+    }
+  }
+</style>
+
 </body>
 </html>
 
