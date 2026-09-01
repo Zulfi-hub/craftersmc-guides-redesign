@@ -4292,6 +4292,45 @@
       height: 196px !important;
     }
   }
+<style id="same-card-size-final">
+  /* Match Featured Tools, Progression Guides, and Live Tools to the
+     proven card dimensions used by Other SkyBlock Guides. */
+  @media (min-width: 701px) {
+    .featured-tools-grid,
+    .horizontal-cards,
+    .other-guides-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 14px !important;
+    }
+
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card {
+      width: auto !important;
+      min-width: 0 !important;
+      flex-basis: auto !important;
+      min-height: 200px !important;
+      height: 200px !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .featured-tools-grid,
+    .horizontal-cards,
+    .other-guides-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+    }
+
+    .featured-tools-grid > .featured-tool-card,
+    .horizontal-cards > .horizontal-card,
+    .other-guides-grid > .schema-card {
+      min-height: 196px !important;
+      height: 196px !important;
+    }
+  }
+</style>
 </style>
 </head>
 <body>
