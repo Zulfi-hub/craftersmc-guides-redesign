@@ -3235,147 +3235,54 @@
   }
 </style>
 
-
-<style id="card-glow-system">
-  .featured-tool-card,
-  .schema-card,
-  .contributor-card {
-    --card-accent: #0797e1;
-    --card-accent-rgb: 7,151,225;
-    position: relative;
-    overflow: hidden;
-    border-color: var(--border-color) !important;
-    transition: transform .2s ease, border-color .2s ease,
-                box-shadow .2s ease, background .2s ease;
+<style id="final-responsive-consistency-fix">
+  /* Single source of truth for the mobile header/sidebar relationship. */
+  @media (max-width: 700px) {
+    :root { --mobile-header-height: 52px !important; }
+    .top-header { height: var(--mobile-header-height) !important; min-height: var(--mobile-header-height) !important; }
+    .sidebar { top: var(--mobile-header-height) !important; }
   }
-
-  .featured-tool-card::after,
-  .schema-card::after,
-  .contributor-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    background:
-      radial-gradient(circle at 12% 0%, rgba(var(--card-accent-rgb), .18), transparent 48%),
-      linear-gradient(135deg, rgba(var(--card-accent-rgb), .09), transparent 58%);
-    transition: opacity .2s ease;
-  }
-
-  .featured-tool-card > *,
-  .schema-card > *,
-  .contributor-card > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Featured Tools */
-  #section-tools .featured-tools-grid > .featured-tool-card:nth-child(1) { --card-accent:#38a8ff; --card-accent-rgb:56,168,255; }
-  #section-tools .featured-tools-grid > .featured-tool-card:nth-child(2) { --card-accent:#a855f7; --card-accent-rgb:168,85,247; }
-  #section-tools .featured-tools-grid > .featured-tool-card:nth-child(3) { --card-accent:#22c55e; --card-accent-rgb:34,197,94; }
-  #section-tools .featured-tools-grid > .featured-tool-card:nth-child(4) { --card-accent:#f59e0b; --card-accent-rgb:245,158,11; }
-
-  /* Progression & Gameplay */
-  #section-guides .horizontal-cards > .schema-card:nth-child(1) { --card-accent:#84cc16; --card-accent-rgb:132,204,22; }
-  #section-guides .horizontal-cards > .schema-card:nth-child(2) { --card-accent:#f59e0b; --card-accent-rgb:245,158,11; }
-  #section-guides .horizontal-cards > .schema-card:nth-child(3) { --card-accent:#a855f7; --card-accent-rgb:168,85,247; }
-  #section-guides .horizontal-cards > .schema-card:nth-child(4) { --card-accent:#ef4444; --card-accent-rgb:239,68,68; }
-
-  /* Live Tools & Trackers */
-  #section-tools .horizontal-cards > .schema-card:nth-child(1) { --card-accent:#38a8ff; --card-accent-rgb:56,168,255; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(2) { --card-accent:#22d3ee; --card-accent-rgb:34,211,238; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(3) { --card-accent:#ec4899; --card-accent-rgb:236,72,153; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(4) { --card-accent:#8b5cf6; --card-accent-rgb:139,92,246; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(5) { --card-accent:#f59e0b; --card-accent-rgb:245,158,11; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(6) { --card-accent:#06b6d4; --card-accent-rgb:6,182,212; }
-  #section-tools .horizontal-cards > .schema-card:nth-child(7) { --card-accent:#f97316; --card-accent-rgb:249,115,22; }
-
-  /* Other SkyBlock Guides */
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(1) { --card-accent:#22d3ee; --card-accent-rgb:34,211,238; }
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(2) { --card-accent:#fbbf24; --card-accent-rgb:251,191,36; }
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(3) { --card-accent:#60a5fa; --card-accent-rgb:96,165,250; }
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(4) { --card-accent:#22c55e; --card-accent-rgb:34,197,94; }
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(5) { --card-accent:#a855f7; --card-accent-rgb:168,85,247; }
-  #section-other-guides .other-guides-grid > .schema-card:nth-child(6) { --card-accent:#ef4444; --card-accent-rgb:239,68,68; }
-
-  /* Developer & API Resources */
-  #section-api .resource-grid > .schema-card:nth-child(1) { --card-accent:#38a8ff; --card-accent-rgb:56,168,255; }
-  #section-api .resource-grid > .schema-card:nth-child(2) { --card-accent:#8b5cf6; --card-accent-rgb:139,92,246; }
-  #section-api .resource-grid > .schema-card:nth-child(3) { --card-accent:#ec4899; --card-accent-rgb:236,72,153; }
-
-  /* Contributors */
-  .contributors-grid > .contributor-card:nth-child(1) { --card-accent:#22c55e; --card-accent-rgb:34,197,94; }
-  .contributors-grid > .contributor-card:nth-child(2) { --card-accent:#a855f7; --card-accent-rgb:168,85,247; }
-  .contributors-grid > .contributor-card:nth-child(3) { --card-accent:#38a8ff; --card-accent-rgb:56,168,255; }
-
-  .featured-tool-icon-wrap {
-    background: #0c1822 !important;
-    border: 1px solid rgba(148,163,184,.10);
-    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
-  }
-
-  .featured-tool-icon-wrap .featured-tool-icon {
-    color: #7dd3fc !important;
-    transition: color .2s ease, text-shadow .2s ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .featured-tool-card:hover,
-    .schema-card:hover,
-    .contributor-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(var(--card-accent-rgb), .58) !important;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(var(--card-accent-rgb), .13), transparent 52%),
-        var(--card-background, #0b111a);
-      box-shadow:
-        0 0 0 1px rgba(var(--card-accent-rgb), .12),
-        0 10px 28px rgba(var(--card-accent-rgb), .13),
-        0 0 34px rgba(var(--card-accent-rgb), .10);
-    }
-
-    .featured-tool-card:hover::after,
-    .schema-card:hover::after,
-    .contributor-card:hover::after {
-      opacity: 1;
-    }
-
-    .featured-tool-card:hover .featured-tool-icon-wrap {
-      background: rgba(var(--card-accent-rgb), .16) !important;
-      border-color: rgba(var(--card-accent-rgb), .34);
-      box-shadow: 0 0 18px rgba(var(--card-accent-rgb), .18);
-    }
-
-    .featured-tool-card:hover .featured-tool-icon {
-      color: var(--card-accent) !important;
-      text-shadow: 0 0 14px rgba(var(--card-accent-rgb), .55);
-    }
-  }
-
-  .featured-tool-card:focus-visible,
-  .schema-card:focus-within,
-  .contributor-card:focus-within {
-    border-color: rgba(var(--card-accent-rgb), .58) !important;
-    box-shadow:
-      0 0 0 2px rgba(var(--card-accent-rgb), .14),
-      0 8px 24px rgba(var(--card-accent-rgb), .10);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .featured-tool-card,
-    .schema-card,
-    .contributor-card,
-    .featured-tool-card::after,
-    .schema-card::after,
-    .contributor-card::after,
-    .featured-tool-icon-wrap,
-    .featured-tool-icon {
-      transition: none !important;
-    }
+  @media (max-width: 430px) {
+    :root { --mobile-header-height: 50px !important; }
+    .top-header { height: var(--mobile-header-height) !important; min-height: var(--mobile-header-height) !important; }
+    .sidebar { top: var(--mobile-header-height) !important; }
   }
 </style>
 
+
+<style id="final-hero-overlap-fix">
+  /* Keep the pinned-player card and SkyBlock status panel in separate flow
+     at tablet / narrow desktop widths, including browser zoomed views. */
+  @media (max-width: 1100px) {
+    .prose-card.hero-card {
+      padding-right: 38px !important;
+    }
+
+    .hero-status {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      width: 100% !important;
+      max-width: 560px !important;
+      margin-top: 20px !important;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .prose-card.hero-card {
+      padding: 24px 18px !important;
+    }
+
+    .pinned-player-card {
+      width: 100% !important;
+      margin-top: 14px !important;
+    }
+
+    .hero-status {
+      margin-top: 18px !important;
+    }
+  }
+</style>
 </head>
 <body>
 <header class="top-header">
@@ -3473,7 +3380,7 @@
 <section class="doc-section" id="overview">
 <div class="prose-card hero-card">
 <div class="hero-kicker"><span aria-hidden="true" class="material-icons">auto_awesome</span>Welcome to CraftersMC Guides</div>
-<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-live="polite">Documentation</span></h1>
+<h1 class="hero-title">CraftersMC SkyBlock <span id="hero-rotating-word" aria-hidden="true">Documentation</span></h1>
 <div class="pinned-player-card" id="pinned-player-card" aria-live="polite">
   <div class="pinned-player-header">
     <div>
@@ -3491,7 +3398,7 @@
   </div>
   <div class="pinned-player-error" id="pinned-player-error" hidden></div>
 </div>
-<div class="hero-status" id="hero-status" aria-live="polite">
+<div class="hero-status" id="hero-status">
 <div class="hero-status-title">SkyBlock Status</div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">groups</span>Players Online</span><strong class="hero-status-value" id="status-players">—</strong></div>
 <div class="hero-status-row"><span class="hero-status-label"><span class="material-icons" aria-hidden="true">cloud_done</span>Server Status</span><strong class="hero-status-value status-online" id="status-server"><span class="status-dot" aria-hidden="true"></span>Loading</strong></div>
@@ -3517,12 +3424,12 @@
 <div class="featured-tool-desc">View player stats, skills, profiles, minions and more.</div>
 <a class="featured-tool-link" href="player.html">Launch →</a>
 </div>
-<div class="featured-tool-card is-clickable" data-primary-href="skycalendar.html">
-<div class="featured-tool-icon-wrap"><div aria-hidden="true" class="featured-tool-icon material-icons">event</div></div>
-<div class="card-eyebrow">Live Tool</div>
-<div class="featured-tool-name"><a href="skycalendar.html">SkyCalendar</a></div>
-<div class="featured-tool-desc">Live event timers and countdowns for SkyBlock events.</div>
-<a class="featured-tool-link" href="skycalendar.html">Launch →</a>
+<div class="featured-tool-card is-clickable" data-primary-href="guide/bazaar-guide.html">
+<div class="featured-tool-icon-wrap"><div aria-hidden="true" class="featured-tool-icon material-icons">gavel</div></div>
+<div class="card-eyebrow">Market Tool</div>
+<div class="featured-tool-name"><a href="guide/bazaar-guide.html">Auction House</a></div>
+<div class="featured-tool-desc">Tips for buying, selling, pricing, and flipping items through the in-game Auction House.</div>
+<a class="featured-tool-link" href="guide/bazaar-guide.html">Open Guide →</a>
 </div>
 <div class="featured-tool-card is-clickable" data-primary-href="guide/bazaar-guide.html">
 <div class="featured-tool-icon-wrap"><div aria-hidden="true" class="featured-tool-icon material-icons">shopping_cart</div></div>
@@ -4136,10 +4043,12 @@ console.log(
   function eventCandidates(now) {
     const candidates = [];
     const currentDayIndex = Math.floor((now - START_OF_TIMES) / SB_DAY_SECONDS);
-    let n = Math.floor(currentDayIndex / 3);
-    let target = START_OF_TIMES + (n * 3) * SB_DAY_SECONDS;
-    if (target <= now) target += 3 * SB_DAY_SECONDS;
-    candidates.push({ name: EVENTS[0].name, target, color: EVENTS[0].color });
+    const recurring = EVENTS[0];
+    const everyDays = Math.max(1, Number(recurring.everyDays) || 1);
+    let n = Math.floor(currentDayIndex / everyDays);
+    let target = START_OF_TIMES + (n * everyDays) * SB_DAY_SECONDS;
+    if (target <= now) target += everyDays * SB_DAY_SECONDS;
+    candidates.push({ name: recurring.name, target, color: recurring.color });
 
     const current = sbTime(now);
     for (const item of EVENTS.slice(1)) {
@@ -4197,6 +4106,7 @@ console.log(
 
   updateEvent();
   loadNetworkStatus();
+  window.setInterval(loadNetworkStatus, 15000);
   window.setInterval(updateEvent, 1000);
 })();
 </script>
@@ -4285,46 +4195,380 @@ console.log(
 
       const profiles = playerData.stats?.skyBlock?.profiles || {};
       const profileIds = Object.keys(profiles);
-      const profileId = pin.profileId && profiles[pin.profileId] ? pin.profileId : profileIds[0] || '';
-      let profileData = null;
-      let member = {};
+      const selectedProfileId =
+        pin.profileId && profiles[pin.profileId] ? pin.profileId :
+        playerData.stats?.skyBlock?.selectedProfile ||
+        playerData.stats?.skyBlock?.selectedProfileId ||
+        playerData.selectedProfile ||
+        '';
+      const profileId = selectedProfileId && profiles[selectedProfileId]
+        ? selectedProfileId
+        : (profileIds.length === 1 ? profileIds[0] : '');
 
-      if (profileId) {
-        try {
-          const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
-          profileData = profileResponse?.profile || profileResponse || null;
-          const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
-          const memberKeys = Object.keys(members);
-          const cleanUuid = String(playerData.uuid || '').replace(/-/g, '').toLowerCase();
-          const matchedKey = memberKeys.find(key => key.toLowerCase() === cleanUuid);
-          member = members[matchedKey || memberKeys[0] || ''] || {};
-        } catch (_) {
-          profileData = null;
-        }
+      let profileData = null;
+      let member = null;
+
+      if (!profileId) {
+        throw new Error('No unambiguous SkyBlock profile is available for this player.');
       }
 
+      const profileResponse = await fetchJson(`${PROXY_ORIGIN}/profile/${encodeURIComponent(profileId)}`);
+      profileData = profileResponse?.profile || profileResponse || null;
+      const members = profileData?.members && typeof profileData.members === 'object' ? profileData.members : {};
+      const memberKeys = Object.keys(members);
+      const cleanUuid = String(playerData.uuid || '').replace(/-/g, '').toLowerCase();
+      const matchedKey = cleanUuid
+        ? memberKeys.find(key => key.replace(/-/g, '').toLowerCase() === cleanUuid)
+        : null;
+
+      if (!matchedKey) {
+        throw new Error('Pinned player was not found in the selected SkyBlock profile.');
+      }
+      member = members[matchedKey];
+
       rankEl.textContent = playerData.selectedRank || 'DEFAULT';
-      levelEl.textContent = member.level != null ? `Level ${member.level}` : '—';
-      purseEl.textContent = compactCoins(member.coinPurse ?? member.coin_purse);
+      levelEl.textContent = member?.level != null ? `Level ${member.level}` : '—';
+      purseEl.textContent = compactCoins(member?.coinPurse ?? member?.coin_purse);
       bankEl.textContent = compactCoins(profileData?.banking?.balance);
       stateEl.textContent = profileData?.cuteName || profileData?.cute_name
         ? `Profile: ${profileData.cuteName || profileData.cute_name}`
         : 'Live stats from Player Viewer data';
+      errorEl.hidden = true;
       statsEl.hidden = false;
     } catch (error) {
       if (token !== requestToken) return;
       statsEl.hidden = true;
       stateEl.textContent = 'Player data could not be loaded right now.';
-      errorEl.hidden = true;
+      errorEl.textContent = error?.message || 'Please try again in a moment.';
+      errorEl.hidden = false;
     }
   }
 
-  loadPinnedPlayer();
+  let pollTimer = null;
+  let pollInFlight = false;
+  const refreshPinnedPlayer = async () => {
+    if (pollInFlight) return;
+    pollInFlight = true;
+    try {
+      await loadPinnedPlayer();
+    } finally {
+      pollInFlight = false;
+      window.clearTimeout(pollTimer);
+      pollTimer = window.setTimeout(refreshPinnedPlayer, 15000);
+    }
+  };
+
+  refreshPinnedPlayer();
   window.addEventListener('storage', event => {
-    if (PIN_KEYS.includes(event.key)) loadPinnedPlayer();
+    if (PIN_KEYS.includes(event.key)) refreshPinnedPlayer();
   });
-  window.addEventListener('pageshow', loadPinnedPlayer);
-  window.setInterval(loadPinnedPlayer, 15000);
+  window.addEventListener('pageshow', refreshPinnedPlayer);
+  window.addEventListener('pagehide', () => window.clearTimeout(pollTimer), { once: true });
+})();
+</script>
+
+
+<style id="premium-animation-pass">
+  /* =========================================================
+     PREMIUM MOTION PASS
+     Subtle, performant, and disabled for reduced-motion users.
+     ========================================================= */
+  .doc-section,
+  .featured-tools-section {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .55s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+  }
+
+  .doc-section.motion-visible,
+  .featured-tools-section.motion-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #overview {
+    transition-delay: 0ms;
+  }
+
+  .featured-tools-section {
+    transition-delay: 60ms;
+  }
+
+  #section-guides {
+    transition-delay: 110ms;
+  }
+
+  #section-tools {
+    transition-delay: 160ms;
+  }
+
+  #section-api {
+    transition-delay: 210ms;
+  }
+
+  #contributors {
+    transition-delay: 260ms;
+  }
+
+  .featured-tool-card,
+  .horizontal-card,
+  .other-guides-grid .schema-card,
+  .resource-grid .schema-card,
+  .contributor-card {
+    transition:
+      transform .22s cubic-bezier(.22,.61,.36,1),
+      border-color .22s ease,
+      background .22s ease,
+      box-shadow .22s ease;
+  }
+
+  .featured-tool-card:hover,
+  .horizontal-card:hover,
+  .other-guides-grid .schema-card:hover,
+  .resource-grid .schema-card:hover,
+  .contributor-card:hover,
+  .featured-tool-card:focus-within,
+  .horizontal-card:focus-within,
+  .other-guides-grid .schema-card:focus-within,
+  .resource-grid .schema-card:focus-within,
+  .contributor-card:focus-within {
+    transform: translateY(-4px) !important;
+    border-color: rgba(56,189,248,.34) !important;
+    box-shadow: 0 18px 38px rgba(0,0,0,.28), 0 0 0 1px rgba(56,189,248,.05) !important;
+  }
+
+  .featured-tool-icon-wrap {
+    transition: transform .22s cubic-bezier(.22,.61,.36,1), background .22s ease, border-color .22s ease;
+  }
+
+  .featured-tool-card:hover .featured-tool-icon-wrap,
+  .featured-tool-card:focus-within .featured-tool-icon-wrap {
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(56,189,248,.10) !important;
+    border-color: rgba(56,189,248,.24) !important;
+  }
+
+  .featured-tool-icon {
+    transition: transform .24s cubic-bezier(.22,.61,.36,1);
+  }
+
+  .featured-tool-card:hover .featured-tool-icon,
+  .featured-tool-card:focus-within .featured-tool-icon {
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  .hero-status .status-dot {
+    animation: statusPulse 2.2s ease-in-out infinite;
+  }
+
+  #hero-rotating-word {
+    transition: opacity .16s ease, transform .18s ease;
+  }
+
+  .search-box {
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+
+  .search-box:focus-within {
+    transform: translateY(-1px);
+  }
+
+  .search-results {
+    transform-origin: top center;
+    animation: searchPanelIn .16s ease-out both;
+  }
+
+  .search-result {
+    animation: searchResultIn .18s ease-out both;
+  }
+
+  .search-result:nth-child(2) { animation-delay: 18ms; }
+  .search-result:nth-child(3) { animation-delay: 36ms; }
+  .search-result:nth-child(4) { animation-delay: 54ms; }
+  .search-result:nth-child(5) { animation-delay: 72ms; }
+
+  .horizontal-scroll-frame::after {
+    transition: opacity .2s ease, width .2s ease;
+  }
+
+  .horizontal-scroll-frame.scroll-end::after {
+    opacity: 0 !important;
+  }
+
+  .horizontal-scroll-frame.scroll-empty::after {
+    opacity: 0 !important;
+  }
+
+  .sidebar-nav-item a {
+    position: relative;
+  }
+
+  .sidebar-nav-item a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    bottom: 7px;
+    width: 2px;
+    border-radius: 99px;
+    background: #38bdf8;
+    transform: scaleY(0);
+    transform-origin: center;
+    opacity: 0;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  .sidebar-nav-item a.section-active::before {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(56,210,123,.22), 0 0 10px currentColor; }
+    50% { box-shadow: 0 0 0 5px rgba(56,210,123,0), 0 0 14px currentColor; }
+  }
+
+  @keyframes searchPanelIn {
+    from { opacity: 0; transform: translateY(-4px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes searchResultIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 700px) {
+    .doc-section,
+    .featured-tools-section {
+      transform: translateY(10px);
+    }
+
+    .featured-tool-card:hover,
+    .horizontal-card:hover,
+    .other-guides-grid .schema-card:hover,
+    .resource-grid .schema-card:hover,
+    .contributor-card:hover {
+      transform: translateY(-2px) !important;
+    }
+
+    .sidebar-nav-item a::before {
+      left: 3px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doc-section,
+    .featured-tools-section,
+    .featured-tool-card,
+    .horizontal-card,
+    .other-guides-grid .schema-card,
+    .resource-grid .schema-card,
+    .contributor-card,
+    .featured-tool-icon-wrap,
+    .featured-tool-icon,
+    .hero-status .status-dot,
+    #hero-rotating-word,
+    .search-box,
+    .search-results,
+    .search-result,
+    .sidebar-nav-item a::before,
+    .horizontal-scroll-frame::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .doc-section,
+    .featured-tools-section {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+
+<script id="premium-motion-script">
+(function () {
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const sections = Array.from(document.querySelectorAll('.main-content > .doc-section, .main-content > .featured-tools-section'));
+
+  function revealSections() {
+    if (reducedMotion || !sections.length) {
+      sections.forEach(section => section.classList.add('motion-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('motion-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px' });
+
+    sections.forEach(section => observer.observe(section));
+  }
+
+  function updateScrollFade(frame) {
+    const scroller = frame.querySelector('.featured-tools-grid, .horizontal-cards');
+    if (!scroller) {
+      frame.classList.add('scroll-empty');
+      return;
+    }
+
+    const maxScroll = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const atEnd = maxScroll <= 2 || scroller.scrollLeft >= maxScroll - 2;
+    frame.classList.toggle('scroll-end', atEnd);
+    frame.classList.toggle('scroll-empty', maxScroll <= 2);
+  }
+
+  function setupHorizontalFades() {
+    document.querySelectorAll('.horizontal-scroll-frame').forEach(frame => {
+      const scroller = frame.querySelector('.featured-tools-grid, .horizontal-cards');
+      if (!scroller) return;
+      const refresh = () => updateScrollFade(frame);
+      scroller.addEventListener('scroll', refresh, { passive: true });
+      window.addEventListener('resize', refresh, { passive: true });
+      refresh();
+    });
+  }
+
+  function setupSidebarSectionIndicator() {
+    const links = Array.from(document.querySelectorAll('.sidebar-nav-item a[href^="#"]'));
+    const targets = links
+      .map(link => ({ link, target: document.querySelector(link.getAttribute('href')) }))
+      .filter(item => item.target);
+
+    if (!targets.length) return;
+
+    const setActive = activeTarget => {
+      targets.forEach(({ link, target }) => {
+        const active = target === activeTarget;
+        link.classList.toggle('section-active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(visible.target);
+    }, {
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: [0.08, 0.2, 0.4]
+    });
+
+    targets.forEach(({ target }) => observer.observe(target));
+
+    const initial = targets.find(({ target }) => target.getBoundingClientRect().top >= 0)?.target || targets[0].target;
+    setActive(initial);
+  }
+
+  revealSections();
+  setupHorizontalFades();
+  setupSidebarSectionIndicator();
 })();
 </script>
 
