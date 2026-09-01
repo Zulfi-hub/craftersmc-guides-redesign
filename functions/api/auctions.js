@@ -602,23 +602,30 @@ export async function onRequest({ request, env }) {
     });
   }
 
-  // Parse query parameters
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const page = params.get('page') || '0';
+  const type = params.get('type') || '';
+  const auctionId = params.get('id') || '';
+  const apiKey = env?.CMC_API_KEY || env?.CRAFTERS_API_KEY || env?.CMC_API_KEY_BAZAAR || 'e89b4eb6-1776-4fb5-9a25-812c2ce1f8d8';
 
   try {
-    // Fetch auctions from CraftersMC API
-    const response = await fetch(
-      `https://api.craftersmc.net/v1/skyblock/auctions?page=${page}`,
-      {
-        headers: {
-          'User-Agent': 'Auctions-Tracker/1.0',
-          'Accept': 'application/json',
-          'x-api-key': env.CMC_API_KEY || env.cmc_api_key || env['cmc-api-key'] || ''
-        }
-      }
-    );
+    let targetUrl = `https://api.craftersmc.net/v1/skyblock/auctions?page=${page}`;
+    if (auctionId) {
+      targetUrl = `https://api.craftersmc.net/v1/skyblock/auction/${auctionId}`;
+    } else if (type === 'ended') {
+      targetUrl = 'https://api.craftersmc.net/v1/skyblock/auctions/ended';
+    }
+
+    const headers = {
+      'User-Agent': 'Auctions-Tracker/1.0',
+      'Accept': 'application/json'
+    };
+    if (apiKey) {
+      headers['X-API-Key'] = apiKey;
+    }
+
+    const response = await fetch(targetUrl, { headers });
 
     if (!response.ok) {
       return new Response(
@@ -638,6 +645,18 @@ export async function onRequest({ request, env }) {
     }
 
     const data = await response.json();
+
+    // If single auction query, return directly without pagination processing
+    if (auctionId) {
+      return new Response(JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS'
+        }
+      });
+    }
 
     // Process auctions to decode NBT data
     if (data.auctions && Array.isArray(data.auctions)) {

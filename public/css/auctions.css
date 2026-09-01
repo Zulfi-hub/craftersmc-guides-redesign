@@ -1,0 +1,791 @@
+/* ==========================================================================
+   CraftersMC Auction House Stylesheet — Modern & Responsive
+   ========================================================================== */
+
+/* Minecraft Pixel Font from feather-bot */
+@font-face {
+  font-family: 'Pixeloid Sans';
+  src: url('../fonts/PixeloidSans.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Layout & Container Overrides */
+.app-layout {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 56px);
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 32px 40px 80px 40px;
+  background: #ffffff;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 24px 24px 60px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px 14px 40px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px 10px 32px 10px;
+  }
+}
+
+/* Hero & Search Card */
+.auction-hero-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .auction-hero-card {
+    padding: 18px 16px;
+    margin-bottom: 18px;
+  }
+}
+
+/* Filter Controls Bar */
+.auction-filter-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+  align-items: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .auction-filter-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .auction-search-col {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .auction-filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .auction-search-col {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .auction-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auction-select {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  color: var(--text-bright);
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.auction-select:focus {
+  border-color: var(--accent-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.12);
+}
+
+/* Custom Image Select Dropdowns */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.custom-select-trigger:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+.custom-select-wrapper.open .custom-select-trigger {
+  border-color: var(--accent-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.custom-select-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-select-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.custom-select-arrow {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.custom-select-wrapper.open .custom-select-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 500;
+  display: none;
+  padding: 4px;
+}
+
+.custom-select-wrapper.open .custom-select-menu {
+  display: block;
+}
+
+.custom-select-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.custom-select-option:hover {
+  background: #f1f5f9;
+  color: var(--text-bright);
+}
+
+.custom-select-option.selected {
+  background: #eff6ff;
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+/* Status Tabs (Active vs Ended) */
+.auction-tabs-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.tab-btn-group {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.tab-btn {
+  padding: 6px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab-btn:hover {
+  color: var(--text-bright);
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: var(--accent-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.view-toggle-group {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.view-btn {
+  padding: 5px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.view-btn.active {
+  background: #ffffff;
+  color: var(--accent-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* KPI Summary Stats Grid */
+.auction-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .auction-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .auction-kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 340px) {
+  .auction-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Auction Items Card Grid View */
+.auction-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .auction-items-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Individual Auction Item Card */
+.auction-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.auction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Rarity Color Top Accents */
+.auction-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #94a3b8;
+}
+
+.auction-card.tier-common::before { background: #94a3b8; }
+.auction-card.tier-uncommon::before { background: #22c55e; }
+.auction-card.tier-rare::before { background: #3b82f6; }
+.auction-card.tier-epic::before { background: #a855f7; }
+.auction-card.tier-legendary::before { background: #f59e0b; }
+.auction-card.tier-mythic::before { background: #ec4899; }
+.auction-card.tier-divine::before { background: #06b6d4; }
+.auction-card.tier-special::before,
+.auction-card.tier-very-special::before { background: #ef4444; }
+
+.auction-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.auction-item-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  line-height: 1.3;
+  text-transform: capitalize;
+}
+
+.tier-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.tier-badge.tier-common { background: #f1f5f9; color: #64748b; }
+.tier-badge.tier-uncommon { background: #dcfce7; color: #15803d; }
+.tier-badge.tier-rare { background: #dbeafe; color: #1d4ed8; }
+.tier-badge.tier-epic { background: #f3e8ff; color: #7e22ce; }
+.tier-badge.tier-legendary { background: #fef3c7; color: #b45309; }
+.tier-badge.tier-mythic { background: #fce7f3; color: #be185d; }
+.tier-badge.tier-special { background: #fee2e2; color: #b91c1c; }
+.tier-badge.tier-very-special { background: #ffe4e6; color: #e11d48; }
+
+.rarity-badge-img {
+  height: 18px;
+  width: auto;
+  max-width: 95px;
+  object-fit: contain;
+  vertical-align: middle;
+  display: inline-block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+}
+
+.rarity-badge-img.large {
+  height: 24px;
+  max-width: 125px;
+}
+
+.type-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.type-pill.bin {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.type-pill.auction {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.auction-card-body {
+  margin-bottom: 14px;
+}
+
+.auction-price-row {
+  margin-bottom: 8px;
+}
+
+.auction-price-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.auction-price-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.auction-price-value.bidding {
+  color: #2563eb;
+}
+
+.auction-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.auction-meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auction-seller-link {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.auction-seller-link:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+.auction-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-card-action {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-card-action:hover {
+  background: #eff6ff;
+  color: var(--accent-color);
+  border-color: #bfdbfe;
+}
+
+/* NBT Lore Tooltip Modal — Light Theme */
+.lore-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lore-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lore-modal-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+  transform: scale(0.96);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.lore-modal-overlay.active .lore-modal-card {
+  transform: scale(1);
+}
+
+.lore-modal-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.lore-modal-title {
+  color: var(--text-bright);
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lore-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.lore-modal-close:hover {
+  color: var(--text-bright);
+  background: #e2e8f0;
+}
+
+.lore-modal-body-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  padding: 20px;
+  overflow-y: auto;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+@media (max-width: 660px) {
+  .lore-modal-body-grid {
+    grid-template-columns: 1fr;
+    padding: 14px;
+    gap: 14px;
+  }
+}
+
+/* Authentic Minecraft In-Game Tooltip Box — Feather-Bot Design */
+.mc-tooltip-box {
+  background: #100010;
+  border: 2px solid #280028;
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: 0 0 20px rgba(120, 0, 180, 0.25), inset 0 0 10px rgba(0, 0, 0, 0.85);
+  font-family: 'Pixeloid Sans', 'PixeloidSans', Consolas, Monaco, monospace;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  letter-spacing: 0.4px;
+  color: #aaaaaa;
+  min-height: 220px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.mc-tooltip-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.5px;
+}
+
+.mc-lore-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 4px;
+  line-height: 1.45;
+}
+
+.mc-rarity-icon-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+}
+
+.mc-rarity-icon-footer img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* Modal Right Sidebar */
+.modal-meta-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-meta-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+/* Dedicated Single Auction Detail View */
+.auction-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auction-detail-header-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.auction-detail-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 860px) {
+  .auction-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bids-history-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  margin-top: 16px;
+}
+
+.bid-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+}
+
+.bid-history-item:hover {
+  background: #f8fafc;
+}
+
+.bid-history-item:last-child {
+  border-bottom: none;
+}
+
+.bid-rank-pill {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bid-rank-pill.top {
+  background: #fef3c7;
+  color: #b45309;
+}
+

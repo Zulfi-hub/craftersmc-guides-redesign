@@ -1,1355 +1,1508 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <link rel="icon" href="assets/cmc-icon.png" type="image/png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Auction House - CraftersMC Guides</title>
+  <title>Live Auction House Explorer — CraftersMC Guides</title>
+  <link rel="icon" href="assets/cmc-icon.png" type="image/png" />
+
+  <!-- Google Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <script src="js/script.js"></script>
+
+  <!-- Core & Documentation Stylesheets -->
+  <link rel="stylesheet" href="better-api-docs/style.css" />
+  <link rel="stylesheet" href="css/player.css" />
+  <link rel="stylesheet" href="css/bazaar.css" />
+  <link rel="stylesheet" href="css/auctions.css" />
+
+  <!-- Core Components -->
+  <script src="js/components.js"></script>
+
+  <!-- Pako for client-side NBT decompression -->
   <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismarine-nbt@2.8.0/nbt.js"></script>
-  <link rel="stylesheet" href="css/essential.css" />
-  <style>
-    html,
-    body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a2e;
-    }
-
-    .auction-wrapper {
-      display: flex;
-      justify-content: center;
-      padding: 24px 12px 48px;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: 2px 2px auto 2px 2px;
-      grid-template-rows: 2px 2px auto 2px 2px;
-      grid-template-areas:
-        "tl-tl tr-tl t tl-tr tr-tr"
-        "bl-tl br-tl t bl-tr br-tr"
-        "l l inv r r"
-        "tl-bl tr-bl b tl-br tr-br"
-        "bl-bl br-bl b bl-br br-br";
-    }
-
-    .s-br {
-      box-shadow: 2px 0 0 black, 0 2px 0 black;
-    }
-
-    .s-bl {
-      box-shadow: -2px 0 0 black, 0 2px 0 black;
-    }
-
-    .s-tr {
-      box-shadow: 0 -2px 0 black, 2px 0 0 black;
-    }
-
-    .s-tl {
-      box-shadow: 0 -2px 0 black, -2px 0 0 black;
-    }
-
-    .corner-top {
-      grid-area: t;
-      box-shadow: 0 -2px 0 black;
-      background-color: #ffffff;
-    }
-
-    .corner-left {
-      grid-area: l;
-      box-shadow: -2px 0 0 black;
-      background-color: #ffffff;
-    }
-
-    .corner-right {
-      grid-area: r;
-      box-shadow: 2px 0 0 black;
-      background-color: #555555;
-    }
-
-    .corner-bottom {
-      grid-area: b;
-      box-shadow: 0 2px 0 black;
-      background-color: #555555;
-    }
-
-    .inner-container {
-      background-color: #c6c6c6;
-      grid-area: inv;
-      grid-column: inherit;
-    }
-
-    .tl-tl {
-      grid-area: tl-tl;
-      background-color: #ffffff;
-      position: relative;
-      bottom: -4px;
-      right: -4px;
-    }
-
-    .br-br {
-      grid-area: br-br;
-      background-color: #555555;
-      position: relative;
-      top: -4px;
-      left: -4px;
-    }
-
-    .bl-tl,
-    .tr-tl,
-    .br-tl {
-      background-color: #ffffff;
-    }
-
-    .bl-tl {
-      grid-area: bl-tl;
-    }
-
-    .tr-tl {
-      grid-area: tr-tl;
-    }
-
-    .br-tl {
-      grid-area: br-tl;
-    }
-
-    .bl-tr {
-      grid-area: bl-tr;
-      background-color: #c6c6c6;
-    }
-
-    .tr-bl {
-      grid-area: tr-bl;
-      background-color: #c6c6c6;
-    }
-
-    .tr-br,
-    .tl-br,
-    .bl-br {
-      background-color: #555555;
-    }
-
-    .tr-br {
-      grid-area: tr-br;
-    }
-
-    .tl-br {
-      grid-area: tl-br;
-    }
-
-    .bl-br {
-      grid-area: bl-br;
-    }
-
-    .inventory {
-      padding: 0.4rem;
-      display: grid;
-    }
-
-    .inventory .inner-container {
-      display: grid;
-      grid-column: inherit;
-    }
-
-    .inner-container h3 {
-      margin: 0 auto 8px auto;
-      font-size: 1.2rem;
-      color: #333;
-      text-align: center;
-    }
-
-    .category-nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 12px;
-      padding: 4px 0;
-    }
-
-    .category-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.1s ease;
-      padding: 0;
-      margin: 0;
-      box-shadow: none;
-    }
-
-    .category-btn img {
-      width: 32px;
-      height: 32px;
-      image-rendering: pixelated;
-      display: block;
-    }
-
-    .category-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .extreme-inner-container {
-      color: #262626;
-      display: grid;
-      grid-template-columns: repeat(9, auto);
-      grid-template-rows: repeat(4, auto);
-    }
-
-    .hotbar-controls {
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .cell {
-      box-shadow: inset 2px 2px 0 0 #373737, inset -2px -2px 0 0 #ffffff;
-      background-color: #8b8b8b;
-      height: 2rem;
-      width: 2rem;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cell img {
-      height: 1.5rem;
-      width: 1.5rem;
-      margin: 0.25rem;
-      image-rendering: pixelated;
-    }
-
-    .item-with-sub {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .tooltip {
-      position: absolute;
-      left: 110%;
-      top: 0;
-      background: #2d143b;
-      color: #ffe16b;
-      border: 2px solid #4b267a;
-      border-radius: 6px;
-      padding: 12px;
-      z-index: 100;
-      min-width: 250px;
-      font-family: 'Minecraft', 'Arial', sans-serif;
-      font-size: 0.85rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      white-space: normal;
-      box-shadow:
-        0 0 0 2px #4b267a,
-        -4px -4px 0 0 #fff,
-        4px -4px 0 0 #fff,
-        -4px 4px 0 0 #555,
-        4px 4px 0 0 #555;
-      font-weight: bold;
-      display: none;
-    }
-
-    .item-with-sub:hover .tooltip {
-      display: block;
-    }
-
-    .tooltip .item-title {
-      color: #6d5cff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .tooltip .item-data {
-      margin-top: 8px;
-      border-top: 1px solid #4b267a;
-      padding-top: 8px;
-    }
-
-    .data-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-      font-size: 12px;
-    }
-
-    .data-label {
-      color: #a3a3ff;
-    }
-
-    .data-value {
-      color: #ffffff;
-      font-weight: bold;
-    }
-
-    .data-value.gold {
-      color: #ffaa00;
-    }
-
-    .tooltip .row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 2px;
-      font-size: 11px;
-      gap: 8px;
-    }
-
-    .tooltip .row span:first-child {
-      color: #a3a3ff;
-      flex: 1;
-    }
-
-    .tooltip .row span:last-child {
-      color: #ffffff;
-      font-weight: bold;
-    }
-
-    .tooltip .row .gold {
-      color: #ffaa00;
-    }
-
-    .tooltip .row.muted {
-      color: #aaaaaa;
-      font-size: 10px;
-    }
-
-    .ah-search {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-sizing: border-box;
-    }
-
-    .ah-btn {
-      cursor: pointer;
-      border: 0;
-      padding: 2px;
-      font: inherit;
-      color: #262626;
-      background: transparent;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      box-shadow: none;
-    }
-
-    .ah-btn:hover {
-      box-shadow: none;
-      background: transparent;
-      transform: none;
-    }
-
-    .ah-btn:focus-visible {
-      outline: 2px solid #ffff55;
-      outline-offset: 2px;
-    }
-
-    .ah-icon {
-      width: 24px;
-      height: 24px;
-      image-rendering: pixelated;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .ah-search-input {
-      width: 240px;
-      height: 28px;
-      border: 0;
-      outline: 0;
-      background: rgba(0, 0, 0, 0.15);
-      box-shadow: inset 2px 2px 0 0 #373737, inset -2px -2px 0 0 #ffffff;
-      color: #262626;
-      font-size: 0.95rem;
-      padding: 0 8px;
-      box-sizing: border-box;
-      transition: width 120ms ease, padding 120ms ease, opacity 120ms ease;
-    }
-
-    .ah-search:not(.ah-search--open) .ah-search-input {
-      width: 0;
-      padding: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .ah-search-input::placeholder {
-      color: #3a3a3a;
-      opacity: 0.85;
-    }
-
-    .ah-badge {
-      position: absolute;
-      right: -2px;
-      bottom: -2px;
-      font-size: 10px;
-      line-height: 1;
-      padding: 2px 3px;
-      background: rgba(0, 0, 0, 0.45);
-      color: #ffffff;
-      border-radius: 2px;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .item-quantity {
-      position: absolute;
-      right: 2px;
-      bottom: 1px;
-      font-size: 14px;
-      line-height: 1;
-      padding: 0 2px;
-      color: #ffffff;
-      font-weight: bold;
-      user-select: none;
-      pointer-events: none;
-      text-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
-      font-family: 'Arial', sans-serif;
-    }
-
-    .item-quantity.hidden {
-      display: none;
-    }
-
-    .cell::before,
-    .cell::after {
-      content: "";
-      height: 2px;
-      width: 2px;
-      background-color: #8b8b8b;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
-    .cell::after {
-      top: auto;
-      right: auto;
-      left: 0;
-      bottom: 0;
-    }
-
-    /* Pagination styles */
-    .page-info {
-      color: #262626;
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin: 0 5px;
-    }
-
-    .ah-pagination-btn {
-      cursor: pointer;
-      border: 0;
-      padding: 2px;
-      background: transparent;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: none;
-    }
-
-    .ah-pagination-btn:hover {
-      transform: none;
-      box-shadow: none;
-      background: transparent;
-    }
-
-    .ah-pagination-btn.disabled {
-      cursor: default;
-      opacity: 0.6;
-      box-shadow: none;
-    }
-  </style>
 </head>
-
 <body>
-  <div id="loader"></div>
 
-  <!-- Top Navbar -->
-  <div class="top"></div>
+  <!-- Top Header Web Component -->
+  <cmc-header active="auction"></cmc-header>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar"></div>
-  <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <!-- Page Layout -->
+  <div class="app-layout">
 
-  <div class="gap"></div>
+    <!-- Left Sidebar Web Component -->
+    <cmc-sidebar active="auction"></cmc-sidebar>
 
-  <div class="auction-wrapper">
-    <div class="container">
-      <div class="corner-left"></div>
-      <div class="corner-right"></div>
-      <div class="corner-bottom"></div>
-      <div class="corner-top"></div>
-      <div class="tl-tl"></div>
-      <div class="tr-tl s-tl"></div>
-      <div class="bl-tl s-tl"></div>
-      <div class="br-tl"></div>
-      <div class="tr-bl s-bl"></div>
-      <div class="bl-tr s-tr"></div>
-      <div class="tl-br"></div>
-      <div class="tr-br s-br"></div>
-      <div class="bl-br s-br"></div>
-      <div class="br-br"></div>
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <section class="doc-section">
 
-      <div class="inventory inner-container">
-        <h3>Auction House</h3>
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="index.html">Guides</a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="auction.html">Live Tools</a>
+          <span class="breadcrumb-separator">/</span>
+          <span>Auction House Explorer</span>
+        </div>
 
-        <!-- Category Navigation Row -->
-        <div class="category-nav" id="categoryNav"></div>
+        <!-- 1. All Auctions Explorer View -->
+        <div id="auctionListView">
+          <!-- Hero & Filter Card -->
+          <div class="auction-hero-card">
+            <div class="section-header" style="margin-bottom: 0;">
+              <h1 class="section-title" style="font-size: 1.6rem; margin-bottom: 6px;">Live Auction House Explorer</h1>
+              <p class="section-desc">Search active Buy-It-Now (BIN) listings, bidding auctions, recently ended sales, item rarities, and sellers across CraftersMC SkyBlock.</p>
+            </div>
 
-        <div class="extreme-inner-container" id="mainGrid"></div>
-        <div class="hotbar-controls" id="hotbarGrid" aria-label="Auction filters">
-          <!-- Previous page button -->
-          <button class="ah-pagination-btn" id="prevPageBtn" title="Previous page">
-            <img id="prevPageImg" src="assets/ah/previous.png" alt="Previous" width="24" height="24" />
-          </button>
+            <!-- Multi-filter bar -->
+            <div class="auction-filter-grid">
+              <div class="auction-search-col">
+                <label class="input-label" for="auctionSearchInput">
+                  <span class="material-icons" style="font-size: 0.95rem;">search</span> Search Product or Seller
+                </label>
+                <div class="search-input-wrapper">
+                  <span class="material-icons search-input-icon">gavel</span>
+                  <input type="text" id="auctionSearchInput" class="bazaar-input" placeholder="e.g. Hyperion, Hardened Diamond, GJ11MAFFIYA..." autocomplete="off" />
+                </div>
+              </div>
 
-          <div class="ah-search" id="ahSearch" title="Search - Search items by their names or descriptions">
-            <button class="ah-btn" id="ahSearchToggle" type="button" aria-label="Search" aria-expanded="false"
-              aria-controls="ahSearchInput">
-              <img class="ah-icon" src="assets/ah/search.png" alt="" />
-            </button>
-            <input class="ah-search-input" id="ahSearchInput" type="search" placeholder="Search..." autocomplete="off"
-              spellcheck="false" />
+              <!-- 1. Listing Type -->
+              <div>
+                <label class="input-label">Listing Type</label>
+                <input type="hidden" id="filterType" value="ALL" />
+                <div class="custom-select-wrapper" id="wrapperFilterType">
+                  <div class="custom-select-trigger" onclick="toggleCustomDropdown('wrapperFilterType')">
+                    <div class="custom-select-trigger-content">
+                      <img src="assets/ah/auction_type/show_all.png" class="custom-select-icon" alt="All" />
+                      <span class="custom-select-label">All Types</span>
+                    </div>
+                    <span class="material-icons custom-select-arrow">expand_more</span>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-select-option selected" data-value="ALL" onclick="selectCustomOption('wrapperFilterType', 'filterType', 'ALL', 'All Types', 'assets/ah/auction_type/show_all.png')">
+                      <img src="assets/ah/auction_type/show_all.png" class="custom-select-icon" alt="All" />
+                      <span>All Types</span>
+                    </div>
+                    <div class="custom-select-option" data-value="BIN" onclick="selectCustomOption('wrapperFilterType', 'filterType', 'BIN', 'Buy It Now (BIN)', 'assets/ah/auction_type/bin_only.png')">
+                      <img src="assets/ah/auction_type/bin_only.png" class="custom-select-icon" alt="BIN" />
+                      <span>Buy It Now (BIN)</span>
+                    </div>
+                    <div class="custom-select-option" data-value="AUCTION" onclick="selectCustomOption('wrapperFilterType', 'filterType', 'AUCTION', 'Bidding Auction', 'assets/ah/auction_type/auction_only.png')">
+                      <img src="assets/ah/auction_type/auction_only.png" class="custom-select-icon" alt="Auction" />
+                      <span>Bidding Auction</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Category -->
+              <div>
+                <label class="input-label">Category</label>
+                <input type="hidden" id="filterCategory" value="ALL" />
+                <div class="custom-select-wrapper" id="wrapperFilterCategory">
+                  <div class="custom-select-trigger" onclick="toggleCustomDropdown('wrapperFilterCategory')">
+                    <div class="custom-select-trigger-content">
+                      <img src="assets/ah/auction_type/show_all.png" class="custom-select-icon" alt="All" />
+                      <span class="custom-select-label">All Categories</span>
+                    </div>
+                    <span class="material-icons custom-select-arrow">expand_more</span>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-select-option selected" data-value="ALL" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'ALL', 'All Categories', 'assets/ah/auction_type/show_all.png')">
+                      <img src="assets/ah/auction_type/show_all.png" class="custom-select-icon" alt="All" />
+                      <span>All Categories</span>
+                    </div>
+                    <div class="custom-select-option" data-value="WEAPONS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'WEAPONS', 'Weapons', 'assets/ah/categories/tab_weapons.png')">
+                      <img src="assets/ah/categories/tab_weapons.png" class="custom-select-icon" alt="Weapons" />
+                      <span>Weapons</span>
+                    </div>
+                    <div class="custom-select-option" data-value="ARMORS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'ARMORS', 'Armors', 'assets/ah/categories/tab_armors.png')">
+                      <img src="assets/ah/categories/tab_armors.png" class="custom-select-icon" alt="Armors" />
+                      <span>Armors</span>
+                    </div>
+                    <div class="custom-select-option" data-value="ACCESSORIES" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'ACCESSORIES', 'Accessories', 'assets/ah/categories/tab_accessories.png')">
+                      <img src="assets/ah/categories/tab_accessories.png" class="custom-select-icon" alt="Accessories" />
+                      <span>Accessories</span>
+                    </div>
+                    <div class="custom-select-option" data-value="PETS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'PETS', 'Pets', 'assets/ah/categories/tab_pets.png')">
+                      <img src="assets/ah/categories/tab_pets.png" class="custom-select-icon" alt="Pets" />
+                      <span>Pets</span>
+                    </div>
+                    <div class="custom-select-option" data-value="TOOLS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'TOOLS', 'Tools', 'assets/ah/categories/tab_tools.png')">
+                      <img src="assets/ah/categories/tab_tools.png" class="custom-select-icon" alt="Tools" />
+                      <span>Tools</span>
+                    </div>
+                    <div class="custom-select-option" data-value="COSMETICS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'COSMETICS', 'Cosmetics', 'assets/ah/categories/tab_cosmetics.png')">
+                      <img src="assets/ah/categories/tab_cosmetics.png" class="custom-select-icon" alt="Cosmetics" />
+                      <span>Cosmetics</span>
+                    </div>
+                    <div class="custom-select-option" data-value="CONSUMABLES" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'CONSUMABLES', 'Consumables', 'assets/ah/categories/tab_consumables.png')">
+                      <img src="assets/ah/categories/tab_consumables.png" class="custom-select-icon" alt="Consumables" />
+                      <span>Consumables</span>
+                    </div>
+                    <div class="custom-select-option" data-value="MISCELLANEOUS" onclick="selectCustomOption('wrapperFilterCategory', 'filterCategory', 'MISCELLANEOUS', 'Miscellaneous', 'assets/ah/categories/tab_miscellaneous.png')">
+                      <img src="assets/ah/categories/tab_miscellaneous.png" class="custom-select-icon" alt="Misc" />
+                      <span>Miscellaneous</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Rarity Tier -->
+              <div>
+                <label class="input-label">Rarity Tier</label>
+                <input type="hidden" id="filterTier" value="ALL" />
+                <div class="custom-select-wrapper" id="wrapperFilterTier">
+                  <div class="custom-select-trigger" onclick="toggleCustomDropdown('wrapperFilterTier')">
+                    <div class="custom-select-trigger-content">
+                      <img src="assets/ah/rarities/notier.png" class="custom-select-icon" alt="All" />
+                      <span class="custom-select-label">All Tiers</span>
+                    </div>
+                    <span class="material-icons custom-select-arrow">expand_more</span>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-select-option selected" data-value="ALL" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'ALL', 'All Tiers', 'assets/ah/rarities/notier.png')">
+                      <img src="assets/ah/rarities/notier.png" class="custom-select-icon" alt="All" />
+                      <span>All Tiers</span>
+                    </div>
+                    <div class="custom-select-option" data-value="COMMON" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'COMMON', 'Common', 'assets/ah/rarities/common.png')">
+                      <img src="assets/ah/rarities/common.png" class="custom-select-icon" alt="Common" />
+                      <span>Common</span>
+                    </div>
+                    <div class="custom-select-option" data-value="UNCOMMON" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'UNCOMMON', 'Uncommon', 'assets/ah/rarities/uncommon.png')">
+                      <img src="assets/ah/rarities/uncommon.png" class="custom-select-icon" alt="Uncommon" />
+                      <span>Uncommon</span>
+                    </div>
+                    <div class="custom-select-option" data-value="RARE" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'RARE', 'Rare', 'assets/ah/rarities/rare.png')">
+                      <img src="assets/ah/rarities/rare.png" class="custom-select-icon" alt="Rare" />
+                      <span>Rare</span>
+                    </div>
+                    <div class="custom-select-option" data-value="EPIC" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'EPIC', 'Epic', 'assets/ah/rarities/epic.png')">
+                      <img src="assets/ah/rarities/epic.png" class="custom-select-icon" alt="Epic" />
+                      <span>Epic</span>
+                    </div>
+                    <div class="custom-select-option" data-value="LEGENDARY" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'LEGENDARY', 'Legendary', 'assets/ah/rarities/legendary.png')">
+                      <img src="assets/ah/rarities/legendary.png" class="custom-select-icon" alt="Legendary" />
+                      <span>Legendary</span>
+                    </div>
+                    <div class="custom-select-option" data-value="MYTHIC" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'MYTHIC', 'Mythic', 'assets/ah/rarities/mythic.png')">
+                      <img src="assets/ah/rarities/mythic.png" class="custom-select-icon" alt="Mythic" />
+                      <span>Mythic</span>
+                    </div>
+                    <div class="custom-select-option" data-value="SPECIAL" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'SPECIAL', 'Special', 'assets/ah/rarities/special.png')">
+                      <img src="assets/ah/rarities/special.png" class="custom-select-icon" alt="Special" />
+                      <span>Special</span>
+                    </div>
+                    <div class="custom-select-option" data-value="VERY_SPECIAL" onclick="selectCustomOption('wrapperFilterTier', 'filterTier', 'VERY_SPECIAL', 'Very Special', 'assets/ah/rarities/special.png')">
+                      <img src="assets/ah/rarities/special.png" class="custom-select-icon" alt="Very Special" />
+                      <span>Very Special</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Sort By -->
+              <div>
+                <label class="input-label">Sort By</label>
+                <input type="hidden" id="sortBy" value="endingSoon" />
+                <div class="custom-select-wrapper" id="wrapperSortBy">
+                  <div class="custom-select-trigger" onclick="toggleCustomDropdown('wrapperSortBy')">
+                    <div class="custom-select-trigger-content">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span class="custom-select-label">Ending Soonest</span>
+                    </div>
+                    <span class="material-icons custom-select-arrow">expand_more</span>
+                  </div>
+                  <div class="custom-select-menu">
+                    <div class="custom-select-option selected" data-value="endingSoon" onclick="selectCustomOption('wrapperSortBy', 'sortBy', 'endingSoon', 'Ending Soonest', 'assets/ah/sort.png')">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span>Ending Soonest</span>
+                    </div>
+                    <div class="custom-select-option" data-value="priceLow" onclick="selectCustomOption('wrapperSortBy', 'sortBy', 'priceLow', 'Lowest Price', 'assets/ah/sort.png')">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span>Lowest Price</span>
+                    </div>
+                    <div class="custom-select-option" data-value="priceHigh" onclick="selectCustomOption('wrapperSortBy', 'sortBy', 'priceHigh', 'Highest Price', 'assets/ah/sort.png')">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span>Highest Price</span>
+                    </div>
+                    <div class="custom-select-option" data-value="mostBids" onclick="selectCustomOption('wrapperSortBy', 'sortBy', 'mostBids', 'Most Bids', 'assets/ah/sort.png')">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span>Most Bids</span>
+                    </div>
+                    <div class="custom-select-option" data-value="newest" onclick="selectCustomOption('wrapperSortBy', 'sortBy', 'newest', 'Newly Listed', 'assets/ah/sort.png')">
+                      <img src="assets/ah/sort.png" class="custom-select-icon" alt="Sort" />
+                      <span>Newly Listed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Status Tabs (Active vs Ended) & View Mode -->
+            <div class="auction-tabs-row">
+              <div class="tab-btn-group">
+                <button class="tab-btn active" id="tabActive" onclick="switchAuctionType('active')">
+                  <span class="material-icons" style="font-size:1rem; color:#16a34a;">fiber_manual_record</span> Active Auctions
+                </button>
+                <button class="tab-btn" id="tabEnded" onclick="switchAuctionType('ended')">
+                  <span class="material-icons" style="font-size:1rem; color:#64748b;">history</span> Recently Ended
+                </button>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span id="auctionCountLabel" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Loading auctions...</span>
+                <button class="btn-secondary-action" onclick="fetchAuctions(currentPage)" title="Refresh Auctions">
+                  <span class="material-icons" style="font-size: 0.95rem;">refresh</span> Refresh
+                </button>
+                <div class="view-toggle-group">
+                  <button class="view-btn active" id="btnViewGrid" onclick="setViewMode('grid')" title="Card Grid View">
+                    <span class="material-icons" style="font-size: 1.1rem;">grid_view</span>
+                  </button>
+                  <button class="view-btn" id="btnViewTable" onclick="setViewMode('table')" title="Dense Table View">
+                    <span class="material-icons" style="font-size: 1.1rem;">view_list</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <button class="ah-btn" id="ahAuctionTypeBtn" type="button"
-            title="Auction Type - Buy It Now, Classic Auction, or Both" aria-label="Auction Type">
-            <img class="ah-icon" id="ahAuctionTypeIcon" src="assets/ah/auction_type/show_all.png" alt="" />
-          </button>
+          <!-- KPI Market Overview Grid -->
+          <div class="auction-kpi-grid">
+            <div class="stat-box">
+              <div class="stat-box-title">Total Active Listings</div>
+              <div id="kpiTotalActive" class="stat-box-value" style="color: var(--accent-color);">-</div>
+              <div id="kpiPageCount" class="stat-box-subtitle">Page 1 of 1</div>
+            </div>
 
-          <button class="ah-btn" id="ahRarityBtn" type="button" title="Item Rarity - Can be switched between rarities"
-            aria-label="Item Rarity">
-            <img class="ah-icon" id="ahRarityIcon" src="assets/ah/rarities/notier.png" alt="" />
-          </button>
+            <div class="stat-box">
+              <div class="stat-box-title">Buy It Now (BIN)</div>
+              <div id="kpiBinCount" class="stat-box-value" style="color: #16a34a;">-</div>
+              <div id="kpiBinShare" class="stat-box-subtitle">Instant purchase listings</div>
+            </div>
 
-          <button class="ah-btn" id="ahSortBtn" type="button"
-            title="Sorting - Highest/lowest bid/price, ending soon, most bids, highest rarity, random"
-            aria-label="Sorting">
-            <img class="ah-icon" src="assets/ah/sort.png" alt="" />
-          </button>
+            <div class="stat-box">
+              <div class="stat-box-title">Bidding Auctions</div>
+              <div id="kpiAuctionCount" class="stat-box-value" style="color: #2563eb;">-</div>
+              <div id="kpiAvgBids" class="stat-box-subtitle">Live player auctions</div>
+            </div>
 
-          <!-- Next page button -->
-          <button class="ah-pagination-btn" id="nextPageBtn" title="Next page">
-            <img id="nextPageImg" src="assets/ah/next.png" alt="Next" width="24" height="24" />
-          </button>
+            <div class="stat-box">
+              <div class="stat-box-title">Average Starting Price</div>
+              <div id="kpiAvgPrice" class="stat-box-value" style="color: #ea580c;">-</div>
+              <div class="stat-box-subtitle">Market valuation estimate</div>
+            </div>
+          </div>
+
+          <!-- Status Alert -->
+          <div id="auctionStatusAlert" class="player-status-alert info" style="display: none;">
+            <span class="material-icons" id="auctionStatusIcon">info</span>
+            <span id="auctionStatusText">Loading auctions...</span>
+          </div>
+
+          <!-- Auction Container: Card Grid View -->
+          <div id="auctionGridContainer" class="auction-items-grid"></div>
+
+          <!-- Auction Container: Table View -->
+          <div id="auctionTableContainer" class="catalog-card" style="display: none; padding: 18px 20px;">
+            <div class="catalog-table-responsive">
+              <table class="bazaar-table" id="auctionDataTable">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Type</th>
+                    <th>Rarity</th>
+                    <th>Price / Highest Bid</th>
+                    <th>Bids</th>
+                    <th>Seller</th>
+                    <th>Time Remaining</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="auctionTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Pagination Controls -->
+          <div class="table-pagination-row" id="paginationRow" style="margin-top: 20px;">
+            <div id="paginationInfo" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
+              Showing 0 of 0 auctions
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn-secondary-action" id="btnPrevPage" onclick="changePage(-1)" disabled>
+                <span class="material-icons" style="font-size: 1rem;">chevron_left</span> Previous
+              </button>
+              <span id="pagePillsContainer" style="display: flex; gap: 4px;"></span>
+              <button class="btn-secondary-action" id="btnNextPage" onclick="changePage(1)" disabled>
+                Next <span class="material-icons" style="font-size: 1rem;">chevron_right</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <span class="page-info" id="pageInfo">Page 1 / 1</span>
-      </div>
-    </div>
+
+        <!-- 2. Dedicated Single Auction Detail View -->
+        <div id="auctionDetailView" class="auction-detail-container" style="display: none;">
+          <!-- Top Navigation Bar -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <button class="btn-secondary-action" onclick="closeAuctionDetail()" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+              <span class="material-icons" style="font-size: 1.1rem;">arrow_back</span> Back to Live Auctions
+            </button>
+            <div id="detailAuctionIdTag" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);"></div>
+          </div>
+
+          <!-- Item Header Card -->
+          <div class="auction-detail-header-card" id="detailHeaderCard">
+            <div>
+              <h1 id="detailItemTitle" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; color: var(--text-bright);">Item Name</h1>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <span id="detailTierBadge" class="tier-badge tier-common">COMMON</span>
+                <span id="detailTypePill" class="type-pill bin">BIN</span>
+                <span id="detailCategoryBadge" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted);">Category</span>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Current Price</div>
+              <div id="detailPriceDisplay" style="font-size: 1.8rem; font-weight: 700; font-family: var(--font-mono); color: #16a34a;">-</div>
+            </div>
+          </div>
+
+          <!-- Main Detail Grid -->
+          <div class="auction-detail-grid">
+            <!-- Left: Authentic In-Game Tooltip Box -->
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-bright); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-icons" style="font-size: 1rem; color: var(--accent-color);">memory</span> In-Game Tooltip &amp; Stats
+              </div>
+              <div class="mc-tooltip-box" id="detailTooltipContent" style="min-height: 280px; max-height: none;">
+                Loading item information...
+              </div>
+            </div>
+
+            <!-- Right: Auction Status, Seller & Live Bids History -->
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-bright); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-icons" style="font-size: 1rem; color: var(--accent-color);">info</span> Auction Details
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="modal-meta-card">
+                  <div class="modal-meta-label">Seller</div>
+                  <a id="detailSellerLink" href="#" class="auction-seller-link" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-color);">
+                    <span class="material-icons" style="font-size: 1.2rem;">person</span>
+                    <span>Unknown</span>
+                  </a>
+                </div>
+
+                <div class="modal-meta-card">
+                  <div class="modal-meta-label">Time Remaining</div>
+                  <div id="detailTimeRemaining" style="font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: #0284c7;">
+                    -
+                  </div>
+                  <div id="detailDatesInfo" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;"></div>
+                </div>
+
+                <div class="modal-meta-card">
+                  <div class="modal-meta-label">Starting Price</div>
+                  <div id="detailStartingPrice" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600; color: var(--text-bright);">
+                    -
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Bids History Card -->
+              <div class="bids-history-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-bright); display: flex; align-items: center; gap: 6px;">
+                    <span class="material-icons" style="font-size: 1.05rem; color: #2563eb;">gavel</span> Bidding History
+                  </div>
+                  <span id="detailBidsCountBadge" style="font-size: 0.75rem; font-weight: 700; background: #eff6ff; color: #2563eb; padding: 2px 8px; border-radius: 12px;">0 bids</span>
+                </div>
+                <div id="detailBidsList">
+                  <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+                    Loading bids history...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toastNotification" style="position: fixed; bottom: 24px; right: 24px; z-index: 2000; background: #0f172a; color: #ffffff; padding: 12px 20px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); align-items: center; gap: 8px;">
+          <span class="material-icons" style="color: #22c55e;">check_circle</span>
+          <span id="toastMessage">Copied to clipboard!</span>
+        </div>
+
+      </section>
+
+      <!-- Reusable Site Footer -->
+      <cmc-footer></cmc-footer>
+    </main>
   </div>
 
-  <div id="footer"></div>
-
-  <script src="js/api-proxy-client.js"></script>
-
+  <!-- Client JavaScript Logic -->
   <script>
-    const apiClient = new APIProxyClient();
-    let allAuctions = [];          // all auctions from all API pages
-    let filteredAuctions = [];     // after applying filters / sort
-    let currentDisplayPage = 0;    // 0-indexed page number for the grid
-    const ITEMS_PER_PAGE = 36;
+    // State
+    let rawAuctions = [];
+    let processedAuctions = [];
+    let filteredAuctions = [];
+    let currentPage = 0; // API page
+    let totalApiPages = 1;
+    let totalAuctionsCount = 0;
+    let currentLocalPage = 0; // Client page (24 items per page)
+    const LOCAL_PAGE_SIZE = 24;
+    let currentType = 'active'; // 'active' | 'ended'
+    let currentView = 'grid'; // 'grid' | 'table'
+    let timerInterval = null;
 
-    // Pagination UI elements
-    let prevBtn, nextBtn, prevImg, nextImg, pageInfoSpan;
-
-    // Category state
-    let selectedCategory = null;   // null = all categories
-    let categoryButtons = [];
-
-    // Category definitions (API category strings)
-    const categories = [
-      { key: "WEAPONS", label: "Weapons", img: "tab_weapons.png", imgSelected: "tab_weapons_selected.png" },
-      { key: "ARMORS", label: "Armors", img: "tab_armors.png", imgSelected: "tab_armors_selected.png" },
-      { key: "PETS", label: "Pets", img: "tab_pets.png", imgSelected: "tab_pets_selected.png" },
-      { key: "CONSUMABLES", label: "Consumables", img: "tab_consumables.png", imgSelected: "tab_consumables_selected.png" },
-      { key: "ACCESSORIES", label: "Accessories", img: "tab_accessories.png", imgSelected: "tab_accessories_selected.png" },
-      { key: "COSMETICS", label: "Cosmetics", img: "tab_cosmetics.png", imgSelected: "tab_cosmetics_selected.png" },
-      { key: "FURNITURES", label: "Furniture", img: "tab_furnitures.png", imgSelected: "tab_furnitures_selected.png" },
-      { key: "TOOLS", label: "Tools", img: "tab_tools.png", imgSelected: "tab_tools_selected.png" },
-      { key: "MISCELLANEOUS", label: "Misc", img: "tab_miscellaneous.png", imgSelected: "tab_miscellaneous_selected.png" },
-    ];
-
-    // Filter options (global)
-    const auctionTypeOptions = [
-      { key: 'both', label: 'Both', icon: 'assets/ah/auction_type/show_all.png' },
-      { key: 'bin', label: 'BIN', icon: 'assets/ah/auction_type/bin_only.png' },
-      { key: 'auction', label: 'Auc', icon: 'assets/ah/auction_type/auction_only.png' },
-    ];
-    const rarityOptions = [
-      { key: 'all', label: 'All', icon: 'assets/ah/rarities/notier.png' },
-      { key: 'common', label: 'Com', icon: 'assets/ah/rarities/common.png' },
-      { key: 'uncommon', label: 'Unc', icon: 'assets/ah/rarities/uncommon.png' },
-      { key: 'rare', label: 'Rare', icon: 'assets/ah/rarities/rare.png' },
-      { key: 'epic', label: 'Epic', icon: 'assets/ah/rarities/epic.png' },
-      { key: 'legendary', label: 'Leg', icon: 'assets/ah/rarities/legendary.png' },
-      { key: 'mythic', label: 'Myth', icon: 'assets/ah/rarities/mythic.png' },
-      { key: 'special', label: 'Spec', icon: 'assets/ah/rarities/special.png' },
-    ];
-    const sortOptions = [
-      { key: 'highest', badge: 'Hi', label: 'Highest bid/price' },
-      { key: 'lowest', badge: 'Lo', label: 'Lowest bid/price' },
-      { key: 'ending', badge: 'End', label: 'Ending soon' },
-      { key: 'bids', badge: 'Bid', label: 'Most bids' },
-      { key: 'rarity', badge: 'Rar', label: 'Highest rarity' },
-      { key: 'random', badge: 'Rnd', label: 'Random' },
-    ];
-
-    let auctionTypeIndex = 0;
-    let rarityIndex = 0;
-    let sortIndex = 0;
-
-    // Helper functions (unchanged)
-    function processItemId(itemId) {
-      if (!itemId || typeof itemId !== 'string') return null;
-      const parts = itemId.split(':');
-      const name = parts[parts.length - 1];
-      if (!name) return null;
-      return name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-    }
-
-    function formatCurrency(amount) {
-      if (amount === undefined || amount === null) return 'N/A';
-      const truncated = Math.trunc(Number(amount) * 100) / 100;
-      const hasDecimals = Math.abs(truncated % 1) > Number.EPSILON;
-      return truncated.toLocaleString(undefined, {
-        minimumFractionDigits: hasDecimals ? 2 : 0,
-        maximumFractionDigits: 2
-      });
-    }
-
+    // Format number with commas
     function formatNumber(num) {
-      if (num === undefined || num === null) return 'N/A';
-      return num.toLocaleString();
+      if (num === null || num === undefined || isNaN(num)) return '-';
+      return Number(num).toLocaleString('en-US');
     }
 
-    function formatTimeRemaining(endTime) {
-      if (!endTime) return 'N/A';
+    // Show status alert
+    function showStatus(msg, type = 'info') {
+      const alertEl = document.getElementById('auctionStatusAlert');
+      const iconEl = document.getElementById('auctionStatusIcon');
+      const textEl = document.getElementById('auctionStatusText');
+      if (!alertEl || !textEl) return;
+
+      alertEl.className = `player-status-alert ${type}`;
+      alertEl.style.display = 'flex';
+      textEl.textContent = msg;
+
+      if (type === 'error') {
+        iconEl.textContent = 'error';
+        iconEl.style.color = '#ef4444';
+      } else if (type === 'success') {
+        iconEl.textContent = 'check_circle';
+        iconEl.style.color = '#22c55e';
+      } else {
+        iconEl.textContent = 'info';
+        iconEl.style.color = '#0284c7';
+      }
+    }
+
+    function hideStatus() {
+      const alertEl = document.getElementById('auctionStatusAlert');
+      if (alertEl) alertEl.style.display = 'none';
+    }
+
+    // Clean Item Name from Item ID
+    function formatItemName(itemId) {
+      if (!itemId) return 'Unknown Item';
+      let clean = itemId.replace(/^trpixel:/i, '').replace(/^minecraft:/i, '');
+      return clean
+        .split('_')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    // Format remaining time
+    function formatTimeRemaining(endsAtMs) {
+      if (!endsAtMs) return 'Ended';
       const now = Date.now();
-      const diff = endTime - now;
+      const diff = endsAtMs - now;
+
       if (diff <= 0) return 'Ended';
-      const mins = Math.floor(diff / 60000);
-      const hours = Math.floor(mins / 60);
-      const days = Math.floor(hours / 24);
-      if (days > 0) return `${days}d ${hours % 24}h`;
-      if (hours > 0) return `${hours}h ${mins % 60}m`;
-      return `${mins}m`;
+
+      const sec = Math.floor((diff / 1000) % 60);
+      const min = Math.floor((diff / (1000 * 60)) % 60);
+      const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      if (days > 0) return `${days}d ${hrs}h`;
+      if (hrs > 0) return `${hrs}h ${min}m`;
+      if (min > 0) return `${min}m ${sec}s`;
+      return `${sec}s`;
     }
 
-    function getRarityIcon(rarity) {
-      const rarityMap = {
-        'common': 'assets/ah/rarities/common.png',
-        'uncommon': 'assets/ah/rarities/uncommon.png',
-        'rare': 'assets/ah/rarities/rare.png',
-        'epic': 'assets/ah/rarities/epic.png',
-        'legendary': 'assets/ah/rarities/legendary.png',
-        'mythic': 'assets/ah/rarities/mythic.png',
-        'special': 'assets/ah/rarities/special.png',
-        'notier': 'assets/ah/rarities/notier.png'
-      };
-      return rarityMap[(rarity || 'common').toLowerCase()] || 'assets/ah/rarities/notier.png';
+    // Toast notification
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      const toastText = document.getElementById('toastMessage');
+      if (!toast || !toastText) return;
+
+      toastText.textContent = msg;
+      toast.style.display = 'flex';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
     }
 
-    function generateImagePaths(itemName) {
-      if (!itemName || typeof itemName !== 'string') return ['assets/ah/search.png'];
-      const paths = [];
-      const original = itemName.trim();
-      const originalSlug = original.replace(/\s+/g, '_');
-      if (originalSlug) {
-        paths.push(`img/${originalSlug}.webp`);
-        paths.push(`img/${originalSlug}.png`);
-      }
-      const lowerSlug = original.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_-]/g, '');
-      if (lowerSlug && lowerSlug !== originalSlug) {
-        paths.push(`img/${lowerSlug}.webp`);
-        paths.push(`img/${lowerSlug}.png`);
-      }
-      const firstWord = original.split(/\s+/)[0];
-      if (firstWord) {
-        paths.push(`img/${firstWord}.webp`);
-        paths.push(`img/${firstWord}.png`);
-        const lowerFirst = firstWord.toLowerCase();
-        if (lowerFirst !== firstWord) {
-          paths.push(`img/${lowerFirst}.webp`);
-          paths.push(`img/${lowerFirst}.png`);
-        }
-      }
-      paths.push('assets/ah/search.png');
-      return paths;
+    // Format ended time (relative past time)
+    function formatTimeEnded(endsAtMs) {
+      if (!endsAtMs) return 'Ended';
+      const now = Date.now();
+      const diff = now - endsAtMs;
+      if (diff <= 0) return 'Just ended';
+
+      const sec = Math.floor((diff / 1000) % 60);
+      const min = Math.floor((diff / (1000 * 60)) % 60);
+      const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      if (days > 0) return `${days}d ago`;
+      if (hrs > 0) return `${hrs}h ago`;
+      if (min > 0) return `${min}m ago`;
+      return `${sec}s ago`;
     }
 
-    function setupImageFallback(imgElement) {
-      const paths = JSON.parse(imgElement.dataset.imagePaths || '[]');
-      let currentIndex = 0;
-      if (paths.length > 0) {
-        imgElement.src = paths[0];
-        currentIndex = 1;
-      }
-      imgElement.addEventListener('error', () => {
-        if (currentIndex < paths.length) {
-          const nextPath = paths[currentIndex];
-          console.log(`[Auction] Image failed: ${imgElement.src}, trying: ${nextPath}`);
-          imgElement.src = nextPath;
-          currentIndex++;
-        } else {
-          console.warn(`[Auction] All image paths failed for item: ${imgElement.dataset.itemName}`);
-        }
-      }, { once: false });
-    }
+    // Fetch Auctions from API
+    async function fetchAuctions(page = 0) {
+      currentPage = page;
+      showStatus(`Loading ${currentType === 'ended' ? 'recently ended auctions' : 'live auctions'} (Page ${page + 1})...`, 'info');
+      document.getElementById('auctionCountLabel').textContent = 'Fetching market data...';
 
-    function formatEnchantments(decoded) {
-      console.log('[Enchantments] Input decoded:', decoded);
-      
-      if (!decoded) {
-        console.log('[Enchantments] No decoded data provided');
-        return '';
-      }
-      
-      // Try multiple possible locations for enchantments
-      let enchants = decoded.tag?.Enchantments?.value || 
-                     decoded.tag?.Enchantments ||
-                     decoded.Enchantments?.value ||
-                     decoded.Enchantments;
-      
-      console.log('[Enchantments] Found enchants:', enchants);
-      
-      if (!enchants || !Array.isArray(enchants)) {
-        console.log('[Enchantments] Enchants not in array format or empty');
-        return '';
-      }
-      
-      const result = enchants.map(e => {
-        // Handle both direct object and NBT wrapper format
-        const enchantObj = e.value || e;
-        const idValue = enchantObj.id?.value || enchantObj.id;
-        const lvlValue = enchantObj.lvl?.value || enchantObj.level?.value || enchantObj.lvl || enchantObj.level;
-        
-        const name = (idValue || '').toString().replace(/^minecraft:/, '').split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-        const level = lvlValue || 0;
-        
-        console.log('[Enchantments] Enchant:', { idValue, name, level });
-        return `<div class="row"><span>${name}</span><span class="gold">${level}</span></div>`;
-      }).join('');
-      
-      console.log('[Enchantments] Result HTML:', result);
-      return result;
-    }
+      const targetEndpoint = currentType === 'ended' ? `/auctions?type=ended` : `/auctions?page=${page}`;
 
-    function formatLore(decoded) {
-      console.log('[Lore] Input decoded:', decoded);
-      
-      if (!decoded) {
-        console.log('[Lore] No decoded data provided');
-        return '';
-      }
-      
-      // Try multiple possible locations for lore
-      let lore = decoded.tag?.display?.Lore?.value ||
-                 decoded.tag?.display?.Lore ||
-                 decoded.display?.Lore?.value ||
-                 decoded.display?.Lore;
-      
-      console.log('[Lore] Found lore:', lore);
-      
-      if (!lore || !Array.isArray(lore)) {
-        console.log('[Lore] No lore array found');
-        return '';
-      }
-      
-      return lore.map(line => {
-        const lineValue = line.value || line;
-        return `<div class="row muted">${cleanMCText(lineValue.toString())}</div>`;
-      }).join('');
-    }
-
-    function cleanMCText(text) {
-      if (!text) return '';
-      let cleaned = text.toString();
-      if (cleaned.startsWith('{')) {
-        try {
-          const parsed = JSON.parse(cleaned);
-          cleaned = parsed.text || (Array.isArray(parsed.extra) ? parsed.extra.map(e => e.text).join('') : cleaned);
-        } catch (e) {
-          console.log('[cleanMCText] Could not parse as JSON:', e.message);
-        }
-      }
-      return cleaned.replace(/§./g, '');
-    }
-
-    function extractItemStats(decoded) {
-      console.log('[Stats] Input decoded:', decoded);
-      const stats = [];
-      
-      if (!decoded) {
-        console.log('[Stats] No decoded data provided');
-        return '';
-      }
-      
       try {
-        // Look for AttributeModifiers in various formats
-        const attrMods = decoded.tag?.AttributeModifiers?.value || 
-                         decoded.tag?.AttributeModifiers ||
-                         decoded.AttributeModifiers?.value ||
-                         decoded.AttributeModifiers;
-        
-        if (Array.isArray(attrMods)) {
-          attrMods.forEach(mod => {
-            const modObj = mod.value || mod;
-            const attrName = modObj.AttributeName?.value || modObj.AttributeName;
-            const amount = modObj.Amount?.value || modObj.Amount;
-            
-            if (attrName && attrName.includes('attackDamage') && amount) {
-              stats.push(`Damage: +${amount}`);
-            }
-          });
+        let res = await fetch(targetEndpoint);
+        if (!res.ok) {
+          // Fallback to /api/auctions
+          const fallbackEndpoint = currentType === 'ended' ? `/api/auctions?type=ended` : `/api/auctions?page=${page}`;
+          res = await fetch(fallbackEndpoint);
         }
-      } catch (e) {
-        console.log('[Stats] Error extracting attribute modifiers:', e.message);
-      }
-      
-      // Look for custom stats in ExtraAttributes
-      try {
-        const extra = decoded.tag?.ExtraAttributes?.value ||
-                      decoded.tag?.ExtraAttributes ||
-                      decoded.ExtraAttributes?.value ||
-                      decoded.ExtraAttributes;
-        
-        if (extra && typeof extra === 'object') {
-          const strength = extra.strength?.value || extra.strength;
-          if (strength) stats.push(`Strength: +${strength}`);
-          
-          const defense = extra.defense?.value || extra.defense;
-          if (defense) stats.push(`Defense: +${defense}`);
-        }
-      } catch (e) {
-        console.log('[Stats] Error extracting extra attributes:', e.message);
-      }
-      
-      console.log('[Stats] Found stats:', stats);
-      return stats.map(s => `<div class="row"><span>${s}</span></div>`).join('');
-    }
 
-    function decodeItemData(base64ItemData) {
-      try {
-        if (!base64ItemData) return null;
-        console.log('[Decode] Attempting to decode itemData...');
-        
-        // Base64 decode
-        const binaryString = atob(base64ItemData);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
+        if (!res.ok) {
+          throw new Error(`API returned HTTP ${res.status}`);
         }
-        
-        // Gzip decompress using pako
-        const decompressed = pako.inflate(bytes);
-        console.log('[Decode] Decompressed data length:', decompressed.length);
-        
-        // Try to parse as NBT using prismarine-nbt
-        try {
-          // Use the global NBT parser if available
-          const nbtParser = window.NBT?.parse || window.nbtjs?.parse;
-          
-          if (nbtParser) {
-            const parsed = nbtParser(decompressed);
-            const decoded = parsed.value || parsed;
-            
-            console.log('[Decode] Successfully parsed NBT:', {
-              hasTag: !!decoded.tag,
-              tagKeys: decoded.tag ? Object.keys(decoded.tag) : [],
-              topLevelKeys: Object.keys(decoded)
-            });
-            
-            // Extract the tag object which contains the actual item data
-            if (decoded.tag) {
-              return decoded.tag;
-            }
-            return decoded;
-          } else {
-            console.warn('[Decode] NBT parser not available, attempting JSON fallback');
-          }
-        } catch (nbtError) {
-          console.warn('[Decode] NBT parsing attempted but failed:', nbtError.message);
-        }
-        
-        // Fallback: try direct JSON parsing
-        try {
-          const jsonStr = new TextDecoder().decode(decompressed);
-          console.log('[Decode] Attempting JSON parse on decompressed data');
-          const decoded = JSON.parse(jsonStr);
-          console.log('[Decode] Fallback JSON parse succeeded:', Object.keys(decoded));
-          return decoded;
-        } catch (jsonError) {
-          console.error('[Decode] JSON parsing failed:', jsonError.message);
-          // Last resort: try to find useful data in the decompressed string
-          const dataStr = new TextDecoder().decode(decompressed);
-          console.log('[Decode] Decompressed data (first 500 chars):', dataStr.substring(0, 500));
-          return null;
-        }
-      } catch (error) {
-        console.error('[Decode] Critical error during itemData decode:', error);
-        return null;
+
+        const data = await res.json();
+        hideStatus();
+
+        totalApiPages = data.totalPages || 1;
+        totalAuctionsCount = data.totalAuctions || (data.auctions ? data.auctions.length : 0);
+
+        rawAuctions = data.auctions || [];
+        // Process auctions
+        processedAuctions = rawAuctions.map(a => {
+          const isBin = (a.type || '').toUpperCase() === 'BIN' || a.bin === true;
+          const endsAtMs = a.endsAt ? (a.endsAt > 1e11 ? a.endsAt : a.endsAt * 1000) : 0;
+          const currentBidPrice = a.highestBidAmount || 0;
+          const startingPrice = a.startingPrice || a.price || 0;
+          const displayPrice = isBin ? startingPrice : (currentBidPrice > 0 ? currentBidPrice : startingPrice);
+          const tier = (a.tier || 'COMMON').toUpperCase();
+
+          return {
+            id: a.id || a.uuid || '',
+            itemId: a.itemId || 'unknown',
+            name: a.itemName || formatItemName(a.itemId),
+            tier: tier,
+            category: (a.category || 'MISC').toUpperCase(),
+            isBin: isBin,
+            price: displayPrice,
+            startingPrice: startingPrice,
+            highestBid: currentBidPrice,
+            bidsCount: a.bids || 0,
+            ownerName: a.ownerName || 'Unknown',
+            ownerUniqueId: a.ownerUniqueId || '',
+            endsAt: endsAtMs,
+            rawItemData: a.itemData || '',
+            ended: currentType === 'ended' || a.ended || (endsAtMs > 0 && endsAtMs <= Date.now()),
+            cancelReason: a.cancelReason || null,
+            winnerName: a.winnerName || a.highestBidderName || null
+          };
+        });
+
+        updateKpiMetrics();
+        applyFiltersAndRender();
+
+      } catch (err) {
+        console.error('[Auctions] Fetch error:', err);
+        showStatus(`Failed to load auctions: ${err.message}. Please check your connection.`, 'error');
+        document.getElementById('auctionCountLabel').textContent = 'Error loading data';
       }
     }
 
-    async function fillCells(auctions) {
-      const mainGrid = document.getElementById('mainGrid');
-      if (!mainGrid) return;
-      console.log(`[Auction] Filling grid with ${auctions.length} auctions`);
-      mainGrid.innerHTML = '';
-      for (let i = 0; i < ITEMS_PER_PAGE; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        if (i < auctions.length) {
-          const auction = auctions[i];
-          console.log(`[fillCells] Auction ${i}:`, auction);
-          const itemName = auction.item_name || 'Unknown Item';
-          const imagePaths = generateImagePaths(itemName);
-          const primaryImage = imagePaths[0];
-          const quantity = auction.count || auction.quantity || 1;
-          const quantityDisplay = quantity > 1 ? quantity : '';
-          const quantityClass = quantity === 1 ? 'item-quantity hidden' : 'item-quantity';
-          cell.innerHTML = `
-            <div class="item-with-sub">
-              <img src="${primaryImage}" alt="${itemName}" class="item-img"
-                   data-item-name="${itemName}"
-                   data-image-paths='${JSON.stringify(imagePaths).replace(/'/g, "&apos;")}'>
-              <div class="${quantityClass}" data-quantity="${quantity}">${quantityDisplay}</div>
-              <div class="tooltip"></div>
-            </div>
-          `;
-          setupAuctionTooltip(cell, auction);
-        }
-        mainGrid.appendChild(cell);
-      }
+    // Update Top Summary KPI Cards
+    function updateKpiMetrics() {
+      const isEndedTab = currentType === 'ended';
+      const total = totalAuctionsCount || processedAuctions.length;
+      const binCount = processedAuctions.filter(a => a.isBin).length;
+      const bidCount = processedAuctions.filter(a => !a.isBin).length;
+      const binShare = processedAuctions.length > 0 ? Math.round((binCount / processedAuctions.length) * 100) : 0;
+
+      const totalPrice = processedAuctions.reduce((sum, a) => sum + (a.price || 0), 0);
+      const avgPrice = processedAuctions.length > 0 ? Math.round(totalPrice / processedAuctions.length) : 0;
+
+      document.getElementById('kpiTotalActive').textContent = formatNumber(total);
+      document.getElementById('kpiPageCount').textContent = isEndedTab ? 'Recently ended sales' : `Page ${currentPage + 1} of ${totalApiPages}`;
+      document.getElementById('kpiBinCount').textContent = formatNumber(binCount);
+      document.getElementById('kpiBinShare').textContent = `${binShare}% of listings`;
+      document.getElementById('kpiAuctionCount').textContent = formatNumber(bidCount);
+      document.getElementById('kpiAvgBids').textContent = `${100 - binShare}% of listings`;
+      document.getElementById('kpiAvgPrice').textContent = `${formatNumber(avgPrice)} coins`;
     }
 
-    function setupAuctionTooltip(cell, auction) {
-      const itemDiv = cell.querySelector('.item-with-sub');
-      const tooltip = itemDiv?.querySelector('.tooltip');
-      const imgElement = itemDiv?.querySelector('.item-img');
-      if (!itemDiv || !tooltip) return;
-      if (imgElement) setupImageFallback(imgElement);
-      
-      // Decode itemData if not already decoded
-      let decodedData = auction.item_nbt_decoded?.decoded;
-      if (!decodedData && auction.itemData) {
-        console.log('[Tooltip] Decoding itemData from base64...');
-        decodedData = decodeItemData(auction.itemData);
-        // Store it for later use
-        if (decodedData) {
-          auction.decodedContent = decodedData;
+    // Filter, Sort, and Render
+    function applyFiltersAndRender() {
+      const q = (document.getElementById('auctionSearchInput')?.value || '').trim().toLowerCase();
+      const selType = document.getElementById('filterType')?.value || 'ALL';
+      const selCat = document.getElementById('filterCategory')?.value || 'ALL';
+      const selTier = document.getElementById('filterTier')?.value || 'ALL';
+      const sortBy = document.getElementById('sortBy')?.value || 'endingSoon';
+
+      filteredAuctions = processedAuctions.filter(a => {
+        // Search match
+        if (q) {
+          const matchName = a.name.toLowerCase().includes(q);
+          const matchId = a.itemId.toLowerCase().includes(q);
+          const matchSeller = a.ownerName.toLowerCase().includes(q);
+          if (!matchName && !matchId && !matchSeller) return false;
         }
-      }
-      
-      // Debug: Log auction data
-      console.log('[Auction] Tooltip auction data:', {
-        item_name: auction.item_name,
-        tier: auction.tier,
-        has_itemData: !!auction.itemData,
-        item_nbt_decoded: auction.item_nbt_decoded,
-        hasDecoded: !!decodedData,
-        decodedKeys: decodedData ? Object.keys(decodedData) : 'none'
-      });
-      
-      // Populate tooltip content immediately
-      tooltip.innerHTML = generateAuctionTooltipHTML(auction, decodedData);
-    }
 
-    function generateAuctionTooltipHTML(auction, decodedData) {
-      const itemName = auction.item_name || 'Unknown Item';
-      const rarity = (auction.tier || 'common').toUpperCase();
-      const isBin = auction.type === 'BIN';
-      const auctionType = isBin ? 'BIN' : 'Auction';
-      const endTime = auction.endsAt * 1000;
-      
-      let html = `<div class="item-title">${itemName} - ${rarity}</div>`;
-      html += `<div class="item-data">`;
-      
-      console.log('[Tooltip] Decoded data:', decodedData);
-      
-      // Display enchantments if available
-      if (decodedData) {
-        const enchantments = formatEnchantments(decodedData);
-        console.log('[Tooltip] Enchantments HTML:', enchantments);
-        if (enchantments) {
-          html += `<div style="margin: 4px 0; border-top: 1px solid #4b267a; padding-top: 4px;">`;
-          html += enchantments;
-          html += `</div>`;
+        // Type match
+        if (selType === 'BIN' && !a.isBin) return false;
+        if (selType === 'AUCTION' && a.isBin) return false;
+
+        // Category match
+        if (selCat !== 'ALL') {
+          const catA = (a.category || '').toUpperCase();
+          const catSel = selCat.toUpperCase();
+          if (catA !== catSel && !catA.includes(catSel) && !catSel.includes(catA)) return false;
         }
-        
-        // Display item stats if available
-        const stats = extractItemStats(decodedData);
-        console.log('[Tooltip] Stats HTML:', stats);
-        if (stats) {
-          html += `<div style="margin: 4px 0;">`;
-          html += stats;
-          html += `</div>`;
+
+        // Tier match
+        if (selTier !== 'ALL') {
+          if (a.tier !== selTier) return false;
         }
-        
-        // Display lore if available
-        const lore = formatLore(decodedData);
-        console.log('[Tooltip] Lore HTML:', lore);
-        if (lore) {
-          html += `<div style="margin: 4px 0; border-top: 1px solid #4b267a; padding-top: 4px; font-size: 11px; color: #aaaaaa;">`;
-          html += lore;
-          html += `</div>`;
-        }
-      } else {
-        console.log('[Tooltip] No decoded NBT data available');
-      }
-      
-      // Auction details
-      html += `<div style="border-top: 1px solid #4b267a; padding-top: 8px; margin-top: 8px;">`;
-      if (isBin) {
-        html += `<div class="data-row"><span class="data-label">BIN Price:</span><span class="data-value gold">${formatCurrency(auction.startingPrice)}</span></div>`;
-      } else {
-        html += `<div class="data-row"><span class="data-label">Starting Bid:</span><span class="data-value gold">${formatCurrency(auction.startingPrice)}</span></div>`;
-        html += `<div class="data-row"><span class="data-label">Highest Bid:</span><span class="data-value gold">${formatCurrency(auction.highestBidAmount || 0)}</span></div>`;
-        html += `<div class="data-row"><span class="data-label">Bids:</span><span class="data-value">${formatNumber(auction.bids || 0)}</span></div>`;
-      }
-      
-      html += `<div class="data-row"><span class="data-label">Type:</span><span class="data-value">${auctionType}</span></div>`;
-      html += `<div class="data-row"><span class="data-label">Seller:</span><span class="data-value">${auction.ownerName || 'Unknown'}</span></div>`;
-      html += `<div class="data-row"><span class="data-label">Ends in:</span><span class="data-value gold">${formatTimeRemaining(endTime)}</span></div>`;
-      html += `</div></div>`;
-      
-      console.log('[Tooltip] Final HTML generated');
-      return html;
-    }
 
-    // Category navigation
-    function buildCategoryNav() {
-      const nav = document.getElementById('categoryNav');
-      if (!nav) return;
-      nav.innerHTML = '';
-      categoryButtons = [];
-
-      // "All" button
-      // const allBtn = document.createElement('button');
-      // allBtn.className = 'category-btn';
-      // const allImg = document.createElement('img');
-      // allImg.src = 'assets/ah/categories/tab_all.png';  // You may need to create this image
-      // allImg.alt = 'All';
-      // allImg.style.width = '32px';
-      // allImg.style.height = '32px';
-      // allBtn.appendChild(allImg);
-      // allBtn.addEventListener('click', () => setSelectedCategory(null));
-      // nav.appendChild(allBtn);
-      // categoryButtons.push({ btn: allBtn, category: null, img: allImg, defaultSrc: 'assets/ah/categories/tab_all.png', selectedSrc: 'assets/ah/categories/tab_all_selected.png' });
-
-      // Category buttons
-      categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'category-btn';
-        const img = document.createElement('img');
-        img.src = `assets/ah/categories/${cat.img}`;
-        img.alt = cat.label;
-        img.style.width = '24px';
-        img.style.height = '24px';
-        btn.appendChild(img);
-        btn.addEventListener('click', () => setSelectedCategory(cat.key));
-        nav.appendChild(btn);
-        categoryButtons.push({ btn, category: cat.key, img, defaultSrc: `assets/ah/categories/${cat.img}`, selectedSrc: `assets/ah/categories/${cat.imgSelected}` });
-      });
-    }
-
-    function setSelectedCategory(categoryKey) {
-      selectedCategory = categoryKey;
-      // Update button images
-      categoryButtons.forEach(item => {
-        if (item.category === categoryKey) {
-          item.img.src = item.selectedSrc;
-        } else {
-          item.img.src = item.defaultSrc;
-        }
-      });
-      applyFiltersAndDisplay();
-    }
-
-    // Apply filters and sorting to the full list, then reset to first page and display
-    function applyFiltersAndDisplay() {
-      const searchText = document.getElementById('ahSearchInput').value.toLowerCase().trim();
-      const auctionTypeKey = auctionTypeOptions[auctionTypeIndex].key;
-      const rarityKey = rarityOptions[rarityIndex].key;
-      const sortKey = sortOptions[sortIndex].key;
-
-      console.log(`[Auction] Applying filters - Search: "${searchText}", Type: ${auctionTypeKey}, Rarity: ${rarityKey}, Sort: ${sortKey}, Category: ${selectedCategory || 'All'}`);
-
-      let temp = allAuctions.filter(auction => {
-        if (searchText && !auction.item_name?.toLowerCase().includes(searchText)) return false;
-        if (auctionTypeKey === 'bin' && auction.type !== 'BIN') return false;
-        if (auctionTypeKey === 'auction' && auction.type !== 'NORMAL') return false;
-        if (rarityKey !== 'all' && auction.tier?.toLowerCase() !== rarityKey.toLowerCase()) return false;
-        if (selectedCategory && auction.category !== selectedCategory) return false;
         return true;
       });
 
-      // Sort
-      switch (sortKey) {
-        case 'highest':
-          temp.sort((a, b) => {
-            const priceA = a.type === 'BIN' ? (a.startingPrice || 0) : (a.highestBidAmount || a.startingPrice || 0);
-            const priceB = b.type === 'BIN' ? (b.startingPrice || 0) : (b.highestBidAmount || b.startingPrice || 0);
-            return priceB - priceA;
-          });
-          break;
-        case 'lowest':
-          temp.sort((a, b) => {
-            const priceA = a.type === 'BIN' ? (a.startingPrice || 0) : (a.highestBidAmount || a.startingPrice || 0);
-            const priceB = b.type === 'BIN' ? (b.startingPrice || 0) : (b.highestBidAmount || b.startingPrice || 0);
-            return priceA - priceB;
-          });
-          break;
-        case 'ending':
-          temp.sort((a, b) => (a.endsAt || 0) - (b.endsAt || 0));
-          break;
-        case 'bids':
-          temp.sort((a, b) => (b.bids || 0) - (a.bids || 0));
-          break;
-        case 'rarity':
-          const rarityOrder = { mythic: 7, legendary: 6, epic: 5, rare: 4, uncommon: 3, common: 2, special: 1 };
-          temp.sort((a, b) => (rarityOrder[b.tier?.toLowerCase()] || 0) - (rarityOrder[a.tier?.toLowerCase()] || 0));
-          break;
-        case 'random':
-          for (let i = temp.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [temp[i], temp[j]] = [temp[j], temp[i]];
-          }
-          break;
-      }
-      filteredAuctions = temp;
-      currentDisplayPage = 0;
-      displayCurrentPage();
-    }
-
-    function displayCurrentPage() {
-      const start = currentDisplayPage * ITEMS_PER_PAGE;
-      const pageItems = filteredAuctions.slice(start, start + ITEMS_PER_PAGE);
-      fillCells(pageItems);
-      updatePaginationUI();
-    }
-
-    function updatePaginationUI() {
-      if (!pageInfoSpan) return;
-      const totalPages = Math.ceil(filteredAuctions.length / ITEMS_PER_PAGE);
-      pageInfoSpan.textContent = `Page ${currentDisplayPage + 1} / ${totalPages || 1}`;
-      if (prevBtn) {
-        const isFirst = currentDisplayPage === 0;
-        prevBtn.classList.toggle('disabled', isFirst);
-        if (prevImg) prevImg.src = isFirst ? 'assets/ah/previous_gray.png' : 'assets/ah/previous.png';
-      }
-      if (nextBtn) {
-        const isLast = currentDisplayPage >= totalPages - 1;
-        nextBtn.classList.toggle('disabled', isLast);
-        if (nextImg) nextImg.src = isLast ? 'assets/ah/next_gray.png' : 'assets/ah/next.png';
-      }
-    }
-
-    function goToPrevPage() {
-      if (currentDisplayPage > 0) {
-        currentDisplayPage--;
-        displayCurrentPage();
-      }
-    }
-
-    function goToNextPage() {
-      const totalPages = Math.ceil(filteredAuctions.length / ITEMS_PER_PAGE);
-      if (currentDisplayPage < totalPages - 1) {
-        currentDisplayPage++;
-        displayCurrentPage();
-      }
-    }
-
-    // Load all auctions from all API pages
-    async function loadAllAuctions() {
-      console.log(`[Auction] Loading all auctions...`);
-      let tempAll = [];
-      let currentApiPage = 0;
-      let totalApiPages = 1;
-
-      try {
-        while (currentApiPage < totalApiPages) {
-          const data = await apiClient.getAuctions(currentApiPage);
-          if (data.auctions && Array.isArray(data.auctions)) {
-            tempAll.push(...data.auctions);
-            totalApiPages = data.totalPages || 1;
-            currentApiPage++;
-            console.log(`[Auction] Fetched page ${currentApiPage}/${totalApiPages}`);
-          } else {
-            break;
-          }
+      // Sorting
+      filteredAuctions.sort((a, b) => {
+        if (sortBy === 'endingSoon') {
+          return currentType === 'ended' ? (b.endsAt || 0) - (a.endsAt || 0) : (a.endsAt || 0) - (b.endsAt || 0);
+        } else if (sortBy === 'priceLow') {
+          return (a.price || 0) - (b.price || 0);
+        } else if (sortBy === 'priceHigh') {
+          return (b.price || 0) - (a.price || 0);
+        } else if (sortBy === 'mostBids') {
+          return (b.bidsCount || 0) - (a.bidsCount || 0);
+        } else if (sortBy === 'newest') {
+          return (b.id || '').localeCompare(a.id || '');
         }
+        return 0;
+      });
 
-        console.log(`[Auction] Loaded ${tempAll.length} total auctions`);
+      // Reset local page on filter change
+      currentLocalPage = 0;
 
-        // Normalize each auction
-        allAuctions = tempAll.map((auction, index) => {
-          const isBin = auction.type === 'BIN';
-          const normalized = {
-            ...auction,
-            bin: isBin,
-            bin_price: isBin ? auction.startingPrice : undefined,
-            highest_bid_amount: auction.highestBidAmount,
-            starting_bid: auction.startingPrice,
-            bid_count: auction.bids,
-            auctioneer: auction.ownerName,
-            end_time: auction.endsAt,
-            uuid: auction.id,
-            item_name: auction.item_name || (auction.itemId ? processItemId(auction.itemId) : 'Unknown Item')
-          };
-          
-          // Debug: Log first auction's NBT data structure
-          if (index === 0) {
-            console.log('[Auction] First auction structure:', {
-              has_item_nbt_decoded: !!auction.item_nbt_decoded,
-              item_nbt_decoded: auction.item_nbt_decoded,
-              decoded_keys: auction.item_nbt_decoded?.decoded ? Object.keys(auction.item_nbt_decoded.decoded) : 'none'
-            });
-          }
-          
-          return normalized;
+      document.getElementById('auctionCountLabel').textContent = `${filteredAuctions.length} auctions matching filters`;
+
+      renderAuctionsView();
+      renderPaginationControls();
+    }
+
+    // Custom Dropdown Controller
+    function toggleCustomDropdown(wrapperId) {
+      const wrapper = document.getElementById(wrapperId);
+      if (!wrapper) return;
+      const isOpen = wrapper.classList.contains('open');
+      document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+      if (!isOpen) {
+        wrapper.classList.add('open');
+      }
+    }
+
+    function selectCustomOption(wrapperId, inputId, value, labelText, iconSrc) {
+      const wrapper = document.getElementById(wrapperId);
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.value = value;
+      }
+      if (wrapper) {
+        const triggerContent = wrapper.querySelector('.custom-select-trigger-content');
+        if (triggerContent) {
+          triggerContent.innerHTML = `
+            <img src="${iconSrc}" class="custom-select-icon" alt="${labelText}" />
+            <span class="custom-select-label">${labelText}</span>
+          `;
+        }
+        wrapper.querySelectorAll('.custom-select-option').forEach(opt => {
+          opt.classList.toggle('selected', opt.getAttribute('data-value') === value);
         });
-
-        // Build category navigation and apply initial filter
-        buildCategoryNav();
-        applyFiltersAndDisplay();
-      } catch (error) {
-        console.error('[Auction] Failed to load auctions:', error);
-        fillCells([]);
+        wrapper.classList.remove('open');
       }
+      applyFiltersAndRender();
     }
 
-    function fillEmptyGrid() {
-      const mainGrid = document.getElementById('mainGrid');
-      if (!mainGrid) return;
-      mainGrid.innerHTML = '';
-      for (let i = 0; i < ITEMS_PER_PAGE; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        mainGrid.appendChild(cell);
+    // Close custom dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-select-wrapper')) {
+        document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
       }
+    });
+
+    // Helper for Rarity Badge Image from /assets/rarity/
+    function getRarityBadgeHtml(tier, isLarge = false) {
+      const t = (tier || 'COMMON').toLowerCase().replace(/\s+/g, '_');
+      const knownRarities = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
+
+      if (knownRarities.includes(t)) {
+        return `<img src="assets/rarity/${t}.webp" alt="${tier}" class="rarity-badge-img ${isLarge ? 'large' : ''}" onerror="this.outerHTML='<span class=\\'tier-badge tier-${t}\\'>${tier}</span>'" />`;
+      }
+      return `<span class="tier-badge tier-${t.replace(/_/g, '-')}">${tier}</span>`;
     }
 
-    function initAuctionFilters() {
-      console.log('[Auction] Initializing auction filters');
-      const searchWrap = document.getElementById('ahSearch');
-      const searchToggle = document.getElementById('ahSearchToggle');
-      const searchInput = document.getElementById('ahSearchInput');
-      const auctionTypeBtn = document.getElementById('ahAuctionTypeBtn');
-      const auctionTypeIcon = document.getElementById('ahAuctionTypeIcon');
-      const rarityBtn = document.getElementById('ahRarityBtn');
-      const rarityIcon = document.getElementById('ahRarityIcon');
-      const sortBtn = document.getElementById('ahSortBtn');
+    // Helper for Auction Type Pill with authentic in-game icons
+    function getTypePillHtml(isBin, isEnded = false, highestBid = 0, cancelReason = null) {
+      if (cancelReason === 'OWNER') {
+        return `<span class="type-pill" style="background:#fee2e2; color:#b91c1c; font-weight:700;"><span class="material-icons" style="font-size:0.75rem;">cancel</span> CANCELLED</span>`;
+      }
+      if (isBin) {
+        return `<span class="type-pill bin" style="font-weight:700;"><img src="assets/ah/auction_type/bin_only.png" style="height:14px; width:14px; object-fit:contain; vertical-align:middle; image-rendering:pixelated;" alt="BIN" /> BIN</span>`;
+      }
+      if (isEnded && highestBid > 0) {
+        return `<span class="type-pill auction" style="background:#dcfce7; color:#15803d; border-color:#86efac; font-weight:700;"><img src="assets/ah/auction_type/auction_only.png" style="height:14px; width:14px; object-fit:contain; vertical-align:middle; image-rendering:pixelated;" alt="Sold" /> SOLD</span>`;
+      }
+      return `<span class="type-pill auction" style="font-weight:700;"><img src="assets/ah/auction_type/auction_only.png" style="height:14px; width:14px; object-fit:contain; vertical-align:middle; image-rendering:pixelated;" alt="Auction" /> AUCTION</span>`;
+    }
 
-      if (!searchWrap || !searchToggle || !searchInput || !auctionTypeBtn || !auctionTypeIcon || !rarityBtn || !rarityIcon || !sortBtn) {
-        console.error('[Auction] Failed to find required filter elements');
+    // Render Grid vs Table View (Chunked to 24 per page for high performance)
+    function renderAuctionsView() {
+      const gridEl = document.getElementById('auctionGridContainer');
+      const tableCardEl = document.getElementById('auctionTableContainer');
+      const tableBodyEl = document.getElementById('auctionTableBody');
+      const isEndedTab = currentType === 'ended';
+
+      if (filteredAuctions.length === 0) {
+        if (currentView === 'grid') {
+          gridEl.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-muted);">
+              <span class="material-icons" style="font-size: 2.5rem; color: #94a3b8; margin-bottom: 8px;">search_off</span>
+              <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-bright);">No auctions match your filters</div>
+              <p style="font-size: 0.85rem; margin-top: 4px;">Try clearing your search query or adjusting your category and rarity filters.</p>
+            </div>
+          `;
+          gridEl.style.display = 'grid';
+          tableCardEl.style.display = 'none';
+        } else {
+          tableBodyEl.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--text-muted);">No auctions match your filters.</td></tr>';
+          gridEl.style.display = 'none';
+          tableCardEl.style.display = 'block';
+        }
         return;
       }
 
-      prevBtn = document.getElementById('prevPageBtn');
-      nextBtn = document.getElementById('nextPageBtn');
-      prevImg = document.getElementById('prevPageImg');
-      nextImg = document.getElementById('nextPageImg');
-      pageInfoSpan = document.getElementById('pageInfo');
+      // Slice only 24 items for the visible page
+      const totalLocalPages = Math.ceil(filteredAuctions.length / LOCAL_PAGE_SIZE) || 1;
+      if (currentLocalPage >= totalLocalPages) currentLocalPage = totalLocalPages - 1;
+      if (currentLocalPage < 0) currentLocalPage = 0;
 
-      if (prevBtn) prevBtn.addEventListener('click', goToPrevPage);
-      if (nextBtn) nextBtn.addEventListener('click', goToNextPage);
+      const startIdx = currentLocalPage * LOCAL_PAGE_SIZE;
+      const visibleAuctions = filteredAuctions.slice(startIdx, startIdx + LOCAL_PAGE_SIZE);
 
-      auctionTypeBtn.addEventListener('click', () => {
-        auctionTypeIndex = (auctionTypeIndex + 1) % auctionTypeOptions.length;
-        console.log(`[Auction] Auction type changed to: ${auctionTypeOptions[auctionTypeIndex].key}`);
-        auctionTypeIcon.src = auctionTypeOptions[auctionTypeIndex].icon;
-        auctionTypeBtn.title = `Auction Type - ${auctionTypeOptions[auctionTypeIndex].key === 'bin' ? 'Buy It Now' : auctionTypeOptions[auctionTypeIndex].key === 'auction' ? 'Classic Auction' : 'Both'}`;
-        applyFiltersAndDisplay();
-      });
+      document.getElementById('paginationInfo').textContent = `Showing ${startIdx + 1}–${Math.min(startIdx + LOCAL_PAGE_SIZE, filteredAuctions.length)} of ${filteredAuctions.length} ${isEndedTab ? 'ended' : 'active'} auctions (Page ${currentLocalPage + 1} of ${totalLocalPages})`;
 
-      rarityBtn.addEventListener('click', () => {
-        rarityIndex = (rarityIndex + 1) % rarityOptions.length;
-        console.log(`[Auction] Rarity filter changed to: ${rarityOptions[rarityIndex].key}`);
-        rarityIcon.src = rarityOptions[rarityIndex].icon;
-        rarityBtn.title = `Item Rarity - ${rarityOptions[rarityIndex].key === 'all' ? 'All rarities' : rarityOptions[rarityIndex].key}`;
-        applyFiltersAndDisplay();
-      });
+      if (currentView === 'grid') {
+        gridEl.style.display = 'grid';
+        tableCardEl.style.display = 'none';
 
-      sortBtn.addEventListener('click', () => {
-        sortIndex = (sortIndex + 1) % sortOptions.length;
-        console.log(`[Auction] Sort changed to: ${sortOptions[sortIndex].key}`);
-        sortBtn.title = `Sorting - ${sortOptions[sortIndex].label}`;
-        applyFiltersAndDisplay();
-      });
+        gridEl.innerHTML = visibleAuctions.map(a => {
+          const tierClass = `tier-${a.tier.toLowerCase().replace(/_/g, '-')}`;
+          const timeText = isEndedTab ? formatTimeEnded(a.endsAt) : formatTimeRemaining(a.endsAt);
 
-      // Search logic
-      let searchDebounce = null;
-      let isSearchOpen = false;
+          let priceLabel = 'Buy It Now Price';
+          let priceClass = '';
+          if (isEndedTab) {
+            if (a.cancelReason === 'OWNER') {
+              priceLabel = 'Cancelled by Seller';
+            } else if (a.isBin) {
+              priceLabel = 'Final BIN Price';
+            } else {
+              priceLabel = a.highestBid > 0 ? 'Winning Bid' : 'Unsold (No Bids)';
+            }
+          } else {
+            priceLabel = a.isBin ? 'Buy It Now Price' : 'Current Highest Bid';
+            priceClass = a.isBin ? '' : 'bidding';
+          }
 
-      function openSearch() {
-        if (isSearchOpen) return;
-        isSearchOpen = true;
-        searchWrap.classList.add('ah-search--open');
-        searchToggle.setAttribute('aria-expanded', 'true');
-        searchInput.focus();
-        if (searchInput.value) searchInput.select();
+          const rarityImgHtml = getRarityBadgeHtml(a.tier);
+          const typePillHtml = getTypePillHtml(a.isBin, isEndedTab, a.highestBid, a.cancelReason);
+
+          return `
+            <div class="auction-card ${tierClass}">
+              <div>
+                <div class="auction-card-header">
+                  <div>
+                    <div class="auction-item-title">${a.name}</div>
+                    <div style="display:flex; align-items:center; gap:6px; margin-top:3px;">
+                      ${rarityImgHtml}
+                      ${typePillHtml}
+                    </div>
+                  </div>
+                  <span class="material-icons" style="color:var(--text-dim); font-size:1.4rem;">token</span>
+                </div>
+
+                <div class="auction-card-body">
+                  <div class="auction-price-row">
+                    <div class="auction-price-label">${priceLabel}</div>
+                    <div class="auction-price-value ${priceClass}">
+                      <span>${formatNumber(a.price)}</span>
+                      <span style="font-size:0.8rem; font-weight:500; color:var(--text-muted);">coins</span>
+                    </div>
+                  </div>
+
+                  <div class="auction-meta-list">
+                    <div class="auction-meta-item">
+                      <span>Seller:</span>
+                      <a href="player.html?username=${encodeURIComponent(a.ownerName)}" class="auction-seller-link" title="Inspect ${a.ownerName} in Player Viewer">
+                        <span class="material-icons" style="font-size:0.9rem;">person</span>
+                        ${a.ownerName}
+                      </a>
+                    </div>
+                    <div class="auction-meta-item">
+                      <span>${isEndedTab ? 'Final Bids:' : 'Bids:'}</span>
+                      <strong style="color:var(--text-bright);">${a.isBin ? 'Instant Buy' : `${a.bidsCount} bids`}</strong>
+                    </div>
+                    <div class="auction-meta-item">
+                      <span>${isEndedTab ? 'Ended:' : 'Time Remaining:'}</span>
+                      <strong class="auction-timer" data-ends="${a.endsAt}" style="color: ${isEndedTab ? '#64748b' : (timeText === 'Ended' ? '#ef4444' : '#0284c7')}; font-family:var(--font-mono);">${timeText}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="auction-card-actions">
+                <button class="btn-card-action" onclick="openAuctionDetail('${a.id}')" style="width: 100%; justify-content: center; background: #f8fafc; font-weight: 700; border: 1px solid var(--border-color);" title="Inspect Full Item & Bids">
+                  <span class="material-icons" style="font-size:1.05rem; color: var(--accent-color);">visibility</span> Inspect Item
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } else {
+        gridEl.style.display = 'none';
+        tableCardEl.style.display = 'block';
+
+        tableBodyEl.innerHTML = visibleAuctions.map(a => {
+          const tierClass = `tier-${a.tier.toLowerCase().replace(/_/g, '-')}`;
+          const timeText = isEndedTab ? formatTimeEnded(a.endsAt) : formatTimeRemaining(a.endsAt);
+          const rarityImgHtml = getRarityBadgeHtml(a.tier);
+          const typePillHtml = getTypePillHtml(a.isBin, isEndedTab, a.highestBid, a.cancelReason);
+
+          return `
+            <tr>
+              <td>
+                <div style="font-weight: 700; color: var(--text-bright);">${a.name}</div>
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">${a.itemId}</div>
+              </td>
+              <td>
+                ${typePillHtml}
+              </td>
+              <td>${rarityImgHtml}</td>
+              <td style="font-family: var(--font-mono); font-weight: 700; color: ${a.isBin ? '#16a34a' : '#2563eb'};">
+                ${formatNumber(a.price)}
+              </td>
+              <td style="font-family: var(--font-mono);">${a.isBin ? '-' : a.bidsCount}</td>
+              <td>
+                <a href="player.html?username=${encodeURIComponent(a.ownerName)}" class="auction-seller-link">
+                  ${a.ownerName}
+                </a>
+              </td>
+              <td>
+                <span class="auction-timer" data-ends="${a.endsAt}" style="font-family: var(--font-mono); color: ${isEndedTab ? '#64748b' : (timeText === 'Ended' ? '#ef4444' : '#0284c7')};">
+                  ${timeText}
+                </span>
+              </td>
+              <td>
+                <button class="table-btn-chart" onclick="openAuctionDetail('${a.id}')" title="Inspect Item & Bids" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 0.78rem; font-weight: 600;">
+                  <span class="material-icons" style="font-size:0.9rem; color: var(--accent-color);">visibility</span> Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
       }
-
-      function closeSearchIfEmpty() {
-        if (!isSearchOpen) return;
-        if (String(searchInput.value || '').trim()) return;
-        isSearchOpen = false;
-        searchWrap.classList.remove('ah-search--open');
-        searchToggle.setAttribute('aria-expanded', 'false');
-      }
-
-      searchToggle.addEventListener('click', openSearch);
-      searchWrap.addEventListener('click', (e) => {
-        if (e.target === searchToggle || e.target === searchInput) return;
-        openSearch();
-      });
-      searchInput.addEventListener('focus', openSearch);
-      searchInput.addEventListener('input', (e) => {
-        const value = String(e.target.value || '');
-        if (searchDebounce) clearTimeout(searchDebounce);
-        searchDebounce = setTimeout(() => {
-          applyFiltersAndDisplay();
-        }, 150);
-      });
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          searchInput.blur();
-          closeSearchIfEmpty();
-        }
-      });
-      searchInput.addEventListener('blur', () => {
-        setTimeout(closeSearchIfEmpty, 0);
-      });
-
-      // Set initial filter icons
-      auctionTypeIcon.src = auctionTypeOptions[0].icon;
-      rarityIcon.src = rarityOptions[0].icon;
-      console.log('[Auction] Filter initialization complete');
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('[Auction] DOMContentLoaded - Initializing auction house');
-      fillEmptyGrid();
-      initAuctionFilters();
-      loadAllAuctions();
+    // Render Pagination Controls
+    function renderPaginationControls() {
+      const prevBtn = document.getElementById('btnPrevPage');
+      const nextBtn = document.getElementById('btnNextPage');
+      const pillsContainer = document.getElementById('pagePillsContainer');
+
+      if (!prevBtn || !nextBtn || !pillsContainer) return;
+
+      const totalLocalPages = Math.ceil(filteredAuctions.length / LOCAL_PAGE_SIZE) || 1;
+
+      prevBtn.disabled = currentLocalPage <= 0;
+      nextBtn.disabled = currentLocalPage >= totalLocalPages - 1;
+
+      // Render local page pills
+      let html = '';
+      const start = Math.max(0, currentLocalPage - 2);
+      const end = Math.min(totalLocalPages - 1, currentLocalPage + 2);
+
+      for (let p = start; p <= end; p++) {
+        const isActive = p === currentLocalPage;
+        html += `
+          <button class="btn-secondary-action ${isActive ? 'active' : ''}" style="${isActive ? 'background:var(--accent-color); color:#ffffff; border-color:var(--accent-color); font-weight:700;' : ''} padding:4px 10px; font-size:0.8rem;" onclick="setLocalPage(${p})">
+            ${p + 1}
+          </button>
+        `;
+      }
+
+      if (totalApiPages > 1) {
+        html += `
+          <span style="margin: 0 4px; color: var(--border-color);">|</span>
+          <button class="btn-secondary-action" style="padding:4px 8px; font-size:0.75rem;" onclick="fetchAuctions(${currentPage + 1 >= totalApiPages ? 0 : currentPage + 1})">
+            API Batch (${currentPage + 1}/${totalApiPages}) ➔
+          </button>
+        `;
+      }
+
+      pillsContainer.innerHTML = html;
+    }
+
+    function setLocalPage(p) {
+      currentLocalPage = p;
+      renderAuctionsView();
+      renderPaginationControls();
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function changePage(delta) {
+      const totalLocalPages = Math.ceil(filteredAuctions.length / LOCAL_PAGE_SIZE) || 1;
+      const newPage = currentLocalPage + delta;
+      if (newPage >= 0 && newPage < totalLocalPages) {
+        setLocalPage(newPage);
+      }
+    }
+
+    // Switch between Active and Ended
+    function switchAuctionType(type) {
+      currentType = type;
+      currentLocalPage = 0;
+      document.getElementById('tabActive').classList.toggle('active', type === 'active');
+      document.getElementById('tabEnded').classList.toggle('active', type === 'ended');
+      fetchAuctions(0);
+    }
+
+    // Switch between Grid and Table View
+    function setViewMode(mode) {
+      currentView = mode;
+      document.getElementById('btnViewGrid').classList.toggle('active', mode === 'grid');
+      document.getElementById('btnViewTable').classList.toggle('active', mode === 'table');
+      renderAuctionsView();
+    }
+
+    // Minecraft Color Code to HTML Converter (From feather-bot LEGACY_COLOR_MAP with pixel font shadow)
+    const FEATHER_COLOR_MAP = {
+      '0': '#000000',
+      '1': '#0000AA',
+      '2': '#00AA00',
+      '3': '#00AAAA',
+      '4': '#AA0000',
+      '5': '#AA00AA',
+      '6': '#FFAA00',
+      '7': '#AAAAAA',
+      '8': '#555555',
+      '9': '#5555FF',
+      a: '#55FF55',
+      b: '#55FFFF',
+      c: '#FF5555',
+      d: '#FF55FF',
+      e: '#FFFF55',
+      f: '#FFFFFF',
+      g: '#DDD605',
+      h: '#E3D4D1',
+      i: '#CECACA',
+      j: '#443A3B',
+      m: '#971607',
+      n: '#B4684D',
+      p: '#DEB12D',
+      q: '#119F36',
+      s: '#2CBAA8',
+      t: '#21497B',
+      u: '#9A5CC6',
+      v: '#EB7114',
+      w: '#8CB3FF',
+      x: '#A5A5A5',
+      y: '#F38BAA',
+      z: '#B38B6D',
+    };
+
+    function minecraftColorToHtml(text) {
+      if (!text) return '';
+      // Strip private unicode icon symbols (e.g. \uE000-\uF8FF) and control chars
+      const clean = text.replace(/[\uE000-\uF8FF]/g, '').replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+      if (!clean.trim()) return '&nbsp;';
+
+      let html = '';
+      let currentColor = '#AAAAAA';
+      let isBold = false;
+      let isItalic = false;
+      let isStrike = false;
+      let isUnderline = false;
+
+      const parts = clean.split(/(§[0-9a-z])/gi);
+      for (const part of parts) {
+        if (part.startsWith('§') && part.length === 2) {
+          const code = part.charAt(1).toLowerCase();
+          if (code === 'r') {
+            currentColor = '#AAAAAA';
+            isBold = false;
+            isItalic = false;
+            isStrike = false;
+            isUnderline = false;
+          } else if (code === 'l') {
+            isBold = true;
+          } else if (code === 'o') {
+            isItalic = true;
+          } else if (code === 'n') {
+            isUnderline = true;
+          } else if (code === 'm') {
+            // In feather-bot, §m is color #971607 (custom reforge stats color)
+            currentColor = FEATHER_COLOR_MAP['m'] || '#971607';
+            isStrike = false;
+          } else if (FEATHER_COLOR_MAP[code]) {
+            currentColor = FEATHER_COLOR_MAP[code];
+          }
+        } else if (part.length > 0) {
+          const safeText = part.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const textDec = `${isStrike ? 'line-through ' : ''}${isUnderline ? 'underline' : ''}`.trim() || 'none';
+          html += `<span style="color:${currentColor}; font-weight:${isBold ? '700' : 'normal'}; font-style:${isItalic ? 'italic' : 'normal'}; text-decoration:${textDec}; text-shadow: 1px 1px 0px rgba(0,0,0,0.95);">${safeText}</span>`;
+        }
+      }
+      return html;
+    }
+
+    // Binary NBT Parser with Auto Endianness Detection
+    function parseBinaryNbt(buf) {
+      if (!buf || buf.length < 3) return null;
+
+      // Detect Little-Endian vs Big-Endian
+      let isLE = false;
+      if (buf.length > 5) {
+        if (buf[4] !== 0 && buf[5] === 0) isLE = true;
+      }
+
+      let pos = 0;
+      const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+
+      function readByte() { return view.getInt8(pos++); }
+      function readShort() { const v = view.getInt16(pos, isLE); pos += 2; return v; }
+      function readInt() { const v = view.getInt32(pos, isLE); pos += 4; return v; }
+      function readString() {
+        const len = view.getUint16(pos, isLE);
+        pos += 2;
+        const bytes = new Uint8Array(buf.buffer, buf.byteOffset + pos, len);
+        pos += len;
+        return new TextDecoder('utf-8').decode(bytes);
+      }
+
+      function readTag(type) {
+        if (type === 1) return readByte();
+        if (type === 2) return readShort();
+        if (type === 3) return readInt();
+        if (type === 4) { pos += 8; return 0; }
+        if (type === 5) { const v = view.getFloat32(pos, isLE); pos += 4; return v; }
+        if (type === 6) { const v = view.getFloat64(pos, isLE); pos += 8; return v; }
+        if (type === 7) {
+          const len = readInt();
+          const arr = new Uint8Array(buf.buffer, buf.byteOffset + pos, len);
+          pos += len;
+          return arr;
+        }
+        if (type === 8) return readString();
+        if (type === 9) {
+          const elemType = readByte();
+          const count = readInt();
+          const list = [];
+          for (let i = 0; i < count; i++) list.push(readTag(elemType));
+          return list;
+        }
+        if (type === 10) {
+          const comp = {};
+          while (pos < buf.byteLength) {
+            const t = readByte();
+            if (t === 0) break;
+            const name = readString();
+            comp[name] = readTag(t);
+          }
+          return comp;
+        }
+        if (type === 11) { const len = readInt(); pos += len * 4; return []; }
+        if (type === 12) { const len = readInt(); pos += len * 8; return []; }
+        return null;
+      }
+
+      try {
+        const rootType = readByte();
+        if (rootType === 10) {
+          readString();
+          return readTag(10);
+        }
+      } catch (err) {
+        console.warn('NBT parse error:', err);
+      }
+      return null;
+    }
+
+    // Extract Lore from NBT itemData
+    function extractLoreFromItemData(itemData) {
+      if (!itemData || typeof pako === 'undefined') return { name: '', lore: [] };
+      try {
+        const raw = atob(itemData);
+        const u8 = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i);
+        const decomp1 = pako.ungzip(u8);
+        const outer = parseBinaryNbt(decomp1);
+
+        let inner = outer;
+        if (outer && outer.nbt) {
+          let b64Str = '';
+          if (outer.nbt instanceof Uint8Array) {
+            b64Str = new TextDecoder('utf-8').decode(outer.nbt);
+          } else {
+            b64Str = String(outer.nbt);
+          }
+          const nestedRaw = atob(b64Str.trim());
+          const nestedU8 = new Uint8Array(nestedRaw.length);
+          for (let i = 0; i < nestedRaw.length; i++) nestedU8[i] = nestedRaw.charCodeAt(i);
+          const decomp2 = pako.ungzip(nestedU8);
+          inner = parseBinaryNbt(decomp2);
+        }
+
+        const lore = inner?.display?.Lore || inner?.tag?.display?.Lore || [];
+        const name = inner?.display?.Name || inner?.tag?.display?.Name || outer?.name || '';
+        return { name, lore: Array.isArray(lore) ? lore : [] };
+      } catch (e) {
+        console.warn('NBT extraction failed:', e);
+        return { name: '', lore: [] };
+      }
+    }
+
+    // Dedicated Single Auction Detail Page Inspector
+    async function openAuctionDetail(auctionId) {
+      if (!auctionId) return;
+
+      // Update URL for shareable links and reloading
+      const newUrl = `${window.location.pathname}?id=${encodeURIComponent(auctionId)}`;
+      if (window.location.search !== `?id=${encodeURIComponent(auctionId)}`) {
+        window.history.pushState({ auctionId }, '', newUrl);
+      }
+
+      document.getElementById('auctionListView').style.display = 'none';
+      const detailView = document.getElementById('auctionDetailView');
+      detailView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      document.getElementById('detailAuctionIdTag').textContent = `Auction ID: ${auctionId}`;
+      document.getElementById('detailTooltipContent').innerHTML = `
+        <div style="padding: 32px; text-align: center; color: var(--text-muted);">
+          <span class="material-icons rotating" style="font-size: 2rem; color: var(--accent-color);">sync</span>
+          <div style="margin-top: 8px; font-weight: 600;">Loading in-game tooltip & stats...</div>
+        </div>
+      `;
+      document.getElementById('detailBidsList').innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+          <span class="material-icons rotating" style="font-size: 1.6rem; color: #2563eb;">sync</span>
+          <div style="margin-top: 6px;">Fetching live bidding history...</div>
+        </div>
+      `;
+
+      let auctionData = null;
+      let bidsList = [];
+
+      // 1. Try fetching from Cloudflare proxy endpoints with fallback
+      const candidateEndpoints = [
+        `/api/auctions?id=${encodeURIComponent(auctionId)}`,
+        `/auctions?id=${encodeURIComponent(auctionId)}`,
+        `/auction/${encodeURIComponent(auctionId)}`
+      ];
+
+      for (const ep of candidateEndpoints) {
+        try {
+          const res = await fetch(ep);
+          if (res.ok) {
+            const json = await res.json();
+            if (json && (json.auction || json.success)) {
+              auctionData = json.auction || json;
+              if (Array.isArray(json.bids) && json.bids.length > 0) {
+                bidsList = json.bids;
+              } else if (Array.isArray(auctionData.bids) && auctionData.bids.length > 0) {
+                bidsList = auctionData.bids;
+              }
+              break;
+            }
+          }
+        } catch (err) {
+          console.warn(`Fetch error for ${ep}:`, err);
+        }
+      }
+
+      // 2. Fallback to cached item if upstream API didn't return
+      if (!auctionData) {
+        const cached = processedAuctions.find(x => x.id === auctionId);
+        if (cached) {
+          auctionData = {
+            id: cached.id,
+            itemId: cached.itemId,
+            tier: cached.tier,
+            category: cached.category,
+            type: cached.isBin ? 'BIN' : 'NORMAL',
+            startingPrice: cached.price,
+            highestBidAmount: cached.price,
+            highestBidderName: '',
+            bids: cached.bidsCount,
+            ownerName: cached.ownerName,
+            endsAt: cached.endsAt ? Math.floor(cached.endsAt / 1000) : 0,
+            createdAt: cached.createdAt,
+            itemData: cached.rawItemData
+          };
+        }
+      }
+
+      // If bidsList is still empty but we know there is a highest bidder, construct the top bid
+      if (bidsList.length === 0 && auctionData && auctionData.highestBidderName && (auctionData.highestBidAmount || auctionData.bids > 0)) {
+        bidsList.push({
+          id: auctionData.highestBidId || 'latest',
+          bidderName: auctionData.highestBidderName,
+          amount: auctionData.highestBidAmount || auctionData.startingPrice || 0,
+          timestamp: auctionData.createdAt || Math.floor(Date.now() / 1000)
+        });
+      }
+
+      if (!auctionData) {
+        document.getElementById('detailTooltipContent').innerHTML = `
+          <div style="padding: 32px 20px; color: #ef4444; text-align: center;">
+            <span class="material-icons" style="font-size: 2.2rem;">error_outline</span>
+            <div style="font-weight: 700; font-size: 1.05rem; margin-top: 6px;">Auction Not Found</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">This auction may have ended or does not exist.</p>
+          </div>
+        `;
+        document.getElementById('detailBidsList').innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted);">No bid data available.</div>';
+        return;
+      }
+
+      const isBin = auctionData.type === 'BIN' || auctionData.isBin;
+      const tier = auctionData.tier || 'COMMON';
+      const tierClass = `tier-${tier.toLowerCase().replace(/_/g, '-')}`;
+      const price = isBin ? (auctionData.startingPrice || 0) : (auctionData.highestBidAmount || auctionData.startingPrice || 0);
+      const endsAtMs = (auctionData.endsAt || 0) * 1000;
+      const timeRemaining = formatTimeRemaining(endsAtMs);
+      const ownerName = auctionData.ownerName || 'Unknown';
+
+      // Decode NBT lore
+      const { name: itemTitle, lore: loreLines } = extractLoreFromItemData(auctionData.itemData);
+      const cleanName = itemTitle ? itemTitle.replace(/§[0-9a-fk-or]/gi, '') : formatItemName(auctionData.itemId);
+
+      document.getElementById('detailItemTitle').textContent = cleanName;
+      document.getElementById('detailTierBadge').outerHTML = `<div id="detailTierBadge" style="display:inline-flex; align-items:center;">${getRarityBadgeHtml(tier, true)}</div>`;
+
+      const isEnded = auctionData.ended || currentType === 'ended' || (endsAtMs > 0 && endsAtMs <= Date.now());
+      document.getElementById('detailTypePill').outerHTML = `<div id="detailTypePill" style="display:inline-flex; align-items:center;">${getTypePillHtml(isBin, isEnded, auctionData.highestBidAmount, auctionData.cancelReason)}</div>`;
+
+      document.getElementById('detailCategoryBadge').textContent = auctionData.category || 'GENERAL';
+      document.getElementById('detailPriceDisplay').innerHTML = `${formatNumber(price)} <span style="font-size: 0.95rem; font-weight: 500; color: var(--text-muted);">coins</span>`;
+      document.getElementById('detailPriceDisplay').style.color = isBin ? '#16a34a' : '#2563eb';
+
+      // Tooltip HTML
+      let tooltipHtml = '';
+      if (itemTitle) {
+        tooltipHtml += `<div class="mc-tooltip-title">${minecraftColorToHtml(itemTitle)}</div>`;
+      } else {
+        tooltipHtml += `<div class="mc-tooltip-title">${minecraftColorToHtml(`§6${cleanName}`)}</div>`;
+      }
+
+      if (loreLines.length > 0) {
+        tooltipHtml += loreLines
+          .map(line => `<div class="mc-lore-line">${minecraftColorToHtml(line)}</div>`)
+          .join('');
+      } else {
+        tooltipHtml += `
+          <div class="mc-lore-line">${minecraftColorToHtml(`§7Rarity: §d${tier}`)}</div>
+          <div class="mc-lore-line">${minecraftColorToHtml(`§7Category: §b${auctionData.category || 'MISC'}`)}</div>
+          <div class="mc-lore-line">${minecraftColorToHtml(`§7In-Game ID: §8${auctionData.itemId}`)}</div>
+        `;
+      }
+
+      // Add authentic rarity UI icon from feather-bot
+      const rarityKey = tier.toLowerCase();
+      tooltipHtml += `
+        <div class="mc-rarity-icon-footer">
+          <img src="assets/ui/${rarityKey}.webp" alt="${tier}" onerror="this.style.display='none'" />
+        </div>
+      `;
+
+      document.getElementById('detailTooltipContent').innerHTML = tooltipHtml;
+
+      // Seller Info
+      const sellerLink = document.getElementById('detailSellerLink');
+      sellerLink.href = `player.html?username=${encodeURIComponent(ownerName)}`;
+      sellerLink.innerHTML = `<span class="material-icons" style="font-size:1.1rem;">person</span> <span>${ownerName}</span>`;
+
+      // Starting Price & Time
+      document.getElementById('detailStartingPrice').textContent = `${formatNumber(auctionData.startingPrice || price)} coins`;
+      document.getElementById('detailTimeRemaining').textContent = timeRemaining;
+      document.getElementById('detailTimeRemaining').style.color = timeRemaining === 'Ended' ? '#ef4444' : '#0284c7';
+
+      if (auctionData.createdAt) {
+        const createdDate = new Date(auctionData.createdAt * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('detailDatesInfo').textContent = `Listed: ${createdDate}`;
+      } else {
+        document.getElementById('detailDatesInfo').textContent = '';
+      }
+
+      // Render Bidding History / Buyer Table
+      const bidsCountBadge = document.getElementById('detailBidsCountBadge');
+      const bidsListContainer = document.getElementById('detailBidsList');
+      const buyerName = bidsList[0]?.bidderName || auctionData.winnerName || auctionData.highestBidderName || auctionData.buyerName;
+
+      if (isBin) {
+        if (buyerName) {
+          bidsCountBadge.textContent = 'Purchased';
+          bidsCountBadge.style.background = '#dcfce7';
+          bidsCountBadge.style.color = '#16a34a';
+
+          const buyTimestamp = bidsList[0]?.timestamp || auctionData.endsAt || auctionData.createdAt;
+          const buyDate = buyTimestamp ? new Date((buyTimestamp < 10000000000 ? buyTimestamp * 1000 : buyTimestamp)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+
+          bidsListContainer.innerHTML = `
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 18px; margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span class="type-pill bin" style="background: #16a34a; color: #ffffff;">
+                  <span class="material-icons" style="font-size:0.75rem;">check_circle</span> INSTANT BOUGHT
+                </span>
+                <span style="font-family: var(--font-mono); font-size: 0.78rem; color: #16a34a; font-weight: 600;">${buyDate}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.72rem; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 0.04em;">Buyer Profile</div>
+                  <a href="player.html?username=${encodeURIComponent(buyerName)}" class="auction-seller-link" style="font-size: 1.08rem; font-weight: 700; color: #15803d; margin-top: 2px;">
+                    <span class="material-icons" style="font-size:1.15rem;">person</span>
+                    <span>${buyerName}</span>
+                  </a>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.72rem; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 0.04em;">Purchase Price</div>
+                  <div style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: #16a34a;">
+                    ${formatNumber(price)} <span style="font-size: 0.75rem; color: #166534; font-weight: 500;">coins</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          bidsCountBadge.textContent = 'Active BIN';
+          bidsCountBadge.style.background = '#dcfce7';
+          bidsCountBadge.style.color = '#16a34a';
+          bidsListContainer.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: #f8fafc; border-radius: 6px;">
+              <span class="material-icons" style="color: #16a34a; font-size: 1.8rem; margin-bottom: 4px;">bolt</span>
+              <div style="font-weight: 700; color: var(--text-bright);">Available for Instant Purchase</div>
+              <p style="margin-top: 4px;">Listed at fixed price of <strong>${formatNumber(price)} coins</strong>. Not yet purchased.</p>
+            </div>
+          `;
+        }
+      } else {
+        bidsCountBadge.textContent = `${bidsList.length} ${bidsList.length === 1 ? 'bid' : 'bids'}`;
+        bidsCountBadge.style.background = '#eff6ff';
+        bidsCountBadge.style.color = '#2563eb';
+
+        if (bidsList.length === 0) {
+          bidsListContainer.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: #f8fafc; border-radius: 6px;">
+              <span class="material-icons" style="color: #94a3b8; font-size: 1.8rem; margin-bottom: 4px;">gavel</span>
+              <div style="font-weight: 700; color: var(--text-bright);">No Bids Placed Yet</div>
+              <p style="margin-top: 4px;">Starting bid is <strong>${formatNumber(auctionData.startingPrice)} coins</strong>.</p>
+            </div>
+          `;
+        } else {
+          // Sort bids by amount descending
+          const sortedBids = [...bidsList].sort((a, b) => (b.amount || 0) - (a.amount || 0));
+
+          bidsListContainer.innerHTML = sortedBids.map((bid, idx) => {
+            const isTop = idx === 0;
+            const bidDate = bid.timestamp ? new Date(bid.timestamp * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+            return `
+              <div class="bid-history-item" style="${isTop ? 'background: #f0fdf4; border-radius: 6px; margin-bottom: 6px; border: 1px solid #bbf7d0;' : ''}">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="bid-rank-pill ${isTop ? 'top' : ''}">${isTop ? '★' : idx + 1}</span>
+                  <div>
+                    <a href="player.html?username=${encodeURIComponent(bid.bidderName)}" class="auction-seller-link" style="font-weight: 700; font-size: 0.9rem;">
+                      ${bid.bidderName || 'Anonymous'}
+                    </a>
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">${bidDate}</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-family: var(--font-mono); font-weight: 700; font-size: 0.95rem; color: ${isTop ? '#16a34a' : 'var(--text-bright)'};">
+                    ${formatNumber(bid.amount)} <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);">coins</span>
+                  </div>
+                  <div style="font-size: 0.7rem; font-weight: 600; color: ${isTop ? '#16a34a' : '#94a3b8'};">
+                    ${isTop ? 'Top Bidder' : 'Outbid'}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    function closeAuctionDetail() {
+      const newUrl = window.location.pathname;
+      window.history.pushState({}, '', newUrl);
+      document.getElementById('auctionDetailView').style.display = 'none';
+      document.getElementById('auctionListView').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Attach Event Listeners
+    document.getElementById('auctionSearchInput')?.addEventListener('input', applyFiltersAndRender);
+    document.getElementById('filterType')?.addEventListener('change', applyFiltersAndRender);
+    document.getElementById('filterCategory')?.addEventListener('change', applyFiltersAndRender);
+    document.getElementById('filterTier')?.addEventListener('change', applyFiltersAndRender);
+    document.getElementById('sortBy')?.addEventListener('change', applyFiltersAndRender);
+
+    // Browser back/forward button router
+    window.addEventListener('popstate', (e) => {
+      const urlId = new URLSearchParams(window.location.search).get('id') || new URLSearchParams(window.location.search).get('auctionId');
+      if (urlId) {
+        openAuctionDetail(urlId);
+      } else {
+        document.getElementById('auctionDetailView').style.display = 'none';
+        document.getElementById('auctionListView').style.display = 'block';
+      }
+    });
+
+    // Live surgical countdown updater every 1 second (zero DOM rebuilds)
+    timerInterval = setInterval(() => {
+      document.querySelectorAll('.auction-timer[data-ends]').forEach(el => {
+        const endsAt = Number(el.getAttribute('data-ends'));
+        if (!endsAt) return;
+        const t = formatTimeRemaining(endsAt);
+        if (el.textContent !== t) {
+          el.textContent = t;
+          el.style.color = t === 'Ended' ? '#ef4444' : '#0284c7';
+        }
+      });
+    }, 1000);
+
+    // Initial Load
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlId = new URLSearchParams(window.location.search).get('id') || new URLSearchParams(window.location.search).get('auctionId');
+      if (urlId) {
+        openAuctionDetail(urlId);
+      } else {
+        fetchAuctions(0);
+      }
     });
   </script>
-</body>
 
+  <!-- Mobile Sidebar & Backdrop Controller -->
+  <script src="better-api-docs/app.js"></script>
+
+</body>
 </html>
